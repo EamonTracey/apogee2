@@ -9,10 +9,7 @@ class DynamicsSimulation:
         self._vehicle = vehicle
         self._motor = motor
 
-        self._time = 0
-        self._vehicle_position = 0
-        self._vehicle_velocity = 0
-        self._vehicle_acceleration = 0
+        self.initialize_conditions()
 
     @property
     def time(self):
@@ -30,12 +27,16 @@ class DynamicsSimulation:
     def vehicle_acceleration(self):
         return self._vehicle_acceleration
 
-    def initialize_conditions(self, vehicle_position: float = 0, self._vehicle_velocity: float = 0):
-        self._vehicle_position = vehicle_position
-        self._vehicle_velocity = vehicle_velocity
-
+    def initialize_conditions(self,
+                              vehicle_position: float = 0,
+                              vehicle_velocity: float = 0,
+                              ignition_time: float = 0):
         self._time = 0
         self._vehicle_acceleration = 0
+
+        self._vehicle_position = vehicle_position
+        self._vehicle_velocity = vehicle_velocity
+        self._ignition_time = ignition_time
 
     def step(self, time_delta: float):
         assert time_delta > 0
@@ -45,9 +46,10 @@ class DynamicsSimulation:
 
         # Calculate the forces acting on the rocket.
         mass_total = self._vehicle.mass + self._motor.calculate_mass(
-            self._time)
+            self._time - self._ignition_time)
         force_gravity = mass_total * -EARTH_GRAVITY_ACCELERATION
-        force_thrust = self._motor.calculate_thrust(self._time)
+        force_thrust = self._motor.calculate_thrust(self._time -
+                                                    self._ignition_time)
         force_drag = -self._vehicle.calculate_drag(mach)
         force_total = force_gravity + force_thrust + force_drag
 
