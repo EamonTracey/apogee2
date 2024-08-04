@@ -40,4 +40,3 @@ class Motor:
         mass = np.interp(time, (0, self._times[-1]),
                          (self._wet_mass, self._dry_mass))
         return mass
-

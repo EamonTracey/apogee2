@@ -3,6 +3,7 @@ from typing import Self
 
 import numpy as np
 
+
 class Vehicle:
 
     def __init__(self, mass: float, machs: tuple[float], drags: tuple[float]):

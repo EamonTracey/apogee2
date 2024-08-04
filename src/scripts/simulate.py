@@ -41,5 +41,6 @@ def simulate(vehicle: str, motor: str, hertz: int):
     plt.plot(times, positions)
     plt.show()
 
+
 if __name__ == "__main__":
     simulate()
