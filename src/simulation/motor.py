@@ -8,10 +8,10 @@ class Motor:
 
     def __init__(self, times: tuple[float], forces: tuple[float],
                  dry_mass: float, wet_mass: float):
-        self._times = times
-        self._forces = forces
-        self._dry_mass = dry_mass
-        self._wet_mass = wet_mass
+        self._times = tuple(times)
+        self._forces = tuple(forces)
+        self._dry_mass = float(dry_mass)
+        self._wet_mass = float(wet_mass)
 
         self._validate_motor()
 
@@ -20,17 +20,14 @@ class Motor:
         with open(file_path, "r") as file:
             motor_json = json.load(file)
 
-        times = tuple(motor_json["times"])
-        forces = tuple(motor_json["forces"])
-        dry_mass = float(motor_json["dry_mass"])
-        wet_mass = float(motor_json["wet_mass"])
-        motor = cls(times, forces, dry_mass, wet_mass)
+        motor = cls(**motor_json)
         return motor
 
     def _validate_motor(self):
         assert len(self._times) > 0
         assert len(self._times) == len(self._forces)
         assert self._times == tuple(sorted(self._times))
+        assert all(t >= 0 for t in self._times)
         assert self._wet_mass >= self._dry_mass >= 0
 
     def calculate_thrust(self, time: float) -> float:
@@ -38,6 +35,9 @@ class Motor:
         return thrust
 
     def calculate_mass(self, time: float) -> float:
+        # TODO: The motor does not expel propellant mass linearly.
+
         mass = np.interp(time, (0, self._times[-1]),
                          (self._wet_mass, self._dry_mass))
         return mass
+
