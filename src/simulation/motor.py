@@ -3,7 +3,9 @@ from typing import Self
 
 import numpy as np
 
+
 class Motor:
+
     def __init__(self, times: tuple[float], forces: tuple[float],
                  dry_mass: float, wet_mass: float):
         self._times = times
@@ -36,5 +38,6 @@ class Motor:
         return thrust
 
     def calculate_mass(self, time: float) -> float:
-        mass = np.interp(time, (0, self._times[-1]), (self._wet_mass, self._dry_mass))
+        mass = np.interp(time, (0, self._times[-1]),
+                         (self._wet_mass, self._dry_mass))
         return mass

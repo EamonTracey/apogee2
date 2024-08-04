@@ -1,7 +1,9 @@
 import json
 from typing import Self
 
+
 class Vehicle:
+
     def __init__(self, mass: float):
         self._mass = mass
 
@@ -26,5 +28,5 @@ class Vehicle:
     def calculate_drag(self, velocity):
         # TODO: Refine drag calculation.
 
-        drag = 0.5 * 1.225 * (velocity ** 2) * 0.39 * 0.018232222
+        drag = 0.5 * 1.225 * (velocity**2) * 0.39 * 0.018232222
         return drag
