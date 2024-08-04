@@ -16,7 +16,7 @@ from simulation.vehicle import Vehicle
               help="The time at which the motor ignites.")
 @click.option("--hertz",
               default=100,
-              help="The speed with which to run the software loop.")
+              help="The speed at which to run the software loop.")
 def simulate(vehicle: str, motor: str, ignition_time: float, hertz: int):
     """Run a complete software-in-the-loop rocket flight simulation."""
     vehicle_file_path = f"data/vehicles/{vehicle}.json"
