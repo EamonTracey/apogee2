@@ -30,6 +30,13 @@ class DynamicsSimulation:
     def vehicle_acceleration(self):
         return self._vehicle_acceleration
 
+    def initialize_conditions(self, vehicle_position: float = 0, self._vehicle_velocity: float = 0):
+        self._vehicle_position = vehicle_position
+        self._vehicle_velocity = vehicle_velocity
+
+        self._time = 0
+        self._vehicle_acceleration = 0
+
     def step(self, time_delta: float):
         assert time_delta > 0
 
