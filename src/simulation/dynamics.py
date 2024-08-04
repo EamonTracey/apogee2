@@ -1,4 +1,4 @@
-from base.constants import EARTH_GRAVITY_ACCELERATION
+from base.constants import EARTH_GRAVITY_ACCELERATION, SPEED_OF_SOUND
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
 
@@ -34,7 +34,7 @@ class DynamicsSimulation:
         assert time_delta > 0
 
         # Derive mach number.
-        mach = self._vehicle_velocity / 343
+        mach = self._vehicle_velocity / SPEED_OF_SOUND
 
         # Calculate the forces acting on the rocket.
         mass_total = self._vehicle.mass + self._motor.calculate_mass(
