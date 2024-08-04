@@ -2,7 +2,9 @@ from base.constants import EARTH_GRAVITY_ACCELERATION
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
 
+
 class DynamicsSimulation:
+
     def __init__(self, vehicle: Vehicle, motor: Motor):
         self._vehicle = vehicle
         self._motor = motor
@@ -32,7 +34,8 @@ class DynamicsSimulation:
         assert time_delta > 0
 
         # Calculate the forces acting on the rocket.
-        mass_total = self._vehicle.mass + self._motor.calculate_mass(self._time)
+        mass_total = self._vehicle.mass + self._motor.calculate_mass(
+            self._time)
         force_gravity = mass_total * -EARTH_GRAVITY_ACCELERATION
         force_thrust = self._motor.calculate_thrust(self._time)
         force_drag = -self._vehicle.calculate_drag(self._vehicle_velocity)
