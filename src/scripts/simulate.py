@@ -1,4 +1,5 @@
 import click
+import matplotlib.pyplot as plt
 
 from simulation.dynamics import DynamicsSimulation
 from simulation.motor import Motor
@@ -21,8 +22,24 @@ def simulate(vehicle: str, motor: str, hertz: int):
     motor_file_path = f"data/motors/{motor}.json"
     motor = Motor.from_json(motor_file_path)
 
-    dynamics_simulation = DynamicsSimulation(vehicle, motor)
+    dynamics = DynamicsSimulation(vehicle, motor)
 
+    # TODO: Run the simulation.
+    time_delta = 1 / hertz
+
+    times = []
+    positions = []
+
+    while dynamics.time < 1 or dynamics.vehicle_position >= 0:
+        times.append(dynamics.time)
+        positions.append(dynamics.vehicle_position)
+        dynamics.step(time_delta)
+
+    plt.xlabel("Time (seconds)")
+    plt.ylabel("Altitude (meters)")
+    plt.title("ACS Simulation")
+    plt.plot(times, positions)
+    plt.show()
 
 if __name__ == "__main__":
     simulate()

@@ -33,12 +33,15 @@ class DynamicsSimulation:
     def step(self, time_delta: float):
         assert time_delta > 0
 
+        # Derive mach number.
+        mach = self._vehicle_velocity / 343
+
         # Calculate the forces acting on the rocket.
         mass_total = self._vehicle.mass + self._motor.calculate_mass(
             self._time)
         force_gravity = mass_total * -EARTH_GRAVITY_ACCELERATION
         force_thrust = self._motor.calculate_thrust(self._time)
-        force_drag = -self._vehicle.calculate_drag(self._vehicle_velocity)
+        force_drag = -self._vehicle.calculate_drag(mach)
         force_total = force_gravity + force_thrust + force_drag
 
         # Advance Newtonian physics.
