@@ -1,0 +1,47 @@
+; Read case file.
+/file/read-case "{input_case_file}"
+
+; Enable energy equation.
+/define/models/energy yes yes yes
+
+; Set turbulence model to Komega SST.
+/define/models/viscous kw-sst yes
+
+; Set air density to ideal gas.
+/define/materials/change-create air air yes ideal-gas no no no no no no
+
+; Define boundary conditions (angle of attack, mach number).
+/define/boundary-conditions/pressure-far-field farfield no 0 no {mach} no 273.15 yes no 1 no 0 no 0 no no yes 5 10
+/define/boundary-conditions/pressure-far-field inlet no 0 no {mach} no 273.15 yes no 1 no 0 no 0 no no yes 5 10
+/define/boundary-conditions/pressure-far-field outlet no 0 no {mach} no 273.15 yes no 1 no 0 no 0 no no yes 5 10
+
+; Make wall stationary and no slip.
+/define/boundary-conditions/wall launchvehicle 0 no 0 no no no 0 no yes motion-bc-stationary yes shear-bc-noslip no no 0 no 0.5 no 1
+
+; Make all methods second order.
+/solve/set/discretization-scheme/pressure 12
+/solve/set/discretization-scheme/density 1
+/solve/set/discretization-scheme/mom 1
+/solve/set/discretization-scheme/k 1
+/solve/set/discretization-scheme/omega 1
+/solve/set/discretization-scheme/temperature 1
+
+; Create axial force report definition.
+/solve/report-definitions add axial-report force force-vector 1 0 0 scaled no thread-names launchvehicle , q
+/solve/report-files add report-file-force report-defs axial-report , file-name "{output_axial_file}" q
+/solve/report-plots add report-plot-force report-defs axial-report , active yes q
+
+; Create normal force report definition.
+/solve/report-definitions add normal-report force force-vector 0 1 0 scaled no thread-names launchvehicle , q
+/solve/report-files add report-file-force report-defs normal-report , file-name "{output_normal_file}" q
+/solve/report-plots add report-plot-force report-defs normal-report , active yes q
+
+; Disable convergence checks.
+/solve/monitors/residual/check-convergence no no no no no no no
+
+; Solve with many iterations.
+/solve/initialize/hyb-initialization
+/solve/iterate {iterations}
+
+; Write case and data files.
+/file/write-case-data "{output_case_data_file}"
