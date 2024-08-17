@@ -4,7 +4,7 @@ from typing import Optional
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from base.constants import EARTH_GRAVITY_ACCELERATION, SPEED_OF_SOUND
+from base.constants import EARTH_GRAVITY_ACCELERATION
 from base.constants import PITCH, ROLL, YAW
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
@@ -33,34 +33,50 @@ class DynamicsSimulation:
         return self._state
 
     def _calculate_derivatives(self):
-        """Calculates the derivatives of the current position, linear momentum, angular momentum, and orientation."""
+        """Calculate the derivatives of the current position, linear momentum,
+        orientation, and angular momentum."""
 
         # Unpack the current simulation state.
         time = self.state.time
         position = np.array(self.state.position)
         linear_momentum = np.array(self.state.linear_momentum)
-        angular_momentum = np.array(self.state.angular_momentum)
         orientation = np.array(self.state.orientation)
+        angular_momentum = np.array(self.state.angular_momentum)
 
-        # The total mass equals the sum of the mass of the vehicle and mass of the motor. The mass of the motor is a function of time since its mass decreases as it burns.
+        # The total mass equals the sum of the mass of the vehicle and mass of
+        # the motor. The mass of the motor is a function of time since its
+        # mass decreases as it burns.
         mass_total = self._vehicle.mass + self._motor.calculate_mass(time)
 
-        # The derivative of the position vector equals the linear momentum vector divided by the mass.
-        derivative_position = linear_momentum / mass_total
+        # The derivative of the position vector equals the linear momentum
+        # divided by the mass.
+        linear_velocity = linear_momentum / mass_total
 
-        # Compute the angular velocity.
-        # TODO: explain the calculation.
-        # TODO: implement an inertia model
+        # Compute the rotation matrix and yaw, pitch, and roll axes of the
+        # vehicle.
         rotation = Rotation.from_quat(orientation).as_matrix()
-        inertia_inverse = np.diag([1, 1, 1])
+        yaw_vehicle = rotation @ YAW
+        pitch_vehicle = rotation @ PITCH
+        roll_vehicle = rotation @ ROLL
+
+        # Compute the angular velocity using the rotation matrix and reference
+        # inertia tensor.
+        inertia = np.diag(self._vehicle.inertia)
+        inertia_inverse = np.linalg.inv(inertia)
         angular_velocity = rotation @ inertia_inverse @ rotation.T @ angular_momentum
 
-        # TODO: understand and explain.
-        s = orientation[0]
-        v = orientation[1:]
-        s_dot = 0.5 * np.dot(angular_velocity, v)
-        v_dot = 0.5 * (s * angular_velocity + np.cross(angular_velocity, v))
-        derivative_orientation = np.array([s_dot, *v_dot])
+        # Compute the derivative of the orientation using the angular velocity
+        # and orientation (quaternion).
+        scalar = orientation[0]
+        vector = orientation[1:]
+        scalar_derivative = 0.5 * np.dot(angular_velocity, vector)
+        vector_dot = 0.5 * (scalar * angular_velocity +
+                            np.cross(angular_velocity, vector))
+        orientation_derivative = np.array(
+            [scalar_derivative, *vector_derivative])
+
+        # Approximate the apparent velocity vector.
+        # V_cm
 
         # TODO: force???
         Ra = rotation @ ROLL
@@ -71,25 +87,26 @@ class DynamicsSimulation:
         # TODO: torque???
         torque = np.array([0.0, 0.0, 0.0])
 
-        return derivative_position, force, torque, derivative_orientation
+        return linear_velocity, force, orientation_derivative, torque
 
     def step(self, time_delta: float):
+        self._vehicle.calculate_axial(0.3, 0)
         assert time_delta > 0
 
         # Calculate the derivatives at the current state
-        derivative_position, force, torque, derivative_orientation = self._calculate_derivatives(
+        linear_velocity, force, orientation_derivative, torque = self._calculate_derivatives(
         )
 
         # Update the state in place
         self._state.position = tuple(
-            np.array(self._state.position) + derivative_position * time_delta)
+            np.array(self._state.position) + linear_velocity * time_delta)
         self._state.linear_momentum = tuple(
             np.array(self._state.linear_momentum) + force * time_delta)
         self._state.angular_momentum = tuple(
             np.array(self._state.angular_momentum) + torque * time_delta)
         self._state.orientation = tuple(
             np.array(self._state.orientation) +
-            derivative_orientation * time_delta)
+            orientation_derivative * time_delta)
 
         # Update the simulation time
         self._state.time += time_delta
