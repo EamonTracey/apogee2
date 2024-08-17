@@ -6,12 +6,12 @@ import numpy as np
 
 class Motor:
 
-    def __init__(self, times: tuple[float], forces: tuple[float],
-                 dry_mass: float, wet_mass: float):
-        self._times = tuple(times)
-        self._forces = tuple(forces)
+    def __init__(self, dry_mass: float, wet_mass: float,
+                 times: tuple[float, ...], forces: tuple[float, ...]):
         self._dry_mass = float(dry_mass)
         self._wet_mass = float(wet_mass)
+        self._times = tuple(times)
+        self._forces = tuple(forces)
 
         self._validate_motor()
 
