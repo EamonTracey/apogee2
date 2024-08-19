@@ -6,8 +6,9 @@ import numpy as np
 
 class Motor:
 
-    def __init__(self, dry_mass: float, wet_mass: float,
+    def __init__(self, length: float, dry_mass: float, wet_mass: float,
                  times: tuple[float, ...], forces: tuple[float, ...]):
+        self._length = float(length)
         self._dry_mass = float(dry_mass)
         self._wet_mass = float(wet_mass)
         self._times = tuple(times)
@@ -22,6 +23,18 @@ class Motor:
 
         motor = cls(**motor_json)
         return motor
+
+    @property
+    def length(self):
+        return self._length
+
+    @property
+    def dry_mass(self):
+        return self._dry_mass
+
+    @property
+    def wet_mass(self):
+        return self._wet_mass
 
     def _validate_motor(self):
         assert len(self._times) > 0

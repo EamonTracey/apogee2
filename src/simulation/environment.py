@@ -21,8 +21,13 @@ class Environment:
 
     @classmethod
     def from_json(cls, file_path: str) -> Self:
-        with open(file_path, "r") as file:
-            environment_json = json.load(file)
+        #        with open(file_path, "r") as file:
+        #            environment_json = json.load(file)
+        #
+        #        environment = cls(**environment_json)
+        #        return environment
+        return Environment((), ())
 
-        environment = cls(**environment_json)
-        return environment
+    def calculate_wind(self, altitude: float) -> float:
+        ...
+        return 0
