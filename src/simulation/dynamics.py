@@ -6,6 +6,7 @@ from scipy.spatial.transform import Rotation
 
 from base.constants import EARTH_GRAVITY_ACCELERATION
 from base.constants import PITCH, ROLL, YAW
+from base.stage import Stage
 from simulation.environment import Environment
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
@@ -19,6 +20,8 @@ class SimulationState:
     linear_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     angular_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     orientation: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 0.0)
+
+    stage: Stage = Stage.GROUND
 
 
 class DynamicsSimulation:
@@ -51,7 +54,7 @@ class DynamicsSimulation:
         # mass decreases as it burns.
         vehicle_mass = self._vehicle.mass
         motor_mass = self._motor.calculate_mass(time)
-        mass_total = self._vehicle.mass + self._motor.calculate_mass(time)
+        mass_total = vehicle_mass + motor_mass
 
         # The derivative of the position vector equals the linear momentum
         # divided by the mass.
@@ -80,7 +83,7 @@ class DynamicsSimulation:
             orientation_scalar * angular_velocity +
             np.cross(angular_velocity, orientation_vector))
         orientation_derivative = np.array(
-            [orientation_scalar_derivative, *orientation_vector_derivative])
+            (orientation_scalar_derivative, *orientation_vector_derivative))
 
         # Compute the center of mass and center of pressure.
         center_of_mass = (
@@ -143,6 +146,21 @@ class DynamicsSimulation:
         torque = torque_normal + torque_roll
 
         return linear_velocity, force, orientation_derivative, torque
+    
+    def _update_stage(self):
+        # TODO: implement
+        if self._state.stage == Stage.GROUND:
+            self._state.stage = Stage.RAIL
+        elif self._state.stage == Stage.RAIL:
+            self._state.stage = Stage.BURN
+        elif self._state.stage == Stage.BURN:
+            self._state.stage = Stage.COAST
+        elif self._state.stage == Stage.COAST:
+            if self._state.linear_momentum[2] < 0:
+                self._state.stage = Stage.DESCENT
+        elif self._state.stage == Stage.DESCENT:
+            ...
+
 
     def step(self, time_delta: float):
         assert time_delta > 0
@@ -161,6 +179,9 @@ class DynamicsSimulation:
         self._state.orientation = tuple(
             np.array(self._state.orientation) +
             orientation_derivative * time_delta)
+
+        # Update the flight stage.
+        self._update_stage()
 
         # Update the simulation time
         self._state.time += time_delta
