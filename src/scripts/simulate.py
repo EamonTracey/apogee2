@@ -1,6 +1,7 @@
 import click
 import matplotlib.pyplot as plt
 
+from base.stage import Stage
 from simulation.dynamics import DynamicsSimulation
 from simulation.environment import Environment
 from simulation.motor import Motor
@@ -38,13 +39,10 @@ def simulate(vehicle: str, motor: str, environment: str, hertz: int):
     positions = []
 
     state = dynamics.state
-    q = 0
-    while state.time < 50:
+    while state.stage != Stage.DESCENT:
         times.append(state.time)
         positions.append(state.position)
         dynamics.step(time_delta)
-        q = max(q, state.position[2])
-    print(f"max altitude = {q}")
     import matplotlib.pyplot as plt
     from mpl_toolkits.mplot3d import Axes3D
     # Create a 3D plot
