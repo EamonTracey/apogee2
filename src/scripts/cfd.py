@@ -4,7 +4,6 @@ import os
 import click
 import ndcctools.taskvine as vine
 
-
 @click.command(context_settings={"show_default": True})
 @click.argument("case")
 @click.option("--attacks",
@@ -23,9 +22,6 @@ import ndcctools.taskvine as vine
 @click.option("--port",
               default=14418,
               help="The port on which the TaskVine manager listens.")
-@click.option("--email",
-              default="etracey@nd.edu",
-              help="The email associated with the CRC account.")
 def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
         iterations: int, port: int, email: str):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
@@ -84,11 +80,7 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
             manager.submit(task)
 
     while not manager.empty():
-        task = manager.wait(5)
-        if task:
-            print(f"Task {task.id} completed with result {task.output}")
-            print(task.std_output)
-
+        task = manager.wait()
 
 if __name__ == "__main__":
     cfd()
