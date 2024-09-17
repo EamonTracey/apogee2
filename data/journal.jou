@@ -1,5 +1,5 @@
 ; Read case file.
-/file/read-case "{input_case_file}"
+/file/read-case "case.cas.h5"
 
 ; Enable energy equation.
 /define/models/energy yes yes yes
@@ -28,12 +28,12 @@
 
 ; Create axial force report definition.
 /solve/report-definitions add axial-report force force-vector 1 0 0 scaled no thread-names launchvehicle , q
-/solve/report-files add report-file-force report-defs axial-report , file-name "{output_axial_file}" q
+/solve/report-files add report-file-force report-defs axial-report , file-name "axial.out" q
 /solve/report-plots add report-plot-force report-defs axial-report , active yes q
 
 ; Create normal force report definition.
 /solve/report-definitions add normal-report force force-vector 0 1 0 scaled no thread-names launchvehicle , q
-/solve/report-files add report-file-force report-defs normal-report , file-name "{output_normal_file}" q
+/solve/report-files add report-file-force report-defs normal-report , file-name "normal.out" q
 /solve/report-plots add report-plot-force report-defs normal-report , active yes q
 
 ; Disable convergence checks.
@@ -44,4 +44,4 @@
 /solve/iterate {iterations}
 
 ; Write case and data files.
-/file/write-case-data "{output_case_data_file}"
+; /file/write-case-data "case_data"
