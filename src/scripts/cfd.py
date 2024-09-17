@@ -2,6 +2,7 @@ from math import cos, radians, sin
 import os
 
 import click
+import ndcctools.taskvine as vine
 
 
 @click.command(context_settings={"show_default": True})
@@ -19,15 +20,15 @@ import click
 @click.option("--iterations",
               default=500,
               help="The number of iterations to execute the CFD run.")
-@click.option("--journal",
-              default="simple",
-              help="The journal file to parameterize.")
+@click.option("--port",
+              default=14418,
+              help="The port on which the TaskVine manager listens.")
 @click.option("--email",
               default="etracey@nd.edu",
               help="The email associated with the CRC account.")
 def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
-        iterations: int, journal: str, email: str):
-    """Generate parameterized CFD jobs to be run on the CRC machines.
+        iterations: int, port: int, email: str):
+    """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
     The case file must contain the vehicle mesh. The vehicle's roll axis must
     coincide with the x axis such that the drag force acts in the positive x
@@ -37,34 +38,23 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
     `{` and `}`. These tokens are mach, ..., iterations, input_case_file,
     output_axial_file, output_normal_file, output_case_data_file.
     """
+    # Create the TaskVine manager.
+    manager = vine.Manager(port)
+    case_vine_file = manager.declare_file(case)
+
     # Retrieve the basename of the case file.
     case_name = os.path.basename(case)
     case_name = case_name.split(".", 2)[0]
 
     # Load the journal template.
-    journal_file_path = f"data/journals/{journal}.jou"
+    journal_file = f"data/journal.jou"
     journal_template: str
-    with open(journal_file_path, "r") as file:
+    with open(journal_file, "r") as file:
         journal_template = file.read()
-
-    # Create the output directories.
-    output_directory = f"data/cfd/{case_name}_{journal}"
-    journal_directory = f"{output_directory}/journal"
-    job_directory = f"{output_directory}/job"
-    axial_directory = f"{output_directory}/axial"
-    normal_directory = f"{output_directory}/normal"
-    case_data_directory = f"{output_directory}/case_data"
-    log_directory = f"{output_directory}/log"
-    os.makedirs(journal_directory, exist_ok=True)
-    os.makedirs(job_directory, exist_ok=True)
-    os.makedirs(axial_directory, exist_ok=True)
-    os.makedirs(normal_directory, exist_ok=True)
-    os.makedirs(case_data_directory, exist_ok=True)
-    os.makedirs(log_directory, exist_ok=True)
 
     for attack in attacks:
         for mach in machs:
-            name = f"{case_name}_{journal}_{attack}_{mach}_{iterations}"
+            name = f"{case_name}_{attack}_{mach}_{iterations}"
 
             # To induce an angle of attack, split the x and y components of the
             # flow velocity vector. Note that we assume the vehicle's roll axis
@@ -74,25 +64,30 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
             flow_vector_y = sin(angle_of_attack)
 
             # Paramterize the journal template.
-            output_axial_file = f"{axial_directory}/{name}_axial.out"
-            output_normal_file = f"{normal_directory}/{name}_normal.out"
-            output_case_data_file = f"{case_data_directory}/{name}_case_data.cas.dat.h5"
             journal_paramaterized = journal_template.format(
                 mach=mach,
                 # ...,
                 iterations=iterations,
-                input_case_file=case,
-                output_axial_file=output_axial_file,
-                output_normal_file=output_normal_file,
-                output_case_data_file=output_case_data_file)
+                input_case_file=case)
 
-            # Write the journal.
-            output_journal_file = f"{journal_directory}/{name}_journal.jou"
-            with open(output_journal_file, "w") as file:
-                file.write(journal_paramaterized)
+            # Create the task with inputs and outputs.
+            task = vine.Task(f"module load ansys; fluent 3ddp -t1 -gr -gu -i journal.jou")
+            journal_vine_buffer = manager.declare_buffer(journal_paramaterized)
+            axial_vine_file = manager.declare_file(f"{name}_axial.out")
+            normal_vine_file = manager.declare_file(f"{name}_normal.out")
+            task.add_input(case_vine_file, "case.cas.h5")
+            task.add_input(journal_vine_buffer, "journal.jou")
+            task.add_output(axial_vine_file, "axial.out")
+            task.add_output(normal_vine_file, "normal.out")
 
-            # Write the job.
-            ...
+            # Submit the task to TaskVine.
+            manager.submit(task)
+
+    while not manager.empty():
+        task = manager.wait(5)
+        if task:
+            print(f"Task {task.id} completed with result {task.output}")
+            print(task.std_output)
 
 
 if __name__ == "__main__":
