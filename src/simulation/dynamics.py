@@ -38,16 +38,10 @@ class DynamicsSimulation:
     def state(self):
         return self._state
 
-    def _calculate_derivatives(self):
+    def _calculate_derivatives(self, time, position, linear_momentum,
+                               orientation, angular_momentum):
         """Calculate the derivatives of the current position, linear momentum,
         orientation, and angular momentum."""
-
-        # Unpack the current simulation state.
-        time = self.state.time
-        position = np.array(self.state.position)
-        linear_momentum = np.array(self.state.linear_momentum)
-        orientation = np.array(self.state.orientation)
-        angular_momentum = np.array(self.state.angular_momentum)
 
         # The total mass equals the sum of the mass of the vehicle and mass of
         # the motor. The mass of the motor is a function of time since its
@@ -62,7 +56,8 @@ class DynamicsSimulation:
 
         # Compute the rotation matrix and yaw, pitch, and roll axes of the
         # vehicle.
-        rotation = Rotation.from_quat(orientation, scalar_first=True).as_matrix()
+        rotation = Rotation.from_quat(orientation,
+                                      scalar_first=True).as_matrix()
         vehicle_yaw = rotation @ YAW
         vehicle_pitch = rotation @ PITCH
         vehicle_roll = rotation @ ROLL
@@ -146,7 +141,7 @@ class DynamicsSimulation:
         torque = torque_normal + torque_roll
 
         return linear_velocity, force, orientation_derivative, torque
-    
+
     def _update_stage(self):
         # TODO: implement
         if self._state.stage == Stage.GROUND:
@@ -161,24 +156,43 @@ class DynamicsSimulation:
         elif self._state.stage == Stage.DESCENT:
             ...
 
-
     def step(self, time_delta: float):
         assert time_delta > 0
 
-        # Calculate the derivatives at the current state
-        linear_velocity, force, orientation_derivative, torque = self._calculate_derivatives(
-        )
+        # Unpack the simulation state into numpy objects.
+        time = self._state.time
+        position = np.array(self._state.position)
+        linear_momentum = np.array(self._state.linear_momentum)
+        orientation = np.array(self._state.orientation)
+        angular_momentum = np.array(self._state.angular_momentum)
 
-        # Update the state in place
-        self._state.position = tuple(
-            np.array(self._state.position) + linear_velocity * time_delta)
-        self._state.linear_momentum = tuple(
-            np.array(self._state.linear_momentum) + force * time_delta)
-        self._state.angular_momentum = tuple(
-            np.array(self._state.angular_momentum) + torque * time_delta)
-        self._state.orientation = tuple(
-            np.array(self._state.orientation) +
-            orientation_derivative * time_delta)
+        # Perform RK4.
+        k1p, k1l, k1o, k1a = self._calculate_derivatives(
+            time, position, linear_momentum, orientation, angular_momentum)
+        k2p, k2l, k2o, k2a = self._calculate_derivatives(
+            time + time_delta / 2, position + time_delta * k1p / 2,
+            linear_momentum + time_delta * k1l / 2,
+            orientation + time_delta * k1o / 2,
+            angular_momentum + time_delta * k1a / 2)
+        k3p, k3l, k3o, k3a = self._calculate_derivatives(
+            time + time_delta / 2, position + time_delta * k2p / 2,
+            linear_momentum + time_delta * k2l / 2,
+            orientation + time_delta * k2o / 2,
+            angular_momentum + time_delta * k2a / 2)
+        k4p, k4l, k4o, k4a = self._calculate_derivatives(
+            time + time_delta, position + time_delta * k3p,
+            linear_momentum + time_delta * k3l, orientation + time_delta * k3o,
+            angular_momentum + time_delta * k3a)
+        position += time_delta / 6 * (k1p + 2 * k2p + 2 * k3p + k4p)
+        linear_momentum += time_delta / 6 * (k1l + 2 * k2l + 2 * k3l + k4l)
+        orientation += time_delta / 6 * (k1o + 2 * k2o + 2 * k3o + k4o)
+        angular_momentum += time_delta / 6 * (k1a + 2 * k2a + 2 * k3a + k4a)
+
+        # Repack the simulation state.
+        self._state.position = tuple(position)
+        self._state.linear_momentum = tuple(linear_momentum)
+        self._state.orientation = tuple(orientation)
+        self._state.angular_momentum = tuple(angular_momentum)
 
         # Update the flight stage.
         self._update_stage()
