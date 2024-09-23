@@ -1,8 +1,14 @@
+from datetime import datetime
+import logging
 from math import cos, radians, sin
 import os
 
 import click
 import ndcctools.taskvine as vine
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
 
 @click.command(context_settings={"show_default": True})
 @click.argument("case")
@@ -20,19 +26,15 @@ import ndcctools.taskvine as vine
               default=500,
               help="The number of iterations to execute the CFD run.")
 @click.option("--port",
-              default=14418,
+              default=41435,
               help="The port on which the TaskVine manager listens.")
 def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
-        iterations: int, port: int, email: str):
+        iterations: int, port: int):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
     The case file must contain the vehicle mesh. The vehicle's roll axis must
     coincide with the x axis such that the drag force acts in the positive x
     direction.
-
-    The journal must contain a specific set of tokens delimited by
-    `{` and `}`. These tokens are mach, ..., iterations, input_case_file,
-    output_axial_file, output_normal_file, output_case_data_file.
     """
     # Create the TaskVine manager.
     manager = vine.Manager(port)
@@ -47,6 +49,12 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
     journal_template: str
     with open(journal_file, "r") as file:
         journal_template = file.read()
+
+    # Make the output directory.
+    now = datetime.now().strftime("%Y%m%d%H%M%S")
+    output_directory = f"data/cfd/{now}"
+    os.makedirs(output_directory, exist_ok=True)
+    logger.info(f"Created output directory {output_directory}")
 
     for attack in attacks:
         for mach in machs:
@@ -63,14 +71,16 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
             journal_paramaterized = journal_template.format(
                 mach=mach,
                 # ...,
-                iterations=iterations,
-                input_case_file=case)
+                iterations=iterations)
 
             # Create the task with inputs and outputs.
-            task = vine.Task(f"module load ansys; fluent 3ddp -t1 -gr -gu -i journal.jou")
+            task = vine.Task(
+                f"module load ansys; fluent 3ddp -t1 -gr -gu -i journal.jou")
             journal_vine_buffer = manager.declare_buffer(journal_paramaterized)
-            axial_vine_file = manager.declare_file(f"{name}_axial.out")
-            normal_vine_file = manager.declare_file(f"{name}_normal.out")
+            axial_vine_file = manager.declare_file(
+                f"{output_directory}/{name}_axial.out")
+            normal_vine_file = manager.declare_file(
+                f"{output_directory}/{name}_normal.out")
             task.add_input(case_vine_file, "case.cas.h5")
             task.add_input(journal_vine_buffer, "journal.jou")
             task.add_output(axial_vine_file, "axial.out")
@@ -78,9 +88,13 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
 
             # Submit the task to TaskVine.
             manager.submit(task)
+            logger.info(
+                f"Submitted CFD run with {case_name=} {attack=} {mach=} {iterations=}"
+            )
 
     while not manager.empty():
         task = manager.wait()
+
 
 if __name__ == "__main__":
     cfd()
