@@ -42,6 +42,3 @@
 ; Solve with many iterations.
 /solve/initialize/hyb-initialization
 /solve/iterate {iterations}
-
-; Write case and data files.
-; /file/write-case-data "case_data"

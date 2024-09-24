@@ -26,7 +26,8 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
               default=500,
               help="The number of iterations to execute the CFD run.")
 @click.option("--port",
-              default=41435,
+              "-p",
+              default=9340,
               help="The port on which the TaskVine manager listens.")
 def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
         iterations: int, port: int):
@@ -75,26 +76,30 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
 
             # Create the task with inputs and outputs.
             task = vine.Task(
-                f"module load ansys; fluent 3ddp -t1 -gr -gu -i journal.jou")
+                f"module load ansys/2024R1; fluent 3ddp -t1 -g < journal.jou > log 2>&1")
             journal_vine_buffer = manager.declare_buffer(journal_paramaterized)
             axial_vine_file = manager.declare_file(
-                f"{output_directory}/{name}_axial.out")
+                f"{output_directory}/{name}.axial")
             normal_vine_file = manager.declare_file(
-                f"{output_directory}/{name}_normal.out")
+                f"{output_directory}/{name}.normal")
+            log_vine_file = manager.declare_file(
+                f"{output_directory}/{name}.log")
             task.add_input(case_vine_file, "case.cas.h5")
             task.add_input(journal_vine_buffer, "journal.jou")
             task.add_output(axial_vine_file, "axial.out")
             task.add_output(normal_vine_file, "normal.out")
+            task.add_output(log_vine_file, "log")
 
             # Submit the task to TaskVine.
             manager.submit(task)
             logger.info(
-                f"Submitted CFD run with {case_name=} {attack=} {mach=} {iterations=}"
+                f"Submitted computational fluid dynamics task {task.id} with {case_name=} {attack=} {mach=} {iterations=}"
             )
 
     while not manager.empty():
-        task = manager.wait()
-
+        task = manager.wait(10)
+        if task is not None:
+            logger.info(f"Completed task {task.id} with exit code {task.exit_code}")
 
 if __name__ == "__main__":
     cfd()
