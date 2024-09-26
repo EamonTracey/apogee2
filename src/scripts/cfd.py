@@ -23,6 +23,7 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
               default=(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
               help="The mach numbers to parameterize.")
 @click.option("--iterations",
+              "-i",
               default=500,
               help="The number of iterations to execute the CFD run.")
 @click.option("--port",
@@ -33,9 +34,9 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
         iterations: int, port: int):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
-    The case file must contain the vehicle mesh. The vehicle's roll axis must
-    coincide with the x axis such that the drag force acts in the positive x
-    direction.
+    The case file must contain the vehicle mesh and four boundaries: farfield,
+    inlet, outlet, and launchvehicle. The vehicle's roll axis must coincide
+    with the x axis such that the drag force acts in the positive x direction.
     """
     # Create the TaskVine manager.
     manager = vine.Manager(port)
@@ -71,7 +72,8 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
             # Paramterize the journal template.
             journal_paramaterized = journal_template.format(
                 mach=mach,
-                # ...,
+                flow_vector_x=flow_vector_x,
+                flow_vector_y=flow_vector_y,
                 iterations=iterations)
 
             # Create the task with inputs and outputs.
