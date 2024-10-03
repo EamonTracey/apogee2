@@ -41,6 +41,7 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
     # Create the TaskVine manager.
     manager = vine.Manager(port)
     case_vine_file = manager.declare_file(case)
+    logging.info(f"TaskVine manager listening on port {port}")
 
     # Retrieve the basename of the case file.
     case_name = os.path.basename(case)
@@ -78,7 +79,8 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
 
             # Create the task with inputs and outputs.
             task = vine.Task(
-                f"module load ansys/2024R1; fluent 3ddp -t1 -g < journal.jou > log 2>&1")
+                f"module load ansys/2024R1; /opt/crc/a/ansys/2024R1/v241/fluent/bin/fluent 3ddp -t1 -g < journal.jou > log 2>&1"
+            )
             journal_vine_buffer = manager.declare_buffer(journal_paramaterized)
             axial_vine_file = manager.declare_file(
                 f"{output_directory}/{name}.axial")
@@ -101,7 +103,9 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
     while not manager.empty():
         task = manager.wait(10)
         if task is not None:
-            logger.info(f"Completed task {task.id} with exit code {task.exit_code}")
+            logger.info(
+                f"Completed task {task.id} with exit code {task.exit_code}")
+
 
 if __name__ == "__main__":
     cfd()
