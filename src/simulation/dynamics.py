@@ -13,7 +13,7 @@ from simulation.vehicle import Vehicle
 
 
 @dataclass
-class SimulationState:
+class DynamicsSimulationState:
     time: float = 0.0
 
     position: tuple[float, float, float] = (0.0, 0.0, 0.0)
@@ -32,7 +32,7 @@ class DynamicsSimulation:
         self._motor = motor
         self._environment = environment
 
-        self._state = SimulationState()
+        self._state = DynamicsSimulationState()
 
     @property
     def state(self):
