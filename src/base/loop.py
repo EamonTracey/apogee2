@@ -23,8 +23,13 @@ class Loop:
         self._state.period = 1 / frequency
 
     @property
-    def state():
+    def state(self):
         return self._state
+
+    def _step(self):
+        for component, frequency in self._state.components:
+            if self._state.step_count % (self._state.frequency // frequency) == 0:
+                component.dispatch()
 
     def add_component(self, component: Component, frequency: int):
         assert frequency > 0
@@ -32,21 +37,19 @@ class Loop:
 
         self._state.components.append((component, frequency))
 
-    def step(self):
+    def run(self, steps: int):
+        iterator = range(steps) if steps > 0 else iter(int, 1)
+
         start = time.time()
-        for component, frequency in self._state.components:
-            if self._state.step_count % (self._state.frequency // frequency) == 0:
-                print(f"{self._state.step_count} dispatch")
-                component.dispatch()
-        end = time.time()
+        for _ in iterator:
+            self._step()
+            self._state.step_count += 1
 
-        self._state.step_count += 1
-        delta = end - start
-        if delta > self._state.period:
-            self._state.slip_count += 1
-        else:
-            time.sleep(self._state.period - delta)
-
-    def run(self):
-        while True:
-            self.step()
+            end = time.time()
+            delta = end - start
+            if delta > self._state.period:
+                self._state.slip_count += 1
+                start = end
+            else:
+                time.sleep(self._state.period - delta)
+                start += self._state.period
