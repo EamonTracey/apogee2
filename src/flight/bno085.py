@@ -43,11 +43,12 @@ class BNO085Component(Component):
 
     def dispatch(self):
         #getting data
-        (acc_x, acc_y, acc_z) = self.sensor.acceleration()
-        (gyro_x, gyro_y, gyro_z) = self.sensor.gyro()
-        #(euler_x, euler_y, euler_z) = self.sensor.euler()
-        (mag_x, mag_y, mag_z) = self.sensor.magnetic()
-        (quaternion_w, quaternion_x, quaternion_y, quaternion_z) = self.sensor.quaternion()
+        try:
+            (acc_x, acc_y, acc_z) = self.sensor.acceleration()
+            (gyro_x, gyro_y, gyro_z) = self.sensor.gyro()
+            #(euler_x, euler_y, euler_z) = self.sensor.euler()
+            (mag_x, mag_y, mag_z) = self.sensor.magnetic()
+            (quaternion_w, quaternion_x, quaternion_y, quaternion_z) = self.sensor.quaternion()
 
         #writing if valid
         if (acc_x and acc_y and acc_z):
@@ -71,9 +72,12 @@ class BNO085Component(Component):
 
         if (quaternion_x and quaternion_y and quaternion_z):
             self._state.quaternion = (quaternion_w, quaternion_x, quaternion_y, quaternion_z)
-            #euler angle stuff!
+            #euler angle from quaternion!
             self._state.euler = quatern2euler((quaternion_w, quaternion_x, quaternion_y, quaternion_z))
             self._state.quaternion_readings += 1
+
+        except:
+
 
 
 def quatern2euler(quaternion_w, quaternion_x, quaternion_y, quaternion_z):
@@ -87,6 +91,8 @@ def quatern2euler(quaternion_w, quaternion_x, quaternion_y, quaternion_z):
     Returns:
     euler : numpy array of shape (N, 3)
         Array of Euler angles [phi, theta, psi] for each quaternion.
+
+    COPIED FROM ZEBNERS MATLAB CODE WHICH IS BASED OFF WIKI for rotation matrix
     """
 
     # Precompute elements of the rotation matrix
