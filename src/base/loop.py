@@ -3,6 +3,7 @@ import time
 
 from component import Component
 
+
 @dataclass
 class LoopState:
     frequency: int = 0
@@ -15,6 +16,7 @@ class LoopState:
 
 
 class Loop:
+
     def __init__(self, frequency: int):
         assert frequency > 0
 
@@ -28,7 +30,8 @@ class Loop:
 
     def _step(self):
         for component, frequency in self._state.components:
-            if self._state.step_count % (self._state.frequency // frequency) == 0:
+            if self._state.step_count % (self._state.frequency //
+                                         frequency) == 0:
                 component.dispatch()
 
     def add_component(self, component: Component, frequency: int):
