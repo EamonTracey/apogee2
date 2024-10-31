@@ -9,9 +9,13 @@ from flight.bmp390 import BMP390Component
 from flight.icm20649 import ICM20649Component
 from flight.log import LogComponent
 
+
 class Flight:
+
     def __init__(self):
         self.loop = Loop(30)
+
+        # Naming is hard.
         utc_date = datetime.datetime.now(datetime.UTC)
         utc_date_string = strftime("%Y%m%d%H%M%S")
         name = f"ACS {utc_date_string}"
@@ -35,7 +39,8 @@ class Flight:
         self.loop.add_component(icm20649_component, 30)
 
         # Log.
-        log_component = LogComponent(f"{name}.log", bmp390_state, bno055_state, icm20649_state)
+        log_component = LogComponent(f"{name}.log", bmp390_state, bno055_state,
+                                     icm20649_state)
         self.loop.add_component(log_component, 30)
 
     def fly(self):
