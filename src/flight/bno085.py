@@ -5,6 +5,7 @@ import adafruit_bno08x.i2c
 import busio
 
 from base.component import Component
+from datetime import datetime
 
 import numpy as np
 
@@ -50,33 +51,35 @@ class BNO085Component(Component):
             (mag_x, mag_y, mag_z) = self.sensor.magnetic()
             (quaternion_w, quaternion_x, quaternion_y, quaternion_z) = self.sensor.quaternion()
 
-        #writing if valid
-        if (acc_x and acc_y and acc_z):
-            self._state.acceleration = (acc_x, acc_y, acc_z)
-            self._state.acceleration_readings += 1
+            #writing if valid
+            if (acc_x and acc_y and acc_z):
+                self._state.acceleration = (acc_x, acc_y, acc_z)
+                self._state.acceleration_readings += 1
 
-        if (gyro_x and gyro_y and gyro_z):
-            self._state.gyro = (gyro_x, gyro_y, gyro_z)
-            self._state.gyro_readings += 1
+            if (gyro_x and gyro_y and gyro_z):
+                self._state.gyro = (gyro_x, gyro_y, gyro_z)
+                self._state.gyro_readings += 1
 
-        #not reading euler because can calculate it from quaternion
-        """
-        if (euler_x and euler_y and euler_z):
-            self._state.euler = (euler_x, euler_y, euler_z)
-            self._state.euler += 1
-        """
+            #not reading euler because can calculate it from quaternion
+            """
+            if (euler_x and euler_y and euler_z):
+                self._state.euler = (euler_x, euler_y, euler_z)
+                self._state.euler += 1
+            """
 
-        if (mag_x and mag_y and mag_z):
-            self._state.magnetic = (mag_x, mag_y, mag_z)
-            self._state.magnetic_readings += 1
+            if (mag_x and mag_y and mag_z):
+                self._state.magnetic = (mag_x, mag_y, mag_z)
+                self._state.magnetic_readings += 1
 
-        if (quaternion_x and quaternion_y and quaternion_z):
-            self._state.quaternion = (quaternion_w, quaternion_x, quaternion_y, quaternion_z)
-            #euler angle from quaternion!
-            self._state.euler = quatern2euler((quaternion_w, quaternion_x, quaternion_y, quaternion_z))
-            self._state.quaternion_readings += 1
+            if (quaternion_x and quaternion_y and quaternion_z):
+                self._state.quaternion = (quaternion_w, quaternion_x, quaternion_y, quaternion_z)
+                #euler angle from quaternion!
+                self._state.euler = quatern2euler((quaternion_w, quaternion_x, quaternion_y, quaternion_z))
+                self._state.quaternion_readings += 1
 
-        except:
+        except Exception as e:
+            print(f'Exception has occured: {e} | {datetime.now().time()}')
+            
 
 
 
