@@ -1,6 +1,10 @@
+adafruit-blinka
+adafruit-circuitpython-bmp3xx
+adafruit-circuitpython-icm20x
 click
 imufusion
 matplotlib
 numpy
+RPi.GPIO
 scipy
 yapf
