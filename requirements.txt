@@ -8,3 +8,6 @@ numpy
 RPi.GPIO
 scipy
 yapf
+adafruit-circuitpython-bno08x
+Adafruit-Blinka
+adafruit-circuitpython-busdevice
