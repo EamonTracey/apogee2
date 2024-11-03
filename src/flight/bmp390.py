@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import busio
+
 from base.component import Component
 
 
@@ -12,7 +14,7 @@ class BMP390State:
 
 class BMP390Component(Component):
 
-    def __init__(self):
+    def __init__(self, i2c: busio.I2C, address: int = 0x77):
         self._state = BMP390State()
 
     @property

@@ -1,6 +1,7 @@
 import click
 
 from scripts.cfd import cfd
+from scripts.fly import fly
 from scripts.simulate import simulate
 
 
@@ -13,6 +14,7 @@ def apogee():
 
 
 apogee.add_command(cfd)
+apogee.add_command(fly)
 apogee.add_command(simulate)
 
 if __name__ == "__main__":
