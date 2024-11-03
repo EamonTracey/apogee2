@@ -1,5 +1,6 @@
 adafruit-blinka
 adafruit-circuitpython-bmp3xx
+adafruit-circuitpython-bno08x
 adafruit-circuitpython-icm20x
 click
 imufusion
@@ -8,6 +9,3 @@ numpy
 RPi.GPIO
 scipy
 yapf
-adafruit-circuitpython-bno08x
-Adafruit-Blinka
-adafruit-circuitpython-busdevice
