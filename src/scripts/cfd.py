@@ -4,7 +4,6 @@ from math import cos, radians, sin
 import os
 
 import click
-import ndcctools.taskvine as vine
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -38,6 +37,8 @@ def cfd(case: str, attacks: tuple[int, ...], machs: tuple[int, ...],
     inlet, outlet, and launchvehicle. The vehicle's roll axis must coincide
     with the x axis such that the drag force acts in the positive x direction.
     """
+    import ndcctools.taskvine as vine
+
     # Create the TaskVine manager.
     manager = vine.Manager(port)
     case_vine_file = manager.declare_file(case)
