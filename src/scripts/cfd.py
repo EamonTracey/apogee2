@@ -6,7 +6,9 @@ import os
 import click
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format="%(message)s")
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s:%(levelname)s:%(message)s",
+                    datefmt="%Y%m%d%H%M%S")
 
 
 @click.command(context_settings={"show_default": True})
@@ -112,6 +114,15 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...],
         if task is not None:
             logger.info(
                 f"Completed task {task.id} with exit code {task.exit_code}")
+        else:
+            workers_connected = manager.stats.workers_connected
+            tasks_submitted = manager.stats.tasks_submitted
+            tasks_running = manager.stats.tasks_running
+            tasks_done = manager.stats.tasks_done
+            logger.info(
+                f"{tasks_done / tasks_submitted * 100:.1f}% complete "
+                f"{workers_connected=} {tasks_running=}"
+            )
 
 
 if __name__ == "__main__":
