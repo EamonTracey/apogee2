@@ -27,12 +27,21 @@ logging.basicConfig(level=logging.INFO,
               "-i",
               default=500,
               help="The number of iterations to execute the CFD run.")
+@click.option("--cores",
+              "-c",
+              default=4,
+              help="The number of cores allocated to each simulation.")
+@click.option("--watch",
+              "-w",
+              default=False,
+              help="Watch output files as written during task execution.")
 @click.option("--port",
               "-p",
               default=9340,
               help="The port on which the TaskVine manager listens.")
-def cfd(cases: tuple[str, ...], attacks: tuple[int, ...],
-        machs: tuple[int, ...], iterations: int, port: int):
+def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
+                                                                       ...],
+        iterations: int, cores: int, watch: bool, port: int):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
     The case file(s) must contain the vehicle mesh and four boundaries:
@@ -89,7 +98,8 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...],
                 task = vine.Task(
                     "module load ansys/2024R1; "
                     "/opt/crc/a/ansys/2024R1/v241/fluent/bin/fluent "
-                    "3ddp -t1 -g < journal.jou > log 2>&1")
+                    f"3ddp -t{cores} -g < journal.jou > log 2>&1")
+                task.set_cores(cores)
                 journal_vine_buffer = manager.declare_buffer(
                     journal_paramaterized)
                 axial_vine_file = manager.declare_file(
@@ -100,9 +110,9 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...],
                     f"{output_directory}/{name}.log")
                 task.add_input(case_vine_file, "case.cas.h5")
                 task.add_input(journal_vine_buffer, "journal.jou")
-                task.add_output(axial_vine_file, "axial.out")
-                task.add_output(normal_vine_file, "normal.out")
-                task.add_output(log_vine_file, "log")
+                task.add_output(axial_vine_file, "axial.out", watch=watch)
+                task.add_output(normal_vine_file, "normal.out", watch=watch)
+                task.add_output(log_vine_file, "log", watch=watch)
 
                 # Submit the task to TaskVine.
                 manager.submit(task)
@@ -119,10 +129,8 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...],
             tasks_submitted = manager.stats.tasks_submitted
             tasks_running = manager.stats.tasks_running
             tasks_done = manager.stats.tasks_done
-            logger.info(
-                f"{tasks_done / tasks_submitted * 100:.1f}% complete "
-                f"{workers_connected=} {tasks_running=}"
-            )
+            logger.info(f"{tasks_done / tasks_submitted * 100:.1f}% complete "
+                        f"{workers_connected=} {tasks_running=}")
 
 
 if __name__ == "__main__":
