@@ -10,6 +10,14 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s:%(levelname)s:%(message)s",
                     datefmt="%Y%m%d%H%M%S")
 
+SCRIPT = """#!/usr/bin/bash
+module load ansys/2024R1
+cfd="fluent 3ddp -t{cores} -g < journal.jou > log 2>&1"
+while ! $cfd; do
+  sleep 10
+done
+"""
+
 
 @click.command(context_settings={"show_default": True})
 @click.argument("cases", nargs=-1, required=True)
@@ -86,6 +94,9 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
             for mach in machs:
                 name = f"{case_name}_{attack}_{mach}_{iterations}"
 
+                # Format the script with the number of cores.
+                script_formatted = SCRIPT.format(cores)
+
                 # To induce an angle of attack, split the x and y components of
                 # the flow velocity vector. Note that we assume the vehicle's
                 # roll axis coincides with the x axis.
@@ -101,11 +112,9 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
                     iterations=iterations)
 
                 # Create the task with inputs and outputs.
-                task = vine.Task(
-                    "module load ansys/2024R1; "
-                    "/opt/crc/a/ansys/2024R1/v241/fluent/bin/fluent "
-                    f"3ddp -t{cores} -g < journal.jou > log 2>&1")
+                task = vine.Task("./script.sh")
                 task.set_cores(cores)
+                script_vine_buffer = manager.declare_buffer(script_formatted)
                 journal_vine_buffer = manager.declare_buffer(
                     journal_paramaterized)
                 axial_vine_file = manager.declare_file(
@@ -114,6 +123,7 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
                     f"{output_directory}/{name}.normal")
                 log_vine_file = manager.declare_file(
                     f"{output_directory}/{name}.log")
+                task.add_input(script_formatted, "script.sh")
                 task.add_input(case_vine_file, "case.cas.h5")
                 task.add_input(journal_vine_buffer, "journal.jou")
                 task.add_output(axial_vine_file, "axial.out", watch=watch)
@@ -130,9 +140,6 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
         if task is not None:
             logger.info(
                 f"Completed task {task.id} with exit code {task.exit_code}")
-            if task.exit_code != 0 and retry:
-                logger.info("Resubmitted task {task.id}")
-                manager.submit(task)
         else:
             workers_connected = manager.stats.workers_connected
             tasks_submitted = manager.stats.tasks_submitted
