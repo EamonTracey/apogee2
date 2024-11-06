@@ -31,17 +31,23 @@ logging.basicConfig(level=logging.INFO,
               "-c",
               default=4,
               help="The number of cores allocated to each simulation.")
+@click.option("--retry",
+              "-r",
+              is_flag=True,
+              default=False,
+              help="Retry simulations with a nonzero exit code.")
 @click.option("--watch",
               "-w",
+              is_flag=True,
               default=False,
-              help="Watch output files as written during task execution.")
+              help="Write incomplete output files during task execution.")
 @click.option("--port",
               "-p",
               default=9340,
               help="The port on which the TaskVine manager listens.")
 def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
                                                                        ...],
-        iterations: int, cores: int, watch: bool, port: int):
+        iterations: int, cores: int, retry: bool, watch: bool, port: int):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
     The case file(s) must contain the vehicle mesh and four boundaries:
@@ -124,6 +130,9 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
         if task is not None:
             logger.info(
                 f"Completed task {task.id} with exit code {task.exit_code}")
+            if task.exit_code != 0 and retry:
+                logger.info("Resubmitted task {task.id}")
+                manager.submit(task)
         else:
             workers_connected = manager.stats.workers_connected
             tasks_submitted = manager.stats.tasks_submitted
