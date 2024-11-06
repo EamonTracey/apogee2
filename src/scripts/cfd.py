@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO,
 @click.option("--machs",
               "-m",
               multiple=True,
-              default=(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+              default=(0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
               help="The Mach numbers to parameterize.")
 @click.option("--iterations",
               "-i",
