@@ -1,0 +1,854 @@
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -t4 -g
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/cortex/lnamd64/cortex.24.1.0 -f fluent -g (fluent "3ddp -pshmem  -host -r24.1.0 -t4 -mpi=intel -path/opt/crc/a/ansys/2024R1/v241/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/926188.1.long/worker-241760-1113866/task.23/fluent-20241106-115801-1115271.trn".
+Auto-Transcript Start Time:  11:58:01, 06 Nov 2024 
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -pshmem -host -t4 -mpi=intel -path/opt/crc/a/ansys/2024R1/v241/fluent -ssh -cx d32cepyc212.crc.nd.edu:38423:41969
+Starting /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/lnamd64/3ddp_host/fluent.24.1.0 host -cx d32cepyc212.crc.nd.edu:38423:41969 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r24.1.0 -t4 -pshmem -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/opt/crc/a/ansys/2024R1/v241/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2024 R1
+
+              Copyright 1987-2024 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Nov 22 2023 10:07:25 EST  Build Id: 10184  
+ 
+Connected License Server List:	7504@linux5-lic.crc.nd.edu
+
+     --------------------------------------------------------------
+     This is an academic version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "d32cepyc212.crc.nd.edu" (unix).
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -flux -node -t4 -pshmem -mpi=intel -ssh -mport 10.32.91.191:10.32.91.191:40007:0
+Starting /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/multiport/mpi/lnamd64/intel2021/bin/mpirun --rsh=ssh -f /tmp/fluent-appfile.etracey.1116074 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/lnamd64/3ddp_node/fluent_mpi.24.1.0 node -mpiw intel -pic shmem -mport 10.32.91.191:10.32.91.191:40007:0
+
+------------------------------------------------------------------------------------
+ID    Hostname              Core  O.S.      PID              Vendor                
+------------------------------------------------------------------------------------
+n0-3  d32cepyc212.crc.nd.e  4/64  Linux-64  1116182-1116185  AMD EPYC 7543 32-Core 
+host  d32cepyc212.crc.nd.e        Linux-64  1115665          AMD EPYC 7543 32-Core 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+------------------------------------------------------------------------------------
+
+
+Initializing SGE
+Done.
+Cleanup script file is /tmp/926188.1.long/worker-241760-1113866/task.23/cleanup-fluent-d32cepyc212.crc.nd.edu-1115665.sh
+Key Behavioral Changes:
+Fluent Guided Meshing Workflows: 
+Workflow template files (.wft) are now saved by default whenever the mesh is saved. You can change the automatic creation of .wft files in Preferences. 
+Journaling: 
+When Ansys Fluent encounters an invalid input in a journal file that is being replayed, it now raises an error condition and aborts the journal processing. 
+Turbulence: 
+The value of kappa used in the Spalart-Allmaras model for interior terms was inconsistent with the reference publications of the model. Fluent historically used a value of 0.4187, but to produce results consistent with the published model, the value should be 0.41. This issue was first addressed in a previous Fluent version and access to the kappa value was given in the GUI while keeping the old default of 0.4187. In Fluent 2024 R1, the default value is now changed to 0.41. 
+Turbomachinery: 
+For Blade Film Cooling, you can now specify stationary holes on the surfaces of a moving/rotating cell zone in transient cases. 
+Boundaries previously referred to as "casings" in the Turbo Topology definition are now referred to as "shrouds." 
+Density-Based Solver: 
+The High Speed Numerics have been updated to increase the robustness of the Roe-FDS numerical flux against shock-instabilities and the carbuncle phenomenon. This modification may produce a slight solution change for cases combining Roe-FDS and HSN. 
+Multiphase Models: 
+Modeling of open channel flows in conjunction with the translation moving reference frame (MRF) has been improved resulting in more accurate and stable solution. In addition, a solution methodology has been suggested to provide better stability for high-speed hull simulations. 
+Parallel Processing: 
+Using dynamic process spawning now requires that you manually specify the interconnect as -pethernet for shared memory or distributed memory without InfiniBand, and -pib.ofed for distributed memory over InfiniBand. 
+Refer to the Ansys, Inc. Release Notes for a full listing of the new features included in Ansys Fluent 2024 R1. 
+ +------------------------------------------------------------------+
+ |                    ANSYS Product Improvement                     |
+ |                                                                  |
+ |   ANSYS Product Improvement Program helps improve ANSYS          |
+ |   products. Participating in this program is like filling out a  |
+ |   survey. Without interrupting your work, the software reports   |
+ |   anonymous usage information such as errors, machine and        |
+ |   solver statistics, features used, etc. to ANSYS. We never      |
+ |   use the data to identify or contact you.                       |
+ |   The data does NOT contain:                                     |
+ |   - Any personally identifiable information including names,     |
+ |     IP addresses, file names, part names, etc.                   |
+ |   - Any information about your geometry or design specific       |
+ |     inputs.                                                      |
+ |   You can stop participation at any time. To change your         |
+ |   selection go to Help >> ANSYS Product Improvement Program      |
+ |   in the GUI.                                                    |
+ |   For more information about the ANSYS Privacy Policy, please    |
+ |   check: http://www.ansys.com/privacy                            |
+ |                                                                  |
+ +------------------------------------------------------------------+
+
+> Fast-loading "/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/addons/afd/lib/hdfio.bin"
+Done.
+WARNING: Rank:0 Machine d32cepyc212.crc.nd.edu has 16 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+Reading from d32cepyc212.crc.nd.edu:"/tmp/926188.1.long/worker-241760-1113866/task.23/case.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+      114744 cells,     1 cell zone  ...
+         114744 polyhedra cells,  zone id: 14422
+      659728 faces,     7 face zones ...
+           5706 polygonal symmetry faces,  zone id: 41
+           5819 polygonal symmetry faces,  zone id: 42
+            454 polygonal pressure-far-field faces,  zone id: 43
+            464 polygonal pressure-far-field faces,  zone id: 44
+           1889 polygonal pressure-far-field faces,  zone id: 45
+          12654 polygonal wall faces,  zone id: 46
+         632742 polygonal interior faces,  zone id: 14421
+      481363 nodes,     1 node zone  ...
+  Done.
+
+
+Building...
+     mesh
+	auto partitioning mesh by Metis (fast),
+	distributing mesh
+		parts....,
+		faces....,
+		nodes....,
+		cells....,
+        bandwidth reduction using Reverse Cuthill-McKee: 29024/2203 = 13.1748
+  Reading boundary layer flags ...
+  Done.
+
+     materials,
+     interface,
+     domains,
+	mixture
+     zones,
+	symmetry1
+	symmetry2
+	outlet
+	inlet
+	farfield
+	launchvehicle
+	interior--flowfield
+	flowfield
+     parallel,
+Done.
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> air is a fluid
+
+Density
+no data required.
+
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> (farfield inlet outlet)
+
+> (farfield inlet outlet)
+
+> (farfield inlet outlet)
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> (launchvehicle)
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+Initialize using the hybrid initialization method.
+
+Checking case topology... 
+-This case has multiple farfield bc 
+-Case will be initialized with constant parameters
+
+	iter		scalar-0
+
+	1		1.000000e+00
+	2		7.743793e-04
+	3		1.294095e-04
+	4		1.968670e-05
+	5		3.537597e-06
+	6		6.444673e-07
+	7		1.188224e-07
+	8		2.233568e-08
+	9		7.727135e-09
+	10		1.510293e-09
+
+Hybrid initialization is done.
+
+Note: Settings to improve the robustness of pathline and
+      particle tracking have been automatically enabled.
+
+
+> 
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+     1  1.0000e+00  9.9144e-04  1.0851e-03  1.4752e-03  2.5793e-04  9.8999e-01  4.9727e-01  2.8736e+01  0:09:52  499
+     2  9.4085e-01  1.0182e-03  1.6849e-03  1.4110e-03  1.9980e-04  9.8315e-01  4.9555e-01  3.8438e+01  0:09:38  498
+     3  7.6698e-01  9.4446e-04  1.4159e-03  9.9486e-04  2.4359e-04  9.6691e-01  4.9261e-01  3.7874e+01  0:09:18  497
+     4  7.1506e-01  8.9133e-04  1.2625e-03  8.6332e-04  2.8074e-04  9.2360e-01  4.8754e-01  3.4309e+01  0:08:56  496
+     5  7.2517e-01  8.5995e-04  1.0851e-03  7.7089e-04  2.9877e-04  8.2371e-01  4.7846e-01  2.9971e+01  0:08:39  495
+     6  6.9541e-01  8.2703e-04  9.2628e-04  7.1846e-04  3.1145e-04  5.7429e-01  4.6177e-01  2.5886e+01  0:08:34  494
+     7  6.6660e-01  8.0583e-04  7.7410e-04  6.6799e-04  3.2280e-04  2.8761e-01  4.3130e-01  2.2371e+01  0:08:30  493
+     8  6.3144e-01  7.8887e-04  6.5280e-04  6.0240e-04  3.3639e-04  1.3720e-01  3.7991e-01  1.9687e+01  0:08:26  492
+     9  5.9307e-01  7.7395e-04  5.4765e-04  5.3164e-04  3.4898e-04  7.2241e-02  3.0186e-01  1.7706e+01  0:08:16  491
+    10  5.5064e-01  7.6203e-04  4.6781e-04  4.6114e-04  3.5982e-04  4.3070e-02  2.0658e-01  1.6490e+01  0:08:04  490
+    11  5.0870e-01  7.5669e-04  4.1664e-04  3.9672e-04  3.7125e-04  2.9411e-02  1.2432e-01  1.5822e+01  0:07:57  489
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    12  4.6597e-01  7.5656e-04  3.8856e-04  3.4385e-04  3.8295e-04  2.4228e-02  7.0825e-02  1.5553e+01  0:07:56  488
+    13  4.2522e-01  7.5782e-04  3.6526e-04  3.0414e-04  3.9357e-04  2.2965e-02  4.1702e-02  1.5473e+01  0:08:00  487
+    14  3.8615e-01  7.5802e-04  3.4356e-04  2.7630e-04  4.0243e-04  2.2005e-02  2.7129e-02  1.5532e+01  0:08:04  486
+    15  3.5093e-01  7.5358e-04  3.2333e-04  2.5823e-04  4.0989e-04  2.0902e-02  1.9762e-02  1.5603e+01  0:07:57  485
+    16  3.2216e-01  7.4292e-04  3.0320e-04  2.4844e-04  4.1640e-04  1.9652e-02  1.5759e-02  1.5660e+01  0:07:47  484
+    17  2.9707e-01  7.2730e-04  2.8297e-04  2.4486e-04  4.2293e-04  1.8483e-02  1.3418e-02  1.5697e+01  0:07:44  483
+    18  2.7426e-01  7.0519e-04  2.6201e-04  2.4420e-04  4.2978e-04  1.7361e-02  1.1890e-02  1.5694e+01  0:07:45  482
+    19  2.5342e-01  6.7632e-04  2.4084e-04  2.4331e-04  4.3432e-04  1.6360e-02  1.0847e-02  1.5657e+01  0:07:51  481
+    20  2.4139e-01  6.4154e-04  2.2082e-04  2.4121e-04  4.3453e-04  1.5412e-02  1.0058e-02  1.5613e+01  0:07:56  480
+    21  2.3742e-01  6.0960e-04  2.0333e-04  2.3762e-04  4.2793e-04  1.4581e-02  9.4601e-03  1.5555e+01  0:07:50  479
+    22  2.3495e-01  5.7952e-04  1.9119e-04  2.3289e-04  4.1459e-04  1.3774e-02  8.9599e-03  1.5487e+01  0:07:40  478
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    23  2.3218e-01  5.4911e-04  1.8635e-04  2.2738e-04  3.9539e-04  1.3077e-02  8.5515e-03  1.5413e+01  0:07:39  477
+    24  2.2802e-01  5.1749e-04  1.8397e-04  2.2171e-04  3.7157e-04  1.2408e-02  8.1757e-03  1.5334e+01  0:07:37  476
+    25  2.2267e-01  4.8382e-04  1.8155e-04  2.1554e-04  3.4454e-04  1.1807e-02  7.8717e-03  1.5258e+01  0:07:38  475
+    26  2.1632e-01  4.4801e-04  1.7738e-04  2.0862e-04  3.1582e-04  1.0761e-02  7.3279e-03  1.5168e+01  0:07:43  474
+    27  2.0921e-01  4.1238e-04  1.7098e-04  2.0105e-04  2.8688e-04  9.6947e-03  6.6627e-03  1.5064e+01  0:07:45  473
+    28  2.0128e-01  3.7951e-04  1.6231e-04  1.9216e-04  2.5918e-04  8.7717e-03  6.0634e-03  1.4939e+01  0:07:39  472
+    29  1.9428e-01  3.5101e-04  1.5232e-04  1.8180e-04  2.3423e-04  7.9059e-03  5.5065e-03  1.4792e+01  0:07:32  471
+    30  1.8973e-01  3.2267e-04  1.4156e-04  1.6953e-04  2.1283e-04  7.1178e-03  4.9974e-03  1.4623e+01  0:07:29  470
+    31  1.8942e-01  2.9275e-04  1.3207e-04  1.5541e-04  1.9295e-04  6.3659e-03  4.5120e-03  1.4422e+01  0:07:35  469
+    32  1.9047e-01  2.6111e-04  1.2551e-04  1.4052e-04  1.7340e-04  5.7431e-03  4.0899e-03  1.4188e+01  0:07:39  468
+    33  1.9212e-01  2.2866e-04  1.2140e-04  1.2512e-04  1.5360e-04  5.2131e-03  3.7140e-03  1.3932e+01  0:07:40  467
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    34  1.9215e-01  1.9677e-04  1.1787e-04  1.1049e-04  1.3355e-04  4.7254e-03  3.3612e-03  1.3651e+01  0:07:37  466
+    35  1.9198e-01  1.6827e-04  1.1458e-04  9.8205e-05  1.1400e-04  4.2647e-03  3.0105e-03  1.3351e+01  0:07:30  465
+    36  1.9081e-01  1.4833e-04  1.1105e-04  8.7607e-05  9.5499e-05  3.8467e-03  2.6881e-03  1.3030e+01  0:07:25  464
+    37  1.8818e-01  1.4705e-04  1.0729e-04  7.9270e-05  7.8302e-05  3.4903e-03  2.4029e-03  1.2681e+01  0:07:27  463
+    38  1.8455e-01  1.5966e-04  1.0315e-04  7.3882e-05  6.2368e-05  3.1474e-03  2.1238e-03  1.2321e+01  0:07:31  462
+    39  1.7978e-01  1.7800e-04  9.8980e-05  7.1316e-05  4.8163e-05  2.8507e-03  1.8616e-03  1.1945e+01  0:07:34  461
+    40  1.7467e-01  1.9783e-04  9.4504e-05  7.0801e-05  4.0498e-05  2.6359e-03  1.6354e-03  1.1563e+01  0:07:30  460
+    41  1.6911e-01  2.1738e-04  8.9491e-05  7.1608e-05  4.0192e-05  2.4562e-03  1.4318e-03  1.1175e+01  0:07:21  459
+    42  1.6329e-01  2.3544e-04  8.4181e-05  7.3229e-05  4.2338e-05  2.3189e-03  1.2779e-03  1.0774e+01  0:07:17  458
+    43  1.5730e-01  2.5129e-04  7.9369e-05  7.5299e-05  4.5421e-05  2.1877e-03  1.1587e-03  1.0364e+01  0:07:17  457
+    44  1.5123e-01  2.6484e-04  7.5932e-05  7.7452e-05  4.8888e-05  2.0507e-03  1.0754e-03  9.9608e+00  0:07:23  456
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    45  1.4496e-01  2.7597e-04  7.3398e-05  7.9710e-05  5.2386e-05  1.9463e-03  1.0393e-03  9.5616e+00  0:07:28  455
+    46  1.3866e-01  2.8453e-04  7.1391e-05  8.2021e-05  5.5658e-05  1.8579e-03  1.0149e-03  9.1722e+00  0:07:25  454
+    47  1.3271e-01  2.9057e-04  6.9605e-05  8.4340e-05  5.8581e-05  1.8922e-03  1.0694e-03  8.7938e+00  0:07:18  453
+    48  1.2723e-01  2.9432e-04  6.7944e-05  8.6625e-05  6.1429e-05  2.0076e-03  1.1985e-03  8.4250e+00  0:07:10  452
+    49  1.2310e-01  2.9604e-04  6.6477e-05  8.8822e-05  6.4073e-05  2.1845e-03  1.3743e-03  8.0696e+00  0:07:10  451
+    50  1.2074e-01  2.9617e-04  6.5099e-05  9.0843e-05  6.6273e-05  2.3822e-03  1.5706e-03  7.7305e+00  0:07:13  450
+    51  1.1849e-01  2.9540e-04  6.3803e-05  9.2613e-05  6.7978e-05  2.4354e-03  1.6860e-03  7.4186e+00  0:07:16  449
+    52  1.1622e-01  2.9419e-04  6.2577e-05  9.4019e-05  6.9253e-05  2.4902e-03  1.7678e-03  7.1220e+00  0:07:14  448
+    53  1.1425e-01  2.9247e-04  6.1574e-05  9.4960e-05  7.0141e-05  2.5664e-03  1.8396e-03  6.8486e+00  0:07:07  447
+    54  1.1247e-01  2.8974e-04  6.1102e-05  9.5502e-05  7.0711e-05  2.6172e-03  1.8832e-03  6.5931e+00  0:07:02  446
+    55  1.1078e-01  2.8615e-04  6.1082e-05  9.5637e-05  7.1051e-05  2.6743e-03  1.9229e-03  6.3615e+00  0:07:03  445
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    56  1.0944e-01  2.8171e-04  6.1674e-05  9.5417e-05  7.1172e-05  2.7440e-03  1.9684e-03  6.1504e+00  0:07:07  444
+    57  1.0769e-01  2.7638e-04  6.2732e-05  9.4944e-05  7.1139e-05  2.8494e-03  2.0592e-03  5.9657e+00  0:07:10  443
+    58  1.0548e-01  2.7047e-04  6.4248e-05  9.4208e-05  7.0994e-05  2.9911e-03  2.1581e-03  5.7979e+00  0:07:08  442
+    59  1.0302e-01  2.6407e-04  6.5842e-05  9.3386e-05  7.0809e-05  3.0302e-03  2.2095e-03  5.6489e+00  0:07:02  441
+    60  1.0047e-01  2.5729e-04  6.7347e-05  9.2523e-05  7.0572e-05  3.0491e-03  2.2428e-03  5.5191e+00  0:06:57  440
+    61  9.7712e-02  2.5015e-04  6.8640e-05  9.1646e-05  7.0329e-05  3.0943e-03  2.2751e-03  5.4085e+00  0:06:57  439
+    62  9.5038e-02  2.4290e-04  6.9645e-05  9.0624e-05  7.0068e-05  3.1314e-03  2.2998e-03  5.3128e+00  0:07:02  438
+    63  9.2327e-02  2.3540e-04  7.0338e-05  8.9435e-05  6.9754e-05  3.1471e-03  2.3117e-03  5.2342e+00  0:07:07  437
+    64  8.9699e-02  2.2760e-04  7.0589e-05  8.7982e-05  6.9398e-05  3.1605e-03  2.3193e-03  5.1735e+00  0:07:03  436
+    65  8.7052e-02  2.1954e-04  7.0393e-05  8.6174e-05  6.8971e-05  3.1584e-03  2.3159e-03  5.1258e+00  0:07:00  435
+    66  8.4398e-02  2.1124e-04  6.9732e-05  8.4108e-05  6.8443e-05  3.1481e-03  2.3042e-03  5.0930e+00  0:06:54  434
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    67  8.1784e-02  2.0268e-04  6.8638e-05  8.1750e-05  6.7780e-05  3.1212e-03  2.2808e-03  5.0711e+00  0:06:55  433
+    68  7.9257e-02  1.9384e-04  6.7142e-05  7.9103e-05  6.6983e-05  3.0884e-03  2.2515e-03  5.0658e+00  0:06:57  432
+    69  7.6817e-02  1.8479e-04  6.5314e-05  7.6195e-05  6.6052e-05  3.0481e-03  2.2161e-03  5.0704e+00  0:06:59  431
+    70  7.4505e-02  1.7561e-04  6.3207e-05  7.3076e-05  6.4994e-05  2.9929e-03  2.1705e-03  5.0915e+00  0:06:59  430
+    71  7.2250e-02  1.6636e-04  6.0885e-05  6.9804e-05  6.3808e-05  2.9411e-03  2.1241e-03  5.1213e+00  0:06:51  429
+    72  7.0193e-02  1.5706e-04  5.8438e-05  6.6386e-05  6.2494e-05  2.8758e-03  2.0704e-03  5.1574e+00  0:06:45  428
+    73  6.8300e-02  1.4780e-04  5.5925e-05  6.2826e-05  6.1082e-05  2.8067e-03  2.0129e-03  5.2053e+00  0:06:44  427
+    74  6.6559e-02  1.3870e-04  5.3367e-05  5.9214e-05  5.9562e-05  2.7330e-03  1.9530e-03  5.2608e+00  0:06:40  426
+    75  6.4956e-02  1.2982e-04  5.0787e-05  5.5600e-05  5.7935e-05  2.6550e-03  1.8907e-03  5.3273e+00  0:06:35  425
+    76  6.3492e-02  1.2127e-04  4.8240e-05  5.2036e-05  5.6197e-05  2.5682e-03  1.8233e-03  5.4023e+00  0:06:31  424
+    77  6.2181e-02  1.1321e-04  4.5789e-05  4.8580e-05  5.4342e-05  2.4752e-03  1.7513e-03  5.4844e+00  0:06:33  423
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    78  6.0965e-02  1.0579e-04  4.3442e-05  4.5226e-05  5.2369e-05  2.3854e-03  1.6799e-03  5.5762e+00  0:06:39  422
+    79  5.9848e-02  9.9091e-05  4.1247e-05  4.2070e-05  5.0278e-05  2.2822e-03  1.6019e-03  5.6783e+00  0:06:44  421
+    80  5.8801e-02  9.3136e-05  3.9194e-05  3.9151e-05  4.8077e-05  2.1769e-03  1.5214e-03  5.7777e+00  0:06:43  420
+    81  5.7841e-02  8.8035e-05  3.7299e-05  3.6525e-05  4.5768e-05  2.0734e-03  1.4415e-03  5.8901e+00  0:06:38  419
+    82  5.6933e-02  8.3772e-05  3.5540e-05  3.4282e-05  4.3354e-05  1.9695e-03  1.3627e-03  6.0047e+00  0:06:32  418
+    83  5.6144e-02  8.0392e-05  3.3895e-05  3.2424e-05  4.0842e-05  1.8623e-03  1.2830e-03  6.1268e+00  0:06:32  417
+    84  5.5385e-02  7.7881e-05  3.2312e-05  3.0995e-05  3.8241e-05  1.7616e-03  1.2085e-03  6.2535e+00  0:06:37  416
+    85  5.4673e-02  7.6257e-05  3.0766e-05  2.9933e-05  3.5563e-05  1.6562e-03  1.1346e-03  6.3811e+00  0:06:41  415
+    86  5.3977e-02  7.5470e-05  2.9245e-05  2.9169e-05  3.2819e-05  1.5543e-03  1.0636e-03  6.5129e+00  0:06:40  414
+    87  5.3297e-02  7.5493e-05  2.7767e-05  2.8657e-05  3.0030e-05  1.4520e-03  9.9373e-04  6.6472e+00  0:06:26  413
+    88  5.2615e-02  7.6192e-05  2.6298e-05  2.8338e-05  2.7208e-05  1.3504e-03  9.2530e-04  6.7827e+00  0:06:26  412
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+    89  5.1922e-02  7.7519e-05  2.4847e-05  2.8205e-05  2.4384e-05  1.2506e-03  8.5880e-04  6.9200e+00  0:06:29  411
+    90  5.1204e-02  7.9357e-05  2.3420e-05  2.8183e-05  2.1582e-05  1.1547e-03  7.9512e-04  7.0557e+00  0:06:33  410
+    91  5.0477e-02  8.1595e-05  2.2043e-05  2.8253e-05  1.8863e-05  1.0604e-03  7.3301e-04  7.1877e+00  0:06:35  409
+    92  4.9719e-02  8.4129e-05  2.0795e-05  2.8407e-05  1.6420e-05  9.6925e-04  6.7551e-04  7.3196e+00  0:06:31  408
+    93  4.8918e-02  8.6851e-05  1.9804e-05  2.8581e-05  1.4511e-05  8.7967e-04  6.1989e-04  7.4516e+00  0:06:24  407
+    94  4.8077e-02  8.9677e-05  1.9179e-05  2.8769e-05  1.3205e-05  7.9331e-04  5.6705e-04  7.5797e+00  0:06:22  406
+    95  4.7204e-02  9.2546e-05  1.8902e-05  2.8965e-05  1.2460e-05  7.1013e-04  5.1693e-04  7.7044e+00  0:06:26  405
+    96  4.6308e-02  9.5345e-05  1.8922e-05  2.9149e-05  1.2252e-05  6.2790e-04  4.6819e-04  7.8279e+00  0:06:30  404
+    97  4.5384e-02  9.7968e-05  1.9182e-05  2.9307e-05  1.2497e-05  5.4795e-04  4.2054e-04  7.9451e+00  0:06:34  403
+    98  4.4423e-02  1.0034e-04  1.9626e-05  2.9451e-05  1.3144e-05  4.9498e-04  3.8602e-04  8.0568e+00  0:06:34  402
+    99  4.3407e-02  1.0241e-04  2.0155e-05  2.9576e-05  1.4151e-05  5.0881e-04  3.9746e-04  8.1647e+00  0:06:28  401
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   100  4.2323e-02  1.0415e-04  2.0686e-05  2.9684e-05  1.5402e-05  5.5818e-04  4.3356e-04  8.2688e+00  0:06:20  400
+   101  4.1170e-02  1.0554e-04  2.1196e-05  2.9787e-05  1.6740e-05  6.1922e-04  4.7881e-04  8.3666e+00  0:06:19  399
+   102  3.9952e-02  1.0650e-04  2.1643e-05  2.9848e-05  1.8099e-05  6.8789e-04  5.2864e-04  8.4583e+00  0:06:22  398
+   103  3.8784e-02  1.0701e-04  2.2024e-05  2.9872e-05  1.9432e-05  7.5536e-04  5.7755e-04  8.5442e+00  0:06:26  397
+   104  3.7694e-02  1.0707e-04  2.2325e-05  2.9854e-05  2.0698e-05  8.2054e-04  6.2502e-04  8.6243e+00  0:06:26  396
+   105  3.6694e-02  1.0667e-04  2.2542e-05  2.9777e-05  2.1886e-05  8.8135e-04  6.6907e-04  8.6996e+00  0:06:21  395
+   106  3.5769e-02  1.0584e-04  2.2686e-05  2.9643e-05  2.2981e-05  9.3613e-04  7.0839e-04  8.7673e+00  0:06:15  394
+   107  3.4831e-02  1.0460e-04  2.2761e-05  2.9457e-05  2.3976e-05  9.8562e-04  7.4379e-04  8.8296e+00  0:06:13  393
+   108  3.3863e-02  1.0311e-04  2.2777e-05  2.9217e-05  2.4873e-05  1.0312e-03  7.7562e-04  8.8855e+00  0:06:11  392
+   109  3.2864e-02  1.0144e-04  2.2733e-05  2.8910e-05  2.5663e-05  1.0685e-03  8.0195e-04  8.9351e+00  0:06:15  391
+   110  3.1856e-02  9.9487e-05  2.2645e-05  2.8536e-05  2.6346e-05  1.1017e-03  8.2483e-04  8.9781e+00  0:06:13  390
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   111  3.0872e-02  9.7282e-05  2.2521e-05  2.8090e-05  2.6931e-05  1.1291e-03  8.4328e-04  9.0157e+00  0:06:08  389
+   112  2.9897e-02  9.4833e-05  2.2384e-05  2.7577e-05  2.7412e-05  1.1510e-03  8.5760e-04  9.0478e+00  0:06:05  388
+   113  2.8970e-02  9.2137e-05  2.2222e-05  2.7004e-05  2.7790e-05  1.1680e-03  8.6821e-04  9.0733e+00  0:06:06  387
+   114  2.8101e-02  8.9220e-05  2.2043e-05  2.6367e-05  2.8068e-05  1.1784e-03  8.7425e-04  9.0937e+00  0:06:10  386
+   115  2.7327e-02  8.6072e-05  2.1832e-05  2.5664e-05  2.8247e-05  1.1836e-03  8.7627e-04  9.1091e+00  0:06:12  385
+   116  2.6652e-02  8.2716e-05  2.1596e-05  2.4901e-05  2.8330e-05  1.1845e-03  8.7510e-04  9.1190e+00  0:06:10  384
+   117  2.6049e-02  7.9171e-05  2.1331e-05  2.4079e-05  2.8312e-05  1.1807e-03  8.7032e-04  9.1248e+00  0:06:04  383
+   118  2.5483e-02  7.5463e-05  2.1029e-05  2.3205e-05  2.8195e-05  1.1712e-03  8.6177e-04  9.1256e+00  0:06:00  382
+   119  2.4965e-02  7.1625e-05  2.0702e-05  2.2279e-05  2.7981e-05  1.1576e-03  8.5014e-04  9.1204e+00  0:06:01  381
+   120  2.4495e-02  6.7682e-05  2.0343e-05  2.1307e-05  2.7667e-05  1.1408e-03  8.3592e-04  9.1124e+00  0:06:04  380
+   121  2.4044e-02  6.3667e-05  1.9957e-05  2.0300e-05  2.7259e-05  1.1185e-03  8.1847e-04  9.0996e+00  0:06:06  379
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   122  2.3623e-02  5.9619e-05  1.9532e-05  1.9261e-05  2.6758e-05  1.0933e-03  7.9847e-04  9.0816e+00  0:06:04  378
+   123  2.3227e-02  5.5569e-05  1.9075e-05  1.8210e-05  2.6167e-05  1.0638e-03  7.7555e-04  9.0605e+00  0:05:59  377
+   124  2.2891e-02  5.1559e-05  1.8585e-05  1.7169e-05  2.5492e-05  1.0308e-03  7.5008e-04  9.0361e+00  0:05:55  376
+   125  2.2570e-02  4.7617e-05  1.8058e-05  1.6164e-05  2.4737e-05  9.9494e-04  7.2246e-04  9.0089e+00  0:05:55  375
+   126  2.2283e-02  4.3794e-05  1.7511e-05  1.5215e-05  2.3909e-05  9.5532e-04  6.9222e-04  8.9785e+00  0:05:59  374
+   127  2.2028e-02  4.0122e-05  1.6924e-05  1.4306e-05  2.3014e-05  9.1645e-04  6.6185e-04  8.9470e+00  0:06:01  373
+   128  2.1783e-02  3.6652e-05  1.6314e-05  1.3447e-05  2.2059e-05  8.7269e-04  6.2878e-04  8.9119e+00  0:06:00  372
+   129  2.1558e-02  3.3446e-05  1.5688e-05  1.2628e-05  2.1051e-05  8.2828e-04  5.9481e-04  8.8730e+00  0:05:57  371
+   130  2.1340e-02  3.0571e-05  1.5049e-05  1.1848e-05  1.9994e-05  7.8166e-04  5.5918e-04  8.8328e+00  0:05:51  370
+   131  2.1123e-02  2.8093e-05  1.4395e-05  1.1113e-05  1.8894e-05  7.3524e-04  5.2321e-04  8.7914e+00  0:05:49  369
+   132  2.0900e-02  2.6064e-05  1.3732e-05  1.0428e-05  1.7756e-05  6.8876e-04  4.8740e-04  8.7486e+00  0:05:54  368
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   133  2.0702e-02  2.4534e-05  1.3069e-05  9.7947e-06  1.6589e-05  6.4024e-04  4.5026e-04  8.7042e+00  0:05:56  367
+   134  2.0502e-02  2.3520e-05  1.2404e-05  9.2035e-06  1.5396e-05  5.9417e-04  4.1433e-04  8.6584e+00  0:05:56  366
+   135  2.0291e-02  2.3033e-05  1.1742e-05  8.6723e-06  1.4181e-05  5.5053e-04  3.8014e-04  8.6122e+00  0:05:51  365
+   136  2.0089e-02  2.3030e-05  1.1090e-05  8.2105e-06  1.2952e-05  5.0799e-04  3.4708e-04  8.5653e+00  0:05:45  364
+   137  1.9887e-02  2.3429e-05  1.0441e-05  7.8279e-06  1.1715e-05  4.6841e-04  3.1717e-04  8.5178e+00  0:05:48  363
+   138  1.9680e-02  2.4140e-05  9.8101e-06  7.5466e-06  1.0477e-05  4.3121e-04  2.9021e-04  8.4701e+00  0:05:48  362
+   139  1.9476e-02  2.5095e-05  9.2007e-06  7.4114e-06  9.2444e-06  3.9640e-04  2.6539e-04  8.4222e+00  0:05:51  361
+   140  1.9254e-02  2.6247e-05  8.6078e-06  7.4373e-06  8.0230e-06  3.6245e-04  2.4249e-04  8.3744e+00  0:05:54  360
+   141  1.9026e-02  2.7525e-05  8.0259e-06  7.6090e-06  6.8341e-06  3.3103e-04  2.2236e-04  8.3267e+00  0:05:50  359
+   142  1.8770e-02  2.8890e-05  7.4668e-06  7.8716e-06  5.8054e-06  3.0052e-04  2.0412e-04  8.2797e+00  0:05:56  358
+   143  1.8500e-02  3.0299e-05  6.9676e-06  8.1980e-06  5.0544e-06  2.7135e-04  1.8751e-04  8.2332e+00  0:05:40  357
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   144  1.8221e-02  3.1719e-05  6.5968e-06  8.5509e-06  4.6349e-06  2.4318e-04  1.7193e-04  8.1869e+00  0:05:40  356
+   145  1.7936e-02  3.3116e-05  6.4264e-06  8.9203e-06  4.4938e-06  2.1604e-04  1.5713e-04  8.1417e+00  0:06:14  355
+   146  1.7643e-02  3.4445e-05  6.4550e-06  9.2920e-06  4.5624e-06  1.8907e-04  1.4268e-04  8.0976e+00  0:05:57  354
+   147  1.7337e-02  3.5676e-05  6.6527e-06  9.6526e-06  4.8008e-06  1.6745e-04  1.2921e-04  8.0549e+00  0:05:55  353
+   148  1.7000e-02  3.6789e-05  6.9500e-06  9.9969e-06  5.1609e-06  1.6723e-04  1.2907e-04  8.0132e+00  0:05:56  352
+   149  1.6644e-02  3.7771e-05  7.2836e-06  1.0318e-05  5.6425e-06  1.8715e-04  1.4361e-04  7.9734e+00  0:05:51  351
+   150  1.6271e-02  3.8618e-05  7.6174e-06  1.0615e-05  6.1850e-06  2.1472e-04  1.6377e-04  7.9352e+00  0:05:45  350
+   151  1.5869e-02  3.9326e-05  7.9429e-06  1.0890e-05  6.7460e-06  2.4380e-04  1.8546e-04  7.8984e+00  0:05:38  349
+   152  1.5459e-02  3.9867e-05  8.2461e-06  1.1134e-05  7.2970e-06  2.7198e-04  2.0663e-04  7.8631e+00  0:05:36  348
+   153  1.5075e-02  4.0234e-05  8.5190e-06  1.1345e-05  7.8236e-06  2.9954e-04  2.2735e-04  7.8295e+00  0:05:37  347
+   154  1.4733e-02  4.0424e-05  8.7555e-06  1.1515e-05  8.3176e-06  3.2457e-04  2.4638e-04  7.7979e+00  0:05:39  346
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   155  1.4407e-02  4.0440e-05  8.9554e-06  1.1644e-05  8.7738e-06  3.4822e-04  2.6400e-04  7.7681e+00  0:05:37  345
+   156  1.4098e-02  4.0288e-05  9.1183e-06  1.1734e-05  9.1895e-06  3.6887e-04  2.7961e-04  7.7404e+00  0:05:31  344
+   157  1.3794e-02  3.9974e-05  9.2411e-06  1.1783e-05  9.5625e-06  3.8739e-04  2.9349e-04  7.7146e+00  0:05:28  343
+   158  1.3481e-02  3.9532e-05  9.3255e-06  1.1787e-05  9.8929e-06  4.0378e-04  3.0566e-04  7.6909e+00  0:05:27  342
+   159  1.3156e-02  3.9041e-05  9.3728e-06  1.1745e-05  1.0179e-05  4.1766e-04  3.1591e-04  7.6693e+00  0:05:31  341
+   160  1.2820e-02  3.8453e-05  9.3805e-06  1.1658e-05  1.0422e-05  4.2955e-04  3.2452e-04  7.6496e+00  0:05:32  340
+   161  1.2479e-02  3.7754e-05  9.3508e-06  1.1527e-05  1.0622e-05  4.3922e-04  3.3140e-04  7.6319e+00  0:05:30  339
+   162  1.2136e-02  3.6940e-05  9.2933e-06  1.1354e-05  1.0780e-05  4.4646e-04  3.3645e-04  7.6167e+00  0:05:26  338
+   163  1.1805e-02  3.6021e-05  9.2102e-06  1.1141e-05  1.0897e-05  4.5211e-04  3.4008e-04  7.6040e+00  0:05:20  337
+   164  1.1480e-02  3.5000e-05  9.1032e-06  1.0893e-05  1.0976e-05  4.5558e-04  3.4209e-04  7.5937e+00  0:05:20  336
+   165  1.1170e-02  3.3872e-05  8.9748e-06  1.0610e-05  1.1020e-05  4.5710e-04  3.4260e-04  7.5851e+00  0:05:23  335
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   166  1.0882e-02  3.2646e-05  8.8272e-06  1.0297e-05  1.1028e-05  4.5790e-04  3.4232e-04  7.5786e+00  0:05:25  334
+   167  1.0602e-02  3.1330e-05  8.6693e-06  9.9588e-06  1.0998e-05  4.5464e-04  3.3957e-04  7.5741e+00  0:05:24  333
+   168  1.0342e-02  2.9937e-05  8.4943e-06  9.5929e-06  1.0930e-05  4.5085e-04  3.3596e-04  7.5715e+00  0:05:18  332
+   169  1.0099e-02  2.8478e-05  8.3072e-06  9.2089e-06  1.0826e-05  4.4529e-04  3.3105e-04  7.5708e+00  0:05:13  331
+   170  9.8776e-03  2.6969e-05  8.1105e-06  8.8064e-06  1.0685e-05  4.3803e-04  3.2487e-04  7.5717e+00  0:05:14  330
+   171  9.6749e-03  2.5418e-05  7.9059e-06  8.3900e-06  1.0511e-05  4.2941e-04  3.1762e-04  7.5744e+00  0:05:18  329
+   172  9.4912e-03  2.3845e-05  7.6950e-06  7.9655e-06  1.0302e-05  4.2073e-04  3.0998e-04  7.5790e+00  0:05:10  328
+   173  9.3125e-03  2.2267e-05  7.4861e-06  7.5436e-06  1.0061e-05  4.0874e-04  3.0055e-04  7.5850e+00  0:05:12  327
+   174  9.1453e-03  2.0696e-05  7.2677e-06  7.1327e-06  9.7898e-06  3.9589e-04  2.9022e-04  7.5927e+00  0:05:13  326
+   175  9.0003e-03  1.9151e-05  7.0395e-06  6.7301e-06  9.4903e-06  3.8273e-04  2.7944e-04  7.6016e+00  0:05:13  325
+   176  8.8673e-03  1.7658e-05  6.8112e-06  6.3404e-06  9.1655e-06  3.6789e-04  2.6758e-04  7.6119e+00  0:05:15  324
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   177  8.7394e-03  1.6232e-05  6.5777e-06  5.9613e-06  8.8176e-06  3.5251e-04  2.5518e-04  7.6233e+00  0:05:15  323
+   178  8.6198e-03  1.4898e-05  6.3372e-06  5.5972e-06  8.4486e-06  3.3645e-04  2.4230e-04  7.6361e+00  0:05:11  322
+   179  8.5069e-03  1.3687e-05  6.0972e-06  5.2477e-06  8.0610e-06  3.1978e-04  2.2888e-04  7.6500e+00  0:05:07  321
+   180  8.4066e-03  1.2614e-05  5.8526e-06  4.9121e-06  7.6572e-06  3.0273e-04  2.1518e-04  7.6648e+00  0:05:04  320
+   181  8.3105e-03  1.1694e-05  5.6042e-06  4.5920e-06  7.2396e-06  2.8539e-04  2.0120e-04  7.6804e+00  0:05:05  319
+   182  8.2178e-03  1.0935e-05  5.3534e-06  4.2924e-06  6.8106e-06  2.6809e-04  1.8718e-04  7.6967e+00  0:05:07  318
+   183  8.1284e-03  1.0345e-05  5.1022e-06  4.0181e-06  6.3712e-06  2.5100e-04  1.7338e-04  7.7137e+00  0:05:08  317
+   184  8.0405e-03  9.9259e-06  4.8510e-06  3.7713e-06  5.9233e-06  2.3458e-04  1.6040e-04  7.7313e+00  0:05:05  316
+   185  7.9526e-03  9.6722e-06  4.6026e-06  3.5503e-06  5.4688e-06  2.1868e-04  1.4825e-04  7.7493e+00  0:04:58  315
+   186  7.8633e-03  9.5782e-06  4.3582e-06  3.3614e-06  5.0100e-06  2.0369e-04  1.3685e-04  7.7678e+00  0:04:56  314
+   187  7.7747e-03  9.6316e-06  4.1179e-06  3.2171e-06  4.5486e-06  1.8932e-04  1.2628e-04  7.7866e+00  0:04:57  313
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   188  7.6860e-03  9.8129e-06  3.8829e-06  3.1309e-06  4.0870e-06  1.7548e-04  1.1656e-04  7.8056e+00  0:04:59  312
+   189  7.5933e-03  1.0100e-05  3.6514e-06  3.1120e-06  3.6272e-06  1.6222e-04  1.0760e-04  7.8247e+00  0:05:00  311
+   190  7.4968e-03  1.0470e-05  3.4239e-06  3.1487e-06  3.1726e-06  1.4958e-04  9.9454e-05  7.8439e+00  0:04:58  310
+   191  7.3979e-03  1.0904e-05  3.2006e-06  3.2213e-06  2.7334e-06  1.3753e-04  9.1959e-05  7.8630e+00  0:04:52  309
+   192  7.2948e-03  1.1381e-05  2.9856e-06  3.3219e-06  2.3467e-06  1.2591e-04  8.5046e-05  7.8820e+00  0:04:51  308
+   193  7.1861e-03  1.1885e-05  2.7890e-06  3.4391e-06  2.0507e-06  1.1467e-04  7.8663e-05  7.9003e+00  0:04:51  307
+   194  7.0718e-03  1.2400e-05  2.6342e-06  3.5658e-06  1.8617e-06  1.0386e-04  7.2659e-05  7.9186e+00  0:04:55  306
+   195  6.9558e-03  1.2915e-05  2.5520e-06  3.6951e-06  1.7696e-06  9.3200e-05  6.6869e-05  7.9364e+00  0:04:56  305
+   196  6.8373e-03  1.3413e-05  2.5456e-06  3.8233e-06  1.7630e-06  8.2861e-05  6.1237e-05  7.9542e+00  0:04:53  304
+   197  6.7200e-03  1.3879e-05  2.5995e-06  3.9460e-06  1.8245e-06  7.2803e-05  5.5735e-05  7.9715e+00  0:04:47  303
+   198  6.5884e-03  1.4303e-05  2.6963e-06  4.0626e-06  1.9403e-06  6.7490e-05  5.2644e-05  7.9882e+00  0:04:45  302
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   199  6.4515e-03  1.4679e-05  2.8098e-06  4.1697e-06  2.1061e-06  7.1889e-05  5.6135e-05  8.0043e+00  0:04:47  301
+   200  6.3011e-03  1.5004e-05  2.9297e-06  4.2697e-06  2.3033e-06  8.0427e-05  6.2623e-05  8.0197e+00  0:04:51  300
+   201  6.1393e-03  1.5276e-05  3.0453e-06  4.3592e-06  2.5116e-06  9.0656e-05  7.0257e-05  8.0345e+00  0:04:52  299
+   202  5.9761e-03  1.5486e-05  3.1536e-06  4.4364e-06  2.7203e-06  1.0126e-04  7.8129e-05  8.0486e+00  0:04:51  298
+   203  5.8187e-03  1.5629e-05  3.2555e-06  4.5020e-06  2.9214e-06  1.1134e-04  8.5641e-05  8.0619e+00  0:04:46  297
+   204  5.6712e-03  1.5703e-05  3.3452e-06  4.5532e-06  3.1121e-06  1.2096e-04  9.2824e-05  8.0745e+00  0:04:40  296
+   205  5.5350e-03  1.5708e-05  3.4196e-06  4.5877e-06  3.2898e-06  1.2997e-04  9.9467e-05  8.0862e+00  0:04:40  295
+   206  5.4157e-03  1.5649e-05  3.4819e-06  4.6073e-06  3.4531e-06  1.3812e-04  1.0546e-04  8.0972e+00  0:04:42  294
+   207  5.2917e-03  1.5528e-05  3.5326e-06  4.6121e-06  3.6004e-06  1.4511e-04  1.1063e-04  8.1073e+00  0:04:45  293
+   208  5.1658e-03  1.5350e-05  3.5647e-06  4.6009e-06  3.7319e-06  1.5157e-04  1.1528e-04  8.1166e+00  0:04:44  292
+   209  5.0380e-03  1.5151e-05  3.5824e-06  4.5729e-06  3.8473e-06  1.5708e-04  1.1924e-04  8.1250e+00  0:04:39  291
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   210  4.9075e-03  1.4916e-05  3.5862e-06  4.5278e-06  3.9460e-06  1.6184e-04  1.2259e-04  8.1327e+00  0:04:34  290
+   211  4.7764e-03  1.4642e-05  3.5770e-06  4.4669e-06  4.0288e-06  1.6572e-04  1.2528e-04  8.1395e+00  0:04:33  289
+   212  4.6517e-03  1.4325e-05  3.5567e-06  4.3904e-06  4.0958e-06  1.6909e-04  1.2751e-04  8.1455e+00  0:04:35  288
+   213  4.5229e-03  1.3968e-05  3.5323e-06  4.3008e-06  4.1470e-06  1.7109e-04  1.2885e-04  8.1506e+00  0:04:38  287
+   214  4.4002e-03  1.3572e-05  3.4944e-06  4.1983e-06  4.1835e-06  1.7272e-04  1.2978e-04  8.1549e+00  0:04:37  286
+   215  4.2860e-03  1.3137e-05  3.4482e-06  4.0835e-06  4.2063e-06  1.7353e-04  1.3012e-04  8.1583e+00  0:04:32  285
+   216  4.1802e-03  1.2666e-05  3.3946e-06  3.9575e-06  4.2157e-06  1.7363e-04  1.2993e-04  8.1610e+00  0:04:28  284
+   217  4.0839e-03  1.2160e-05  3.3347e-06  3.8214e-06  4.2101e-06  1.7313e-04  1.2927e-04  8.1628e+00  0:04:27  283
+   218  3.9864e-03  1.1625e-05  3.2728e-06  3.6779e-06  4.1905e-06  1.7178e-04  1.2803e-04  8.1639e+00  0:04:30  282
+   219  3.8963e-03  1.1066e-05  3.2042e-06  3.5271e-06  4.1569e-06  1.6992e-04  1.2637e-04  8.1642e+00  0:04:32  281
+   220  3.8129e-03  1.0486e-05  3.1318e-06  3.3707e-06  4.1093e-06  1.6746e-04  1.2427e-04  8.1639e+00  0:04:31  280
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   221  3.7372e-03  9.8907e-06  3.0559e-06  3.2100e-06  4.0481e-06  1.6436e-04  1.2171e-04  8.1628e+00  0:04:28  279
+   222  3.6667e-03  9.2857e-06  2.9766e-06  3.0464e-06  3.9738e-06  1.6074e-04  1.1874e-04  8.1612e+00  0:04:23  278
+   223  3.6005e-03  8.6763e-06  2.8942e-06  2.8825e-06  3.8869e-06  1.5665e-04  1.1541e-04  8.1588e+00  0:04:24  277
+   224  3.5429e-03  8.0689e-06  2.8090e-06  2.7236e-06  3.7877e-06  1.5224e-04  1.1180e-04  8.1560e+00  0:04:24  276
+   225  3.4855e-03  7.4720e-06  2.7235e-06  2.5713e-06  3.6777e-06  1.4712e-04  1.0776e-04  8.1525e+00  0:04:27  275
+   226  3.4332e-03  6.8902e-06  2.6338e-06  2.4234e-06  3.5575e-06  1.4181e-04  1.0349e-04  8.1485e+00  0:04:29  274
+   227  3.3845e-03  6.3318e-06  2.5415e-06  2.2801e-06  3.4278e-06  1.3605e-04  9.8929e-05  8.1440e+00  0:04:25  273
+   228  3.3396e-03  5.8064e-06  2.4472e-06  2.1415e-06  3.2897e-06  1.3011e-04  9.4189e-05  8.1391e+00  0:04:20  272
+   229  3.2969e-03  5.3245e-06  2.3520e-06  2.0079e-06  3.1437e-06  1.2392e-04  8.9249e-05  8.1338e+00  0:04:18  271
+   230  3.2567e-03  4.8953e-06  2.2562e-06  1.8798e-06  2.9909e-06  1.1756e-04  8.4180e-05  8.1281e+00  0:04:18  270
+   231  3.2186e-03  4.5260e-06  2.1603e-06  1.7582e-06  2.8321e-06  1.1111e-04  7.9019e-05  8.1220e+00  0:04:21  269
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   232  3.1825e-03  4.2190e-06  2.0645e-06  1.6445e-06  2.6683e-06  1.0460e-04  7.3806e-05  8.1157e+00  0:04:23  268
+   233  3.1479e-03  3.9804e-06  1.9689e-06  1.5398e-06  2.4998e-06  9.8099e-05  6.8623e-05  8.1090e+00  0:04:20  267
+   234  3.1170e-03  3.8120e-06  1.8737e-06  1.4456e-06  2.3273e-06  9.1822e-05  6.3656e-05  8.1023e+00  0:04:14  266
+   235  3.0803e-03  3.7131e-06  1.7814e-06  1.3630e-06  2.1519e-06  8.5641e-05  5.8864e-05  8.0953e+00  0:04:12  265
+   236  3.0444e-03  3.6745e-06  1.6884e-06  1.2903e-06  1.9740e-06  7.9750e-05  5.4344e-05  8.0882e+00  0:04:12  264
+   237  3.0098e-03  3.6914e-06  1.5961e-06  1.2327e-06  1.7947e-06  7.4070e-05  5.0106e-05  8.0809e+00  0:04:15  263
+   238  2.9792e-03  3.7560e-06  1.5051e-06  1.1968e-06  1.6146e-06  6.8743e-05  4.6325e-05  8.0736e+00  0:04:15  262
+   239  2.9408e-03  3.8623e-06  1.4178e-06  1.1876e-06  1.4353e-06  6.3304e-05  4.2617e-05  8.0662e+00  0:04:14  261
+   240  2.9023e-03  3.9989e-06  1.3297e-06  1.1983e-06  1.2576e-06  5.8306e-05  3.9303e-05  8.0588e+00  0:04:10  260
+   241  2.8633e-03  4.1605e-06  1.2426e-06  1.2235e-06  1.0842e-06  5.3540e-05  3.6259e-05  8.0514e+00  0:04:07  259
+   242  2.8237e-03  4.3388e-06  1.1579e-06  1.2591e-06  9.2731e-07  4.8943e-05  3.3448e-05  8.0441e+00  0:04:07  258
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   243  2.7818e-03  4.5280e-06  1.0796e-06  1.3011e-06  8.0362e-07  4.4537e-05  3.0856e-05  8.0368e+00  0:04:08  257
+   244  2.7375e-03  4.7220e-06  1.0157e-06  1.3461e-06  7.2189e-07  4.0270e-05  2.8438e-05  8.0297e+00  0:04:09  256
+   245  2.6920e-03  4.9161e-06  9.7787e-07  1.3924e-06  6.7863e-07  3.6084e-05  2.6118e-05  8.0227e+00  0:04:06  255
+   246  2.6453e-03  5.1053e-06  9.6891e-07  1.4385e-06  6.7018e-07  3.2034e-05  2.3884e-05  8.0159e+00  0:04:01  254
+   247  2.5966e-03  5.2834e-06  9.8488e-07  1.4837e-06  6.8878e-07  2.8072e-05  2.1709e-05  8.0092e+00  0:03:59  253
+   248  2.5454e-03  5.4460e-06  1.0180e-06  1.5268e-06  7.2988e-07  2.5696e-05  2.0006e-05  8.0028e+00  0:03:59  252
+   249  2.4915e-03  5.5910e-06  1.0604e-06  1.5670e-06  7.8926e-07  2.6663e-05  2.0704e-05  7.9965e+00  0:04:01  251
+   250  2.4340e-03  5.7168e-06  1.1057e-06  1.6048e-06  8.6389e-07  2.9901e-05  2.3044e-05  7.9906e+00  0:04:02  250
+   251  2.3728e-03  5.8232e-06  1.1505e-06  1.6398e-06  9.4431e-07  3.3873e-05  2.5952e-05  7.9848e+00  0:03:59  249
+   252  2.3079e-03  5.9076e-06  1.1931e-06  1.6712e-06  1.0255e-06  3.8023e-05  2.9017e-05  7.9793e+00  0:03:54  248
+   253  2.2453e-03  5.9670e-06  1.2322e-06  1.6983e-06  1.1042e-06  4.2086e-05  3.2010e-05  7.9742e+00  0:03:52  247
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   254  2.1886e-03  6.0009e-06  1.2671e-06  1.7203e-06  1.1790e-06  4.5945e-05  3.4893e-05  7.9693e+00  0:03:53  246
+   255  2.1355e-03  6.0091e-06  1.2970e-06  1.7366e-06  1.2488e-06  4.9511e-05  3.7545e-05  7.9647e+00  0:03:56  245
+   256  2.0914e-03  5.9924e-06  1.3217e-06  1.7472e-06  1.3132e-06  5.2880e-05  4.0017e-05  7.9605e+00  0:03:58  244
+   257  2.0428e-03  5.9526e-06  1.3434e-06  1.7524e-06  1.3713e-06  5.5630e-05  4.2085e-05  7.9565e+00  0:03:55  243
+   258  1.9943e-03  5.8906e-06  1.3577e-06  1.7519e-06  1.4230e-06  5.8244e-05  4.3972e-05  7.9529e+00  0:03:49  242
+   259  1.9451e-03  5.8189e-06  1.3665e-06  1.7452e-06  1.4685e-06  6.0515e-05  4.5602e-05  7.9495e+00  0:03:48  241
+   260  1.8951e-03  5.7341e-06  1.3699e-06  1.7321e-06  1.5078e-06  6.2458e-05  4.6979e-05  7.9466e+00  0:03:48  240
+   261  1.8455e-03  5.6347e-06  1.3684e-06  1.7127e-06  1.5408e-06  6.4080e-05  4.8108e-05  7.9439e+00  0:03:50  239
+   262  1.7962e-03  5.5189e-06  1.3626e-06  1.6872e-06  1.5679e-06  6.5393e-05  4.8992e-05  7.9416e+00  0:03:51  238
+   263  1.7484e-03  5.3868e-06  1.3531e-06  1.6560e-06  1.5888e-06  6.6396e-05  4.9638e-05  7.9396e+00  0:03:53  237
+   264  1.7020e-03  5.2402e-06  1.3399e-06  1.6196e-06  1.6042e-06  6.7098e-05  5.0054e-05  7.9380e+00  0:03:49  236
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   265  1.6575e-03  5.0786e-06  1.3235e-06  1.5780e-06  1.6143e-06  6.7509e-05  5.0245e-05  7.9365e+00  0:03:44  235
+   266  1.6156e-03  4.9024e-06  1.3043e-06  1.5318e-06  1.6193e-06  6.7641e-05  5.0223e-05  7.9355e+00  0:03:43  234
+   267  1.5802e-03  4.7127e-06  1.2825e-06  1.4812e-06  1.6189e-06  6.7871e-05  5.0133e-05  7.9347e+00  0:03:44  233
+   268  1.5406e-03  4.5120e-06  1.2620e-06  1.4284e-06  1.6128e-06  6.7185e-05  4.9639e-05  7.9343e+00  0:03:45  232
+   269  1.5037e-03  4.3002e-06  1.2371e-06  1.3725e-06  1.6012e-06  6.6550e-05  4.9041e-05  7.9341e+00  0:03:43  231
+   270  1.4734e-03  4.0810e-06  1.2105e-06  1.3141e-06  1.5843e-06  6.5891e-05  4.8359e-05  7.9342e+00  0:03:40  230
+   271  1.4399e-03  3.8561e-06  1.1858e-06  1.2549e-06  1.5620e-06  6.4606e-05  4.7354e-05  7.9345e+00  0:03:36  229
+   272  1.4102e-03  3.6261e-06  1.1570e-06  1.1940e-06  1.5346e-06  6.3321e-05  4.6271e-05  7.9352e+00  0:03:36  228
+   273  1.3832e-03  3.3943e-06  1.1267e-06  1.1326e-06  1.5023e-06  6.1780e-05  4.5012e-05  7.9359e+00  0:03:37  227
+   274  1.3597e-03  3.1625e-06  1.0949e-06  1.0725e-06  1.4655e-06  6.0061e-05  4.3613e-05  7.9370e+00  0:03:39  226
+   275  1.3388e-03  2.9336e-06  1.0617e-06  1.0141e-06  1.4245e-06  5.8165e-05  4.2082e-05  7.9383e+00  0:03:38  225
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   276  1.3194e-03  2.7099e-06  1.0276e-06  9.5726e-07  1.3796e-06  5.6120e-05  4.0431e-05  7.9398e+00  0:03:34  224
+   277  1.3008e-03  2.4943e-06  9.9239e-07  9.0185e-07  1.3312e-06  5.3943e-05  3.8675e-05  7.9414e+00  0:03:31  223
+   278  1.2832e-03  2.2896e-06  9.5641e-07  8.4834e-07  1.2795e-06  5.1647e-05  3.6833e-05  7.9433e+00  0:03:31  222
+   279  1.2667e-03  2.1000e-06  9.1983e-07  7.9642e-07  1.2248e-06  4.9267e-05  3.4921e-05  7.9452e+00  0:03:32  221
+   280  1.2510e-03  1.9288e-06  8.8299e-07  7.4620e-07  1.1673e-06  4.6832e-05  3.2954e-05  7.9474e+00  0:03:33  220
+   281  1.2365e-03  1.7788e-06  8.4608e-07  6.9810e-07  1.1074e-06  4.4354e-05  3.0967e-05  7.9496e+00  0:03:31  219
+   282  1.2229e-03  1.6522e-06  8.0926e-07  6.5248e-07  1.0454e-06  4.1848e-05  2.8954e-05  7.9521e+00  0:03:28  218
+   283  1.2130e-03  1.5501e-06  7.7257e-07  6.1020e-07  9.8159e-07  3.9483e-05  2.7005e-05  7.9545e+00  0:03:25  217
+   284  1.1974e-03  1.4773e-06  7.3757e-07  5.7313e-07  9.1635e-07  3.6801e-05  2.4949e-05  7.9572e+00  0:03:25  216
+   285  1.1838e-03  1.4299e-06  7.0151e-07  5.3786e-07  8.4955e-07  3.4383e-05  2.3067e-05  7.9598e+00  0:03:26  215
+   286  1.1707e-03  1.4079e-06  6.6522e-07  5.0686e-07  7.8163e-07  3.2059e-05  2.1287e-05  7.9625e+00  0:03:29  214
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   287  1.1578e-03  1.4080e-06  6.2911e-07  4.8149e-07  7.1293e-07  2.9827e-05  1.9603e-05  7.9653e+00  0:03:29  213
+   288  1.1454e-03  1.4276e-06  5.9333e-07  4.6386e-07  6.4391e-07  2.7685e-05  1.8061e-05  7.9681e+00  0:03:25  212
+   289  1.1327e-03  1.4641e-06  5.5806e-07  4.5556e-07  5.7495e-07  2.5642e-05  1.6639e-05  7.9709e+00  0:03:22  211
+   290  1.1192e-03  1.5139e-06  5.2337e-07  4.5716e-07  5.0642e-07  2.3689e-05  1.5340e-05  7.9738e+00  0:03:20  210
+   291  1.1051e-03  1.5748e-06  4.8935e-07  4.6577e-07  4.3899e-07  2.1839e-05  1.4161e-05  7.9765e+00  0:03:21  209
+   292  1.0903e-03  1.6432e-06  4.5627e-07  4.7906e-07  3.7557e-07  2.0067e-05  1.3081e-05  7.9794e+00  0:03:22  208
+   293  1.0746e-03  1.7167e-06  4.2521e-07  4.9555e-07  3.2322e-07  1.8367e-05  1.2088e-05  7.9821e+00  0:03:20  207
+   294  1.0580e-03  1.7928e-06  3.9850e-07  5.1354e-07  2.8644e-07  1.6717e-05  1.1163e-05  7.9849e+00  0:03:16  206
+   295  1.0408e-03  1.8696e-06  3.8071e-07  5.3216e-07  2.6558e-07  1.5113e-05  1.0280e-05  7.9876e+00  0:03:38  205
+   296  1.0233e-03  1.9450e-06  3.7437e-07  5.5090e-07  2.5869e-07  1.3542e-05  9.4251e-06  7.9903e+00  0:03:25  204
+   297  1.0052e-03  2.0165e-06  3.7837e-07  5.6929e-07  2.6300e-07  1.2002e-05  8.5880e-06  7.9928e+00  0:03:16  203
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   298  9.8629e-04  2.0825e-06  3.8998e-07  5.8678e-07  2.7670e-07  1.0669e-05  7.8118e-06  7.9953e+00  0:03:16  202
+   299  9.6628e-04  2.1416e-06  4.0592e-07  6.0305e-07  2.9754e-07  1.0562e-05  7.8494e-06  7.9977e+00  0:03:17  201
+   300  9.4486e-04  2.1934e-06  4.2346e-07  6.1818e-07  3.2513e-07  1.1606e-05  8.6528e-06  8.0001e+00  0:03:16  200
+   301  9.2184e-04  2.2377e-06  4.4106e-07  6.3209e-07  3.5568e-07  1.3030e-05  9.7354e-06  8.0023e+00  0:03:12  199
+   302  8.9729e-04  2.2736e-06  4.5790e-07  6.4455e-07  3.8704e-07  1.4593e-05  1.0907e-05  8.0045e+00  0:03:09  198
+   303  8.7271e-04  2.2998e-06  4.7346e-07  6.5528e-07  4.1771e-07  1.6137e-05  1.2062e-05  8.0065e+00  0:03:07  197
+   304  8.5019e-04  2.3160e-06  4.8734e-07  6.6410e-07  4.4693e-07  1.7627e-05  1.3185e-05  8.0084e+00  0:03:08  196
+   305  8.2928e-04  2.3222e-06  4.9929e-07  6.7065e-07  4.7441e-07  1.9010e-05  1.4223e-05  8.0102e+00  0:03:09  195
+   306  8.0995e-04  2.3184e-06  5.0920e-07  6.7495e-07  4.9975e-07  2.0272e-05  1.5164e-05  8.0119e+00  0:03:09  194
+   307  7.9208e-04  2.3050e-06  5.1709e-07  6.7701e-07  5.2280e-07  2.1414e-05  1.6007e-05  8.0134e+00  0:03:05  193
+   308  7.7417e-04  2.2827e-06  5.2282e-07  6.7684e-07  5.4348e-07  2.2430e-05  1.6751e-05  8.0149e+00  0:03:02  192
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   309  7.5564e-04  2.2547e-06  5.2645e-07  6.7429e-07  5.6181e-07  2.3320e-05  1.7398e-05  8.0162e+00  0:03:01  191
+   310  7.3669e-04  2.2229e-06  5.2800e-07  6.6937e-07  5.7767e-07  2.4087e-05  1.7948e-05  8.0174e+00  0:03:02  190
+   311  7.1733e-04  2.1857e-06  5.2761e-07  6.6200e-07  5.9111e-07  2.4731e-05  1.8404e-05  8.0184e+00  0:03:03  189
+   312  6.9798e-04  2.1420e-06  5.2547e-07  6.5228e-07  6.0220e-07  2.5254e-05  1.8766e-05  8.0194e+00  0:03:03  188
+   313  6.7917e-04  2.0921e-06  5.2195e-07  6.4042e-07  6.1088e-07  2.5658e-05  1.9036e-05  8.0201e+00  0:02:59  187
+   314  6.6083e-04  2.0364e-06  5.1704e-07  6.2656e-07  6.1735e-07  2.5944e-05  1.9217e-05  8.0209e+00  0:02:58  186
+   315  6.4336e-04  1.9750e-06  5.1086e-07  6.1076e-07  6.2170e-07  2.6118e-05  1.9312e-05  8.0214e+00  0:02:57  185
+   316  6.2679e-04  1.9080e-06  5.0364e-07  5.9321e-07  6.2410e-07  2.6181e-05  1.9323e-05  8.0218e+00  0:02:58  184
+   317  6.1128e-04  1.8356e-06  4.9543e-07  5.7409e-07  6.2439e-07  2.6138e-05  1.9254e-05  8.0221e+00  0:02:58  183
+   318  6.0051e-04  1.7584e-06  4.8637e-07  5.5356e-07  6.2265e-07  2.6340e-05  1.9237e-05  8.0224e+00  0:02:58  182
+   319  5.8504e-04  1.6783e-06  4.8032e-07  5.3332e-07  6.1872e-07  2.5819e-05  1.8945e-05  8.0224e+00  0:02:54  181
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   320  5.7102e-04  1.5944e-06  4.7104e-07  5.1146e-07  6.1265e-07  2.5508e-05  1.8672e-05  8.0225e+00  0:02:50  180
+   321  5.5844e-04  1.5080e-06  4.6083e-07  4.8900e-07  6.0449e-07  2.5090e-05  1.8325e-05  8.0223e+00  0:02:49  179
+   322  5.4686e-04  1.4197e-06  4.4982e-07  4.6587e-07  5.9435e-07  2.4585e-05  1.7914e-05  8.0221e+00  0:02:50  178
+   323  5.3623e-04  1.3306e-06  4.3820e-07  4.4244e-07  5.8233e-07  2.4003e-05  1.7442e-05  8.0218e+00  0:02:51  177
+   324  5.2669e-04  1.2413e-06  4.2603e-07  4.1920e-07  5.6860e-07  2.3345e-05  1.6915e-05  8.0215e+00  0:02:51  176
+   325  5.1807e-04  1.1530e-06  4.1336e-07  3.9662e-07  5.5322e-07  2.2628e-05  1.6339e-05  8.0210e+00  0:02:48  175
+   326  5.1027e-04  1.0664e-06  4.0021e-07  3.7462e-07  5.3633e-07  2.1852e-05  1.5715e-05  8.0205e+00  0:02:46  174
+   327  5.0291e-04  9.8252e-07  3.8670e-07  3.5320e-07  5.1803e-07  2.1026e-05  1.5055e-05  8.0198e+00  0:02:45  173
+   328  4.9597e-04  9.0245e-07  3.7282e-07  3.3239e-07  4.9842e-07  2.0152e-05  1.4358e-05  8.0191e+00  0:02:44  172
+   329  4.8955e-04  8.2775e-07  3.5868e-07  3.1215e-07  4.7761e-07  1.9252e-05  1.3636e-05  8.0184e+00  0:02:46  171
+   330  4.8339e-04  7.5961e-07  3.4443e-07  2.9250e-07  4.5570e-07  1.8323e-05  1.2900e-05  8.0176e+00  0:02:46  170
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   331  4.7773e-04  6.9925e-07  3.3018e-07  2.7368e-07  4.3281e-07  1.7372e-05  1.2145e-05  8.0167e+00  0:02:43  169
+   332  4.7245e-04  6.4784e-07  3.1596e-07  2.5564e-07  4.0908e-07  1.6407e-05  1.1376e-05  8.0158e+00  0:02:39  168
+   333  4.6743e-04  6.0561e-07  3.0178e-07  2.3887e-07  3.8463e-07  1.5435e-05  1.0604e-05  8.0148e+00  0:02:38  167
+   334  4.6264e-04  5.7393e-07  2.8757e-07  2.2345e-07  3.5957e-07  1.4470e-05  9.8419e-06  8.0139e+00  0:02:37  166
+   335  4.5791e-04  5.5297e-07  2.7342e-07  2.0959e-07  3.3394e-07  1.3528e-05  9.1062e-06  8.0128e+00  0:02:38  165
+   336  4.5318e-04  5.4258e-07  2.5938e-07  1.9726e-07  3.0786e-07  1.2626e-05  8.4105e-06  8.0118e+00  0:02:38  164
+   337  4.4846e-04  5.4109e-07  2.4551e-07  1.8701e-07  2.8148e-07  1.1764e-05  7.7549e-06  8.0107e+00  0:02:37  163
+   338  4.4371e-04  5.4755e-07  2.3182e-07  1.7971e-07  2.5488e-07  1.0935e-05  7.1470e-06  8.0097e+00  0:02:33  162
+   339  4.3890e-04  5.6086e-07  2.1836e-07  1.7601e-07  2.2823e-07  1.0140e-05  6.5899e-06  8.0086e+00  0:02:32  161
+   340  4.3386e-04  5.7960e-07  2.0503e-07  1.7620e-07  2.0166e-07  9.3766e-06  6.0759e-06  8.0075e+00  0:02:35  160
+   341  4.2852e-04  6.0277e-07  1.9192e-07  1.7947e-07  1.7539e-07  8.6504e-06  5.6071e-06  8.0064e+00  0:02:35  159
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   342  4.2297e-04  6.2907e-07  1.7909e-07  1.8459e-07  1.5022e-07  7.9555e-06  5.1759e-06  8.0053e+00  0:02:35  158
+   343  4.1705e-04  6.5747e-07  1.6684e-07  1.9100e-07  1.2872e-07  7.2898e-06  4.7795e-06  8.0042e+00  0:02:34  157
+   344  4.1076e-04  6.8698e-07  1.5607e-07  1.9804e-07  1.1304e-07  6.6468e-06  4.4129e-06  8.0032e+00  0:02:31  156
+   345  4.0417e-04  7.1688e-07  1.4848e-07  2.0533e-07  1.0366e-07  6.0224e-06  4.0656e-06  8.0021e+00  0:02:29  155
+   346  3.9740e-04  7.4636e-07  1.4527e-07  2.1257e-07  9.9775e-08  5.4107e-06  3.7321e-06  8.0011e+00  0:02:27  154
+   347  3.9044e-04  7.7447e-07  1.4614e-07  2.1963e-07  1.0052e-07  4.8211e-06  3.4056e-06  8.0000e+00  0:02:27  153
+   348  3.8313e-04  8.0052e-07  1.5009e-07  2.2631e-07  1.0506e-07  4.3076e-06  3.0846e-06  7.9991e+00  0:02:28  152
+   349  3.7539e-04  8.2388e-07  1.5592e-07  2.3248e-07  1.1247e-07  4.2104e-06  2.9944e-06  7.9981e+00  0:02:28  151
+   350  3.6716e-04  8.4443e-07  1.6257e-07  2.3817e-07  1.2263e-07  4.5670e-06  3.2505e-06  7.9972e+00  0:02:25  150
+   351  3.5836e-04  8.6199e-07  1.6931e-07  2.4341e-07  1.3424e-07  5.1227e-06  3.6510e-06  7.9963e+00  0:02:21  149
+   352  3.4899e-04  8.7638e-07  1.7581e-07  2.4809e-07  1.4636e-07  5.7329e-06  4.0977e-06  7.9955e+00  0:02:22  148
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   353  3.3931e-04  8.8714e-07  1.8184e-07  2.5214e-07  1.5832e-07  6.3420e-06  4.5481e-06  7.9947e+00  0:02:21  147
+   354  3.3037e-04  8.9400e-07  1.8723e-07  2.5548e-07  1.6977e-07  6.9327e-06  4.9852e-06  7.9940e+00  0:02:17  146
+   355  3.2222e-04  8.9694e-07  1.9188e-07  2.5801e-07  1.8058e-07  7.4802e-06  5.3955e-06  7.9932e+00  0:02:15  145
+   356  3.1456e-04  8.9603e-07  1.9573e-07  2.5968e-07  1.9057e-07  7.9811e-06  5.7692e-06  7.9926e+00  0:02:14  144
+   357  3.0768e-04  8.9140e-07  1.9879e-07  2.6052e-07  1.9970e-07  8.4347e-06  6.1048e-06  7.9920e+00  0:02:14  143
+   358  3.0083e-04  8.8323e-07  2.0104e-07  2.6053e-07  2.0789e-07  8.8399e-06  6.4023e-06  7.9914e+00  0:02:15  142
+   359  2.9372e-04  8.7243e-07  2.0248e-07  2.5967e-07  2.1516e-07  9.1969e-06  6.6620e-06  7.9909e+00  0:02:11  141
+   360  2.8634e-04  8.6052e-07  2.0314e-07  2.5791e-07  2.2150e-07  9.5054e-06  6.8841e-06  7.9904e+00  0:02:07  140
+   361  2.7881e-04  8.4651e-07  2.0306e-07  2.5525e-07  2.2687e-07  9.7669e-06  7.0692e-06  7.9900e+00  0:02:03  139
+   362  2.7124e-04  8.3007e-07  2.0229e-07  2.5170e-07  2.3134e-07  9.9816e-06  7.2178e-06  7.9897e+00  0:02:00  138
+   363  2.6390e-04  8.1119e-07  2.0098e-07  2.4733e-07  2.3487e-07  1.0150e-05  7.3312e-06  7.9893e+00  0:01:58  137
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   364  2.5674e-04  7.9008e-07  1.9918e-07  2.4219e-07  2.3753e-07  1.0273e-05  7.4092e-06  7.9891e+00  0:01:58  136
+   365  2.4990e-04  7.6679e-07  1.9689e-07  2.3632e-07  2.3937e-07  1.0352e-05  7.4534e-06  7.9888e+00  0:01:57  135
+   366  2.4342e-04  7.4129e-07  1.9419e-07  2.2977e-07  2.4045e-07  1.0389e-05  7.4652e-06  7.9887e+00  0:01:55  134
+   367  2.3733e-04  7.1372e-07  1.9112e-07  2.2261e-07  2.4075e-07  1.0385e-05  7.4457e-06  7.9885e+00  0:01:53  133
+   368  2.3155e-04  6.8429e-07  1.8774e-07  2.1492e-07  2.4019e-07  1.0341e-05  7.3963e-06  7.9884e+00  0:01:51  132
+   369  2.2608e-04  6.5321e-07  1.8407e-07  2.0676e-07  2.3883e-07  1.0259e-05  7.3185e-06  7.9884e+00  0:01:50  131
+   370  2.2102e-04  6.2089e-07  1.8019e-07  1.9819e-07  2.3667e-07  1.0141e-05  7.2136e-06  7.9884e+00  0:01:50  130
+   371  2.1636e-04  5.8749e-07  1.7613e-07  1.8931e-07  2.3372e-07  9.9888e-06  7.0828e-06  7.9884e+00  0:01:50  129
+   372  2.1205e-04  5.5326e-07  1.7188e-07  1.8016e-07  2.3001e-07  9.8026e-06  6.9272e-06  7.9885e+00  0:01:49  128
+   373  2.0803e-04  5.1857e-07  1.6744e-07  1.7090e-07  2.2555e-07  9.5870e-06  6.7491e-06  7.9886e+00  0:01:47  127
+   374  2.0429e-04  4.8376e-07  1.6283e-07  1.6172e-07  2.2038e-07  9.3429e-06  6.5499e-06  7.9888e+00  0:01:46  126
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   375  2.0095e-04  4.4921e-07  1.5806e-07  1.5285e-07  2.1453e-07  9.0723e-06  6.3312e-06  7.9889e+00  0:01:45  125
+   376  1.9794e-04  4.1527e-07  1.5313e-07  1.4423e-07  2.0806e-07  8.7782e-06  6.0945e-06  7.9892e+00  0:01:44  124
+   377  1.9511e-04  3.8240e-07  1.4807e-07  1.3583e-07  2.0103e-07  8.4625e-06  5.8416e-06  7.9894e+00  0:01:44  123
+   378  1.9243e-04  3.5100e-07  1.4288e-07  1.2773e-07  1.9347e-07  8.1281e-06  5.5748e-06  7.9897e+00  0:01:44  122
+   379  1.8993e-04  3.2174e-07  1.3763e-07  1.1992e-07  1.8544e-07  7.7791e-06  5.2960e-06  7.9899e+00  0:01:43  121
+   380  1.8755e-04  2.9515e-07  1.3231e-07  1.1238e-07  1.7698e-07  7.4178e-06  5.0074e-06  7.9903e+00  0:01:41  120
+   381  1.8534e-04  2.7173e-07  1.2695e-07  1.0523e-07  1.6814e-07  7.0482e-06  4.7120e-06  7.9906e+00  0:01:40  119
+   382  1.8324e-04  2.5189e-07  1.2158e-07  9.8428e-08  1.5897e-07  6.6731e-06  4.4122e-06  7.9910e+00  0:01:39  118
+   383  1.8123e-04  2.3569e-07  1.1619e-07  9.2143e-08  1.4952e-07  6.2954e-06  4.1111e-06  7.9913e+00  0:01:39  117
+   384  1.7930e-04  2.2353e-07  1.1078e-07  8.6368e-08  1.3980e-07  5.9206e-06  3.8139e-06  7.9917e+00  0:01:39  116
+   385  1.7739e-04  2.1534e-07  1.0539e-07  8.1150e-08  1.2988e-07  5.5540e-06  3.5288e-06  7.9921e+00  0:01:38  115
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   386  1.7547e-04  2.1099e-07  1.0003e-07  7.6515e-08  1.1979e-07  5.2039e-06  3.2601e-06  7.9925e+00  0:01:37  114
+   387  1.7355e-04  2.1008e-07  9.4735e-08  7.2574e-08  1.0958e-07  4.8673e-06  3.0064e-06  7.9929e+00  0:01:35  113
+   388  1.7162e-04  2.1226e-07  8.9505e-08  6.9593e-08  9.9318e-08  4.5436e-06  2.7724e-06  7.9934e+00  0:01:34  112
+   389  1.6967e-04  2.1704e-07  8.4355e-08  6.7896e-08  8.9041e-08  4.2322e-06  2.5573e-06  7.9938e+00  0:01:33  111
+   390  1.6765e-04  2.2390e-07  7.9271e-08  6.7616e-08  7.8805e-08  3.9333e-06  2.3585e-06  7.9942e+00  0:01:32  110
+   391  1.6552e-04  2.3245e-07  7.4265e-08  6.8561e-08  6.8685e-08  3.6488e-06  2.1769e-06  7.9946e+00  0:01:32  109
+   392  1.6332e-04  2.4223e-07  6.9360e-08  7.0266e-08  5.8949e-08  3.3765e-06  2.0090e-06  7.9951e+00  0:01:30  108
+   393  1.6099e-04  2.5284e-07  6.4668e-08  7.2539e-08  5.0517e-08  3.1153e-06  1.8547e-06  7.9954e+00  0:01:30  107
+   394  1.5853e-04  2.6393e-07  6.0455e-08  7.5102e-08  4.4218e-08  2.8627e-06  1.7117e-06  7.9959e+00  0:01:29  106
+   395  1.5595e-04  2.7523e-07  5.7331e-08  7.7812e-08  4.0368e-08  2.6178e-06  1.5763e-06  7.9963e+00  0:01:26  105
+   396  1.5332e-04  2.8642e-07  5.5839e-08  8.0555e-08  3.8669e-08  2.3773e-06  1.4462e-06  7.9967e+00  0:01:25  104
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   397  1.5063e-04  2.9716e-07  5.5922e-08  8.3276e-08  3.8793e-08  2.1426e-06  1.3190e-06  7.9970e+00  0:01:24  103
+   398  1.4781e-04  3.0715e-07  5.7255e-08  8.5877e-08  4.0385e-08  1.9150e-06  1.1937e-06  7.9974e+00  0:01:22  102
+   399  1.4483e-04  3.1615e-07  5.9372e-08  8.8323e-08  4.3115e-08  1.8188e-06  1.1447e-06  7.9978e+00  0:01:21  101
+   400  1.4167e-04  3.2411e-07  6.1861e-08  9.0591e-08  4.6919e-08  1.9216e-06  1.2345e-06  7.9982e+00  0:01:19  100
+   401  1.3828e-04  3.3094e-07  6.4417e-08  9.2701e-08  5.1350e-08  2.1141e-06  1.3864e-06  7.9985e+00  0:01:18   99
+   402  1.3467e-04  3.3659e-07  6.6904e-08  9.4605e-08  5.5996e-08  2.3367e-06  1.5586e-06  7.9988e+00  0:01:17   98
+   403  1.3091e-04  3.4088e-07  6.9227e-08  9.6274e-08  6.0602e-08  2.5658e-06  1.7335e-06  7.9991e+00  0:01:16   97
+   404  1.2741e-04  3.4367e-07  7.1327e-08  9.7677e-08  6.5020e-08  2.7897e-06  1.9032e-06  7.9994e+00  0:01:15   96
+   405  1.2424e-04  3.4498e-07  7.3170e-08  9.8766e-08  6.9200e-08  2.9999e-06  2.0634e-06  7.9996e+00  0:01:14   95
+   406  1.2127e-04  3.4480e-07  7.4725e-08  9.9525e-08  7.3077e-08  3.1911e-06  2.2092e-06  7.9999e+00  0:01:13   94
+   407  1.1857e-04  3.4318e-07  7.5984e-08  9.9957e-08  7.6622e-08  3.3652e-06  2.3403e-06  8.0001e+00  0:01:13   93
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   408  1.1591e-04  3.4021e-07  7.6943e-08  1.0006e-07  7.9814e-08  3.5201e-06  2.4567e-06  8.0004e+00  0:01:12   92
+   409  1.1316e-04  3.3618e-07  7.7597e-08  9.9830e-08  8.2653e-08  3.6572e-06  2.5584e-06  8.0006e+00  0:01:11   91
+   410  1.1034e-04  3.3168e-07  7.7954e-08  9.9241e-08  8.5139e-08  3.7749e-06  2.6457e-06  8.0008e+00  0:01:10   90
+   411  1.0745e-04  3.2637e-07  7.8024e-08  9.8297e-08  8.7257e-08  3.8752e-06  2.7186e-06  8.0009e+00  0:01:09   89
+   412  1.0454e-04  3.2016e-07  7.7824e-08  9.7004e-08  8.9025e-08  3.9567e-06  2.7774e-06  8.0011e+00  0:01:08   88
+   413  1.0168e-04  3.1300e-07  7.7412e-08  9.5386e-08  9.0435e-08  4.0210e-06  2.8224e-06  8.0012e+00  0:01:08   87
+   414  9.8903e-05  3.0497e-07  7.6794e-08  9.3466e-08  9.1502e-08  4.0669e-06  2.8538e-06  8.0013e+00  0:01:07   86
+   415  9.6243e-05  2.9611e-07  7.5984e-08  9.1256e-08  9.2256e-08  4.0965e-06  2.8722e-06  8.0014e+00  0:01:06   85
+   416  9.3713e-05  2.8640e-07  7.5000e-08  8.8773e-08  9.2708e-08  4.1089e-06  2.8778e-06  8.0015e+00  0:01:05   84
+   417  9.1351e-05  2.7589e-07  7.3868e-08  8.6048e-08  9.2862e-08  4.1061e-06  2.8713e-06  8.0015e+00  0:01:04   83
+   418  8.9114e-05  2.6465e-07  7.2597e-08  8.3101e-08  9.2688e-08  4.0873e-06  2.8533e-06  8.0015e+00  0:01:04   82
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   419  8.6989e-05  2.5275e-07  7.1208e-08  7.9970e-08  9.2194e-08  4.0548e-06  2.8243e-06  8.0015e+00  0:01:03   81
+   420  8.5034e-05  2.4036e-07  6.9718e-08  7.6672e-08  9.1395e-08  4.0074e-06  2.7848e-06  8.0016e+00  0:01:03   80
+   421  8.3229e-05  2.2755e-07  6.8160e-08  7.3254e-08  9.0289e-08  3.9478e-06  2.7353e-06  8.0015e+00  0:01:02   79
+   422  8.1579e-05  2.1440e-07  6.6524e-08  6.9732e-08  8.8884e-08  3.8748e-06  2.6762e-06  8.0015e+00  0:01:01   78
+   423  8.0038e-05  2.0105e-07  6.4816e-08  6.6154e-08  8.7191e-08  3.7907e-06  2.6083e-06  8.0015e+00  0:01:00   77
+   424  7.8610e-05  1.8765e-07  6.3039e-08  6.2584e-08  8.5218e-08  3.6950e-06  2.5321e-06  8.0014e+00  0:01:00   76
+   425  7.7326e-05  1.7431e-07  6.1194e-08  5.9134e-08  8.2983e-08  3.5900e-06  2.4483e-06  8.0013e+00  0:00:59   75
+   426  7.6179e-05  1.6120e-07  5.9283e-08  5.5787e-08  8.0506e-08  3.4752e-06  2.3575e-06  8.0013e+00  0:00:58   74
+   427  7.5095e-05  1.4847e-07  5.7325e-08  5.2540e-08  7.7809e-08  3.3530e-06  2.2605e-06  8.0012e+00  0:00:57   73
+   428  7.4073e-05  1.3629e-07  5.5314e-08  4.9401e-08  7.4907e-08  3.2225e-06  2.1578e-06  8.0011e+00  0:00:56   72
+   429  7.3121e-05  1.2488e-07  5.3276e-08  4.6377e-08  7.1821e-08  3.0875e-06  2.0507e-06  8.0009e+00  0:00:55   71
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   430  7.2211e-05  1.1449e-07  5.1215e-08  4.3458e-08  6.8564e-08  2.9468e-06  1.9397e-06  8.0009e+00  0:00:55   70
+   431  7.1363e-05  1.0530e-07  4.9140e-08  4.0683e-08  6.5160e-08  2.8037e-06  1.8258e-06  8.0007e+00  0:00:54   69
+   432  7.0565e-05  9.7476e-08  4.7058e-08  3.8045e-08  6.1627e-08  2.6578e-06  1.7101e-06  8.0006e+00  0:00:54   68
+   433  6.9796e-05  9.1073e-08  4.4973e-08  3.5606e-08  5.7983e-08  2.5119e-06  1.5936e-06  8.0004e+00  0:00:53   67
+   434  6.9060e-05  8.6213e-08  4.2881e-08  3.3359e-08  5.4239e-08  2.3658e-06  1.4782e-06  8.0003e+00  0:00:51   66
+   435  6.8330e-05  8.2905e-08  4.0798e-08  3.1334e-08  5.0411e-08  2.2238e-06  1.3671e-06  8.0001e+00  0:00:51   65
+   436  6.7598e-05  8.1088e-08  3.8726e-08  2.9529e-08  4.6517e-08  2.0873e-06  1.2624e-06  8.0000e+00  0:00:50   64
+   437  6.6862e-05  8.0633e-08  3.6680e-08  2.7990e-08  4.2580e-08  1.9572e-06  1.1637e-06  7.9998e+00  0:00:50   63
+   438  6.6125e-05  8.1390e-08  3.4658e-08  2.6809e-08  3.8617e-08  1.8317e-06  1.0722e-06  7.9997e+00  0:00:49   62
+   439  6.5384e-05  8.3169e-08  3.2670e-08  2.6112e-08  3.4648e-08  1.7119e-06  9.8838e-07  7.9995e+00  0:00:48   61
+   440  6.4612e-05  8.5772e-08  3.0707e-08  2.5958e-08  3.0694e-08  1.5964e-06  9.1100e-07  7.9994e+00  0:00:47   60
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   441  6.3799e-05  8.9042e-08  2.8775e-08  2.6293e-08  2.6781e-08  1.4872e-06  8.4058e-07  7.9992e+00  0:00:46   59
+   442  6.2960e-05  9.2803e-08  2.6880e-08  2.6930e-08  2.2997e-08  1.3823e-06  7.7571e-07  7.9990e+00  0:00:46   58
+   443  6.2073e-05  9.6896e-08  2.5059e-08  2.7796e-08  1.9679e-08  1.2826e-06  7.1617e-07  7.9988e+00  0:00:45   57
+   444  6.1133e-05  1.0118e-07  2.3413e-08  2.8781e-08  1.7169e-08  1.1865e-06  6.6115e-07  7.9987e+00  0:00:50   56
+   445  6.0147e-05  1.0555e-07  2.2158e-08  2.9829e-08  1.5612e-08  1.0949e-06  6.0914e-07  7.9985e+00  0:00:48   55
+   446  5.9138e-05  1.0989e-07  2.1524e-08  3.0891e-08  1.4896e-08  1.0060e-06  5.5924e-07  7.9984e+00  0:00:46   54
+   447  5.8106e-05  1.1406e-07  2.1511e-08  3.1949e-08  1.4899e-08  9.2084e-07  5.1047e-07  7.9982e+00  0:00:45   53
+   448  5.7029e-05  1.1794e-07  2.1994e-08  3.2962e-08  1.5476e-08  8.4224e-07  4.6251e-07  7.9981e+00  0:00:43   52
+   449  5.5890e-05  1.2145e-07  2.2798e-08  3.3918e-08  1.6502e-08  8.1779e-07  4.3977e-07  7.9979e+00  0:00:42   51
+   450  5.4681e-05  1.2455e-07  2.3756e-08  3.4803e-08  1.7942e-08  8.6195e-07  4.7168e-07  7.9978e+00  0:00:40   50
+   451  5.3383e-05  1.2723e-07  2.4746e-08  3.5628e-08  1.9641e-08  9.4287e-07  5.2928e-07  7.9977e+00  0:00:39   49
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   452  5.1999e-05  1.2944e-07  2.5711e-08  3.6374e-08  2.1429e-08  1.0320e-06  5.9544e-07  7.9976e+00  0:00:39   48
+   453  5.0549e-05  1.3114e-07  2.6614e-08  3.7032e-08  2.3208e-08  1.1222e-06  6.6287e-07  7.9974e+00  0:00:38   47
+   454  4.9194e-05  1.3227e-07  2.7433e-08  3.7586e-08  2.4917e-08  1.2097e-06  7.2834e-07  7.9974e+00  0:00:37   46
+   455  4.7968e-05  1.3282e-07  2.8153e-08  3.8022e-08  2.6535e-08  1.2913e-06  7.9037e-07  7.9972e+00  0:00:35   45
+   456  4.6812e-05  1.3279e-07  2.8761e-08  3.8326e-08  2.8038e-08  1.3657e-06  8.4693e-07  7.9972e+00  0:00:35   44
+   457  4.5772e-05  1.3222e-07  2.9255e-08  3.8506e-08  2.9412e-08  1.4333e-06  8.9786e-07  7.9970e+00  0:00:34   43
+   458  4.4749e-05  1.3112e-07  2.9634e-08  3.8559e-08  3.0651e-08  1.4935e-06  9.4308e-07  7.9970e+00  0:00:33   42
+   459  4.3695e-05  1.2958e-07  2.9894e-08  3.8484e-08  3.1754e-08  1.5466e-06  9.8271e-07  7.9969e+00  0:00:32   41
+   460  4.2612e-05  1.2788e-07  3.0039e-08  3.8270e-08  3.2720e-08  1.5924e-06  1.0167e-06  7.9968e+00  0:00:31   40
+   461  4.1499e-05  1.2586e-07  3.0073e-08  3.7920e-08  3.3545e-08  1.6313e-06  1.0452e-06  7.9967e+00  0:00:30   39
+   462  4.0382e-05  1.2350e-07  3.0002e-08  3.7434e-08  3.4234e-08  1.6631e-06  1.0682e-06  7.9967e+00  0:00:30   38
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   463  3.9277e-05  1.2077e-07  2.9847e-08  3.6822e-08  3.4786e-08  1.6881e-06  1.0860e-06  7.9966e+00  0:00:29   37
+   464  3.8209e-05  1.1771e-07  2.9612e-08  3.6091e-08  3.5205e-08  1.7062e-06  1.0985e-06  7.9966e+00  0:00:28   36
+   465  3.7183e-05  1.1432e-07  2.9302e-08  3.5251e-08  3.5504e-08  1.7178e-06  1.1060e-06  7.9966e+00  0:00:28   35
+   466  3.6205e-05  1.1061e-07  2.8924e-08  3.4303e-08  3.5685e-08  1.7229e-06  1.1085e-06  7.9966e+00  0:00:27   34
+   467  3.5291e-05  1.0659e-07  2.8490e-08  3.3261e-08  3.5753e-08  1.7221e-06  1.1064e-06  7.9965e+00  0:00:26   33
+   468  3.4426e-05  1.0228e-07  2.8002e-08  3.2132e-08  3.5695e-08  1.7151e-06  1.0998e-06  7.9965e+00  0:00:25   32
+   469  3.3602e-05  9.7720e-08  2.7470e-08  3.0932e-08  3.5513e-08  1.7027e-06  1.0889e-06  7.9965e+00  0:00:24   31
+   470  3.2844e-05  9.2964e-08  2.6897e-08  2.9666e-08  3.5214e-08  1.6846e-06  1.0740e-06  7.9965e+00  0:00:24   30
+   471  3.2141e-05  8.8043e-08  2.6300e-08  2.8354e-08  3.4796e-08  1.6617e-06  1.0552e-06  7.9965e+00  0:00:23   29
+   472  3.1500e-05  8.2989e-08  2.5671e-08  2.6998e-08  3.4264e-08  1.6337e-06  1.0327e-06  7.9965e+00  0:00:22   28
+   473  3.0901e-05  7.7859e-08  2.5016e-08  2.5618e-08  3.3620e-08  1.6013e-06  1.0068e-06  7.9965e+00  0:00:21   27
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   474  3.0346e-05  7.2699e-08  2.4333e-08  2.4239e-08  3.2869e-08  1.5644e-06  9.7766e-07  7.9966e+00  0:00:20   26
+   475  2.9844e-05  6.7562e-08  2.3625e-08  2.2908e-08  3.2017e-08  1.5237e-06  9.4562e-07  7.9966e+00  0:00:20   25
+   476  2.9397e-05  6.2508e-08  2.2890e-08  2.1614e-08  3.1071e-08  1.4793e-06  9.1083e-07  7.9966e+00  0:00:19   24
+   477  2.8977e-05  5.7593e-08  2.2138e-08  2.0360e-08  3.0040e-08  1.4319e-06  8.7364e-07  7.9966e+00  0:00:18   23
+   478  2.8581e-05  5.2882e-08  2.1365e-08  1.9145e-08  2.8929e-08  1.3814e-06  8.3428e-07  7.9967e+00  0:00:17   22
+   479  2.8210e-05  4.8462e-08  2.0581e-08  1.7978e-08  2.7748e-08  1.3288e-06  7.9311e-07  7.9967e+00  0:00:16   21
+   480  2.7857e-05  4.4424e-08  1.9787e-08  1.6848e-08  2.6500e-08  1.2743e-06  7.5044e-07  7.9968e+00  0:00:16   20
+   481  2.7527e-05  4.0846e-08  1.8989e-08  1.5774e-08  2.5194e-08  1.2186e-06  7.0665e-07  7.9968e+00  0:00:15   19
+   482  2.7218e-05  3.7788e-08  1.8188e-08  1.4751e-08  2.3839e-08  1.1618e-06  6.6214e-07  7.9969e+00  0:00:14   18
+   483  2.6920e-05  3.5276e-08  1.7387e-08  1.3805e-08  2.2440e-08  1.1049e-06  6.1736e-07  7.9969e+00  0:00:13   17
+   484  2.6635e-05  3.3352e-08  1.6582e-08  1.2931e-08  2.1003e-08  1.0479e-06  5.7289e-07  7.9970e+00  0:00:12   16
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   485  2.6353e-05  3.2029e-08  1.5781e-08  1.2143e-08  1.9532e-08  9.9226e-07  5.3003e-07  7.9970e+00  0:00:12   15
+   486  2.6072e-05  3.1280e-08  1.4983e-08  1.1438e-08  1.8036e-08  9.3875e-07  4.8961e-07  7.9971e+00  0:00:11   14
+   487  2.5787e-05  3.1062e-08  1.4195e-08  1.0836e-08  1.6522e-08  8.8766e-07  4.5152e-07  7.9972e+00  0:00:10   13
+   488  2.5504e-05  3.1314e-08  1.3416e-08  1.0366e-08  1.4997e-08  8.3828e-07  4.1613e-07  7.9972e+00  0:00:09   12
+   489  2.5219e-05  3.1964e-08  1.2651e-08  1.0080e-08  1.3470e-08  7.9111e-07  3.8368e-07  7.9973e+00  0:00:09   11
+   490  2.4923e-05  3.2939e-08  1.1894e-08  1.0003e-08  1.1948e-08  7.4547e-07  3.5371e-07  7.9974e+00  0:00:08   10
+   491  2.4610e-05  3.4175e-08  1.1150e-08  1.0121e-08  1.0440e-08  7.0226e-07  3.2642e-07  7.9974e+00  0:00:07    9
+   492  2.4289e-05  3.5607e-08  1.0418e-08  1.0357e-08  8.9773e-09  6.6057e-07  3.0126e-07  7.9975e+00  0:00:06    8
+   493  2.3948e-05  3.7171e-08  9.7144e-09  1.0685e-08  7.6789e-09  6.2093e-07  2.7817e-07  7.9975e+00  0:00:05    7
+   494  2.3588e-05  3.8815e-08  9.0724e-09  1.1061e-08  6.6827e-09  5.8226e-07  2.5683e-07  7.9976e+00  0:00:05    6
+   495  2.3209e-05  4.0495e-08  8.5725e-09  1.1464e-08  6.0521e-09  5.4511e-07  2.3673e-07  7.9976e+00  0:00:04    5
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega  report-def     time/iter
+   496  2.2822e-05  4.2165e-08  8.3057e-09  1.1871e-08  5.7486e-09  5.0829e-07  2.1744e-07  7.9977e+00  0:00:03    4
+   497  2.2425e-05  4.3777e-08  8.2824e-09  1.2280e-08  5.7283e-09  4.7274e-07  1.9862e-07  7.9978e+00  0:00:02    3
+   498  2.2012e-05  4.5283e-08  8.4520e-09  1.2670e-08  5.9308e-09  4.3735e-07  1.8012e-07  7.9979e+00  0:00:02    2
+   499  2.1576e-05  4.6646e-08  8.7533e-09  1.3041e-08  6.3108e-09  4.1740e-07  1.6949e-07  7.9979e+00  0:00:01    1
+   500  2.1113e-05  4.7856e-08  9.1180e-09  1.3382e-08  6.8509e-09  4.2607e-07  1.8017e-07  7.9980e+00  0:00:00    0
+
+> Halting due to end of file on input.
+Auto-Transcript Stop Time:  12:06:00, 06 Nov 2024 
+Total Transcript Time: 7 Minute 58 Second.
+
+Automatic transcript closed.

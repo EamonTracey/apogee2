@@ -12,10 +12,7 @@ logging.basicConfig(level=logging.INFO,
 
 SCRIPT = """#!/usr/bin/bash
 module load ansys/2024R1
-cfd="fluent 3ddp -t{cores} -g < journal.jou > log 2>&1"
-while ! $cfd; do
-  sleep 10
-done
+/opt/crc/a/ansys/2024R1/v241/fluent/bin/fluent 3ddp -t{} -g < journal.jou > log 2>&1
 """
 
 
@@ -39,11 +36,6 @@ done
               "-c",
               default=4,
               help="The number of cores allocated to each simulation.")
-@click.option("--retry",
-              "-r",
-              is_flag=True,
-              default=False,
-              help="Retry simulations with a nonzero exit code.")
 @click.option("--watch",
               "-w",
               is_flag=True,
@@ -55,7 +47,7 @@ done
               help="The port on which the TaskVine manager listens.")
 def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
                                                                        ...],
-        iterations: int, cores: int, retry: bool, watch: bool, port: int):
+        iterations: int, cores: int, watch: bool, port: int):
     """Launch parameterized Ansys Fluent CFD jobs via TaskVine.
 
     The case file(s) must contain the vehicle mesh and four boundaries:
@@ -123,7 +115,7 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
                     f"{output_directory}/{name}.normal")
                 log_vine_file = manager.declare_file(
                     f"{output_directory}/{name}.log")
-                task.add_input(script_formatted, "script.sh")
+                task.add_input(script_vine_buffer, "script.sh")
                 task.add_input(case_vine_file, "case.cas.h5")
                 task.add_input(journal_vine_buffer, "journal.jou")
                 task.add_output(axial_vine_file, "axial.out", watch=watch)
