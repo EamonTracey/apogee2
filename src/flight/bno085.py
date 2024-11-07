@@ -56,7 +56,7 @@ class BNO085Component(Component):
         except Exception as exception:
             # TODO: Implement logging.
             ...
-        if acceleration is not None:
+        if acceleration is not None and acceleration[0] is not None and acceleration[1] is not None and acceleration[2] is not None:
             self._state.acceleration = acceleration
         else:
             self._state.acceleration_errors += 1
@@ -68,7 +68,7 @@ class BNO085Component(Component):
         except Exception as exception:
             # TODO: Implement logging.
             ...
-        if magnetic is not None:
+        if magnetic is not None and magnetic[0] is not None and magnetic[1] is not None and magnetic[2] is not None:
             self._state.magnetic = magnetic
         else:
             self._state.magnetic_errors += 1
@@ -80,10 +80,11 @@ class BNO085Component(Component):
         except Exception as exception:
             # TODO: Implement logging.
             ...
-        if gyro is not None:
+        if gyro is not None and gyro[0] is not None and gyro[1] is not None and gyro[2] is not None:
             self._state.gyro = gyro
         else:
             self._state.gyro_errors += 1
+
 
         # Read the fused orientation.
         quaternion = None
@@ -92,7 +93,7 @@ class BNO085Component(Component):
         except Exception as exception:
             # TODO: Implement logging.
             ...
-        if quaternion is not None:
+        if quaternion is not None and quaternion[0] is not None and quaternion[1] is not None and quaternion[2] and quaternion[3] is not None:
             self._state.quaternion = quaternion
         else:
             self._state.quaternion_errors += 1
