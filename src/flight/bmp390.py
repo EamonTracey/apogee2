@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import board
 
 from base.component import Component
 
@@ -17,4 +18,5 @@ class BMP390Component(Component):
         return self._state
 
     def dispatch(self):
-        ...
+        i2c = board.I2C()
+        altimeter = BMP390State(altimeter)
