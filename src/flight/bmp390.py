@@ -6,7 +6,10 @@ import adafruit_bmp3xx
 import adafruit_bmp3xx.i2c
 from datetime import datetime
 
+import busio
+
 from base.component import Component
+
 
 @dataclass
 class BMP390State:
@@ -20,8 +23,10 @@ class BMP390State:
     altitude_errors: int = 0
     temperature_errors: int = 0
 
+
 class BMP390Component(Component):
-    def __init__(self, i2c: busio.I2C, address: int = 0x4a): # placeholder address - update later
+
+    def __init__(self, i2c: busio.I2C, address: int = 0x77):
         self._state = BMP390State()
         
         self._bmp390 = adafruit_bmp3xx.BMP3XX_I2C(i2c)
