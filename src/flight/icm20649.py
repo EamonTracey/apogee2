@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-import adafruit_icm20649
+import adafruit_icm20x
 import busio
 
 from base.component import Component

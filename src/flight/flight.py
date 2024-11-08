@@ -19,7 +19,7 @@ class Flight:
 
         # Naming is hard.
         utc_date = datetime.datetime.now(datetime.UTC)
-        utc_date_string = strftime("%Y%m%d%H%M%S")
+        utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
         name = f"ACS {utc_date_string}"
 
         # Handle optional configurations.
