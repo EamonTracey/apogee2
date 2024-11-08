@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 import time
 
-from component import Component
+from base.component import Component
 
 
 @dataclass
