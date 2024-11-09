@@ -2,7 +2,7 @@ import csv
 from dataclasses import dataclass
 
 from base.component import Component
-from base.loop import Loop
+from base.loop import LoopState
 from flight.bmp390 import BMP390State
 from flight.bno085 import BNO085State
 from flight.icm20649 import ICM20649State
