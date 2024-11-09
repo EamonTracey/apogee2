@@ -37,7 +37,7 @@ class BNO085Component(Component):
     def __init__(self, i2c: busio.I2C, address: int = 0x4a):
         self._state = BNO085State()
 
-        self._bno085 = adafruit_bno08x.i2c.BNO08X_I2C(i2c, address)
+        self._bno085 = adafruit_bno08x.i2c.BNO08X_I2C(i2c, address=address)
         self._bno085.initialize()
         self._bno085.enable_feature(adafruit_bno08x.BNO_REPORT_ACCELEROMETER)
         self._bno085.enable_feature(adafruit_bno08x.BNO_REPORT_MAGNETOMETER)

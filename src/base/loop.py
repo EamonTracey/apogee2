@@ -14,6 +14,7 @@ class LoopState:
 
     components: list = field(default_factory=list)
 
+    first_time: float = 0
     time: float = 0
     step_count: int = 0
     slip_count: int = 0
@@ -47,7 +48,7 @@ class Loop:
         assert self._state.frequency % frequency == 0
 
         logger.info(
-            f"Adding component {component.__name__} with frequency {frequency} Hz."
+            f"Adding component {type(component).__name__} with frequency {frequency} Hz."
         )
         self._state.components.append((component, frequency))
 
@@ -55,6 +56,7 @@ class Loop:
         iterator = range(steps) if steps > 0 else iter(int, 1)
 
         start = time.time()
+        self._state.first_time = start
         for _ in iterator:
             self._state.time = start
             self._step()

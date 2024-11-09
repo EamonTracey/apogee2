@@ -11,7 +11,6 @@ HEADERS = [
     "Time",
     "Loop_Slip_Count",
     "Altitude_BMP390",
-    "Pressure_BMP390",
     "Temperature_BMP390",
     "Acceleration_X_BNO085",
     "Acceleration_Y_BNO085",
@@ -62,10 +61,9 @@ class LogComponent(Component):
 
     def dispatch(self):
         log = [
-            self._loop_state.time,
+            self._loop_state.time - self._loop_state.first_time,
             self._loop_state.slip_count,
             self._bmp390_state.altitude,
-            self._bmp390_state.pressure,
             self._bmp390_state.temperature,
             *self._bno085_state.acceleration,
             *self._bno085_state.magnetic,
@@ -75,4 +73,4 @@ class LogComponent(Component):
             *self._icm20649_state.magnetic,
             *self._icm20649_state.gyro,
         ]
-        csv.writerow(log)
+        self._writer.writerow(log)
