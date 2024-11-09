@@ -32,8 +32,8 @@ class ICM20649Component(Component):
     def __init__(self, i2c: busio.I2C, address: int = 0x68):
         self._state = ICM20649State()
 
-        self._icm20649 = adafruit_icm20649.ICM20649(i2c, address)
-        self._icm20649.accelerometer_range = adafruit_icm20649.AccelRange.RANGE_30G
+        self._icm20649 = adafruit_icm20x.ICM20649(i2c, address=address)
+        self._icm20649.accelerometer_range = adafruit_icm20x.AccelRange.RANGE_30G
 
         logger.info("ICM20649 initialized.")
         logger.info(f"{self._icm20649.accelerometer_range=}")

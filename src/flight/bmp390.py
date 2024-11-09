@@ -28,7 +28,7 @@ class BMP390Component(Component):
     def __init__(self, i2c: busio.I2C, address: int = 0x77):
         self._state = BMP390State()
 
-        self._bmp390 = adafruit_bmp3xx.BMP3XX_I2C(i2c)
+        self._bmp390 = adafruit_bmp3xx.BMP3XX_I2C(i2c, address=address)
 
         logger.info("BMP390 initialized.")
         logger.info(f"{self._bmp390.pressure_oversampling=}")
