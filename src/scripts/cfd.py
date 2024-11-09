@@ -6,9 +6,6 @@ import os
 import click
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO,
-                    format="%(asctime)s:%(levelname)s:%(message)s",
-                    datefmt="%Y%m%d%H%M%S")
 
 SCRIPT = """#!/usr/bin/bash
 module load ansys/2024R1
@@ -56,6 +53,12 @@ def cfd(cases: tuple[str, ...], attacks: tuple[int, ...], machs: tuple[int,
     direction.
     """
     import ndcctools.taskvine as vine
+
+    # Initialize logging.
+    logging.basicConfig(
+        format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
+        datefmt="%Y%m%d%H%M%S",
+        level=logging.INFO)
 
     # Create the TaskVine manager.
     manager = vine.Manager(port)
