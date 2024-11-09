@@ -11,11 +11,14 @@ from flight.bno085 import BNO085Component
 from flight.icm20649 import ICM20649Component
 from flight.log import LogComponent
 
+logger = logging.getLogger(__name__)
+
 
 class Flight:
 
     def __init__(self, log_file: Optional[str] = None):
         self.loop = Loop(30)
+        loop_state = self.loop.state
 
         # Naming is hard.
         utc_date = datetime.datetime.now(datetime.UTC)
@@ -45,8 +48,8 @@ class Flight:
         self.loop.add_component(icm20649_component, 30)
 
         # Log.
-        log_component = LogComponent(log_file, bmp390_state, bno085_state,
-                                     icm20649_state)
+        log_component = LogComponent(log_file, loop_state, bmp390_state,
+                                     bno085_state, icm20649_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
