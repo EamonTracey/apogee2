@@ -24,13 +24,13 @@ def fly(name: Optional[str]):
 
     # Initialize logging.
     logging.basicConfig(
-        filename=f"{name.log}",
+        filename=f"{name}.log",
         format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
         datefmt="%Y%m%d%H%M%S",
         level=logging.INFO)
     logger.info("Apogee Control System. Alpha Kappa Sigma.")
     logger.info("Developed by the Notre Dame Rocketry Team.")
-    loger.info(f"{name=}")
+    logger.info(f"{name=}")
 
     flight = Flight(name)
     flight.run()
