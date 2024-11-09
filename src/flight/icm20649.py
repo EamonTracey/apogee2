@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import logging
+import traceback
 
 import adafruit_icm20x
 import busio
