@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 import traceback
 
 import adafruit_bno08x
