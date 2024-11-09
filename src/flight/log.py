@@ -45,18 +45,18 @@ class LogState:
 
 class LogComponent(Component):
 
-    def __init__(self, log_file: str, loop_state: LoopState,
+    def __init__(self, path: str, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State):
         self._state = LogState()
 
-        self._log_file = log_file
+        self._path = path
         self._loop_state = loop_state
         self._bmp390_state = bmp390_state
         self._bno085_state = bno085_state
         self._icm20649_state = icm20649_state
 
-        self._file = open(log_file, "w")
+        self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
         self._writer.writerow(HEADERS)
 
@@ -75,4 +75,4 @@ class LogComponent(Component):
             *self._icm20649_state.magnetic,
             *self._icm20649_state.gyro,
         ]
-        csv.writerow(lo)
+        csv.writerow(log)
