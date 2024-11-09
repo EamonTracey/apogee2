@@ -15,15 +15,11 @@ class ICM20649State:
     # The acceleration in meters per second squared.
     acceleration: tuple[float, float, float] = (0, 0, 0)
 
-    # The magnetic field in microteslas.
-    magnetic: tuple[float, float, float] = (0, 0, 0)
-
     # The angular velocity in degrees per second.
     gyro: tuple[float, float, float] = (0, 0, 0)
 
     # Count the number of times each reading fails.
     acceleration_errors: int = 0
-    magnetic_errors: int = 0
     gyro_errors: int = 0
 
 
@@ -62,19 +58,6 @@ class ICM20649Component(Component):
             self._state.acceleration = acceleration
         else:
             self._state.acceleration_errors += 1
-
-        # Read the raw magnetic field.
-        magnetic = None
-        try:
-            magnetic = self._icm20649.magnetic
-        except Exception as exception:
-            logger.exception(
-                f"Exception when reading ICM20649 magnetic: {traceback.format_exc()}"
-            )
-        if magnetic is not None:
-            self._state.magnetic = magnetic
-        else:
-            self._state.magnetic_errors += 1
 
         # Read the raw angular velocity.
         gyro = None
