@@ -16,18 +16,9 @@ logger = logging.getLogger(__name__)
 
 class Flight:
 
-    def __init__(self, log_file: Optional[str] = None):
+    def __init__(self, name: str):
         self.loop = Loop(30)
         loop_state = self.loop.state
-
-        # Naming is hard.
-        utc_date = datetime.datetime.now(datetime.UTC)
-        utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
-        name = f"ACS {utc_date_string}"
-
-        # Handle optional configurations.
-        if log_file is None:
-            log_file = f"{name}.log"
 
         # Connect to the I2C bus.
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -48,7 +39,8 @@ class Flight:
         self.loop.add_component(icm20649_component, 30)
 
         # Log.
-        log_component = LogComponent(log_file, loop_state, bmp390_state,
+        log_path = f"{name}.csv"
+        log_component = LogComponent(log_path, loop_state, bmp390_state,
                                      bno085_state, icm20649_state)
         self.loop.add_component(log_component, 30)
 
