@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 @click.command(context_settings={"show_default": True})
 @click.option("-n",
               "--name",
-              type=Optional[str],
+              type=str,
               default=None,
               help="The name of the flight, used to name log files.")
 def fly(name: Optional[str]):
@@ -18,9 +18,10 @@ def fly(name: Optional[str]):
     from flight.flight import Flight
 
     # Naming is hard.
-    utc_date = datetime.datetime.now(datetime.UTC)
-    utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
-    name = f"ACS {utc_date_string}"
+    if name is None:
+        utc_date = datetime.datetime.now(datetime.UTC)
+        utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
+        name = f"ACS {utc_date_string}"
 
     # Initialize logging.
     logging.basicConfig(
