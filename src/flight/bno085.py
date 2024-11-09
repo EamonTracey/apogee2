@@ -1,13 +1,13 @@
 from dataclasses import dataclass
+import traceback
 
 import adafruit_bno08x
 import adafruit_bno08x.i2c
 import busio
 
 from base.component import Component
-from datetime import datetime
 
-import numpy as np
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -18,7 +18,7 @@ class BNO085State:
     # Magnetic field in microteslas.
     magnetic: tuple[float, float, float] = (0, 0, 0)
 
-    # Angular velocity radians per second.
+    # Angular velocity in radians per second.
     gyro: tuple[float, float, float] = (0, 0, 0)
 
     # Orientation as a (w, x, y, z) quaternion.
@@ -44,6 +44,9 @@ class BNO085Component(Component):
         self._bno085.enable_feature(adafruit_bno08x.BNO_REPORT_ROTATION_VECTOR)
         self._bno085.begin_calibration()
 
+        logger.info("BNO085 initialized.")
+        logger.info(f"{self._bno085.calibration_status=}")
+
     @property
     def state(self):
         return self._state
@@ -54,9 +57,12 @@ class BNO085Component(Component):
         try:
             acceleration = self._bno085.acceleration
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
-        if acceleration is not None and acceleration[0] is not None and acceleration[1] is not None and acceleration[2] is not None:
+            logger.exception(
+                f"Exception when reading BNO085 acceleration: {traceback.format_exc()}"
+            )
+        if acceleration is not None and acceleration[
+                0] is not None and acceleration[
+                    1] is not None and acceleration[2] is not None:
             self._state.acceleration = acceleration
         else:
             self._state.acceleration_errors += 1
@@ -66,9 +72,11 @@ class BNO085Component(Component):
         try:
             magnetic = self._bno085.magnetic
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
-        if magnetic is not None and magnetic[0] is not None and magnetic[1] is not None and magnetic[2] is not None:
+            logger.exception(
+                f"Exception when reading BNO085 magnetic: {traceback.format_exc()}"
+            )
+        if magnetic is not None and magnetic[0] is not None and magnetic[
+                1] is not None and magnetic[2] is not None:
             self._state.magnetic = magnetic
         else:
             self._state.magnetic_errors += 1
@@ -78,22 +86,25 @@ class BNO085Component(Component):
         try:
             gyro = self._bno085.gyro
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
-        if gyro is not None and gyro[0] is not None and gyro[1] is not None and gyro[2] is not None:
+            logger.exception(
+                f"Exception when reading BNO085 gyro: {traceback.format_exc()}"
+            )
+        if gyro is not None and gyro[0] is not None and gyro[
+                1] is not None and gyro[2] is not None:
             self._state.gyro = gyro
         else:
             self._state.gyro_errors += 1
-
 
         # Read the fused orientation.
         quaternion = None
         try:
             quaternion = self._bno085.quaternion
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
-        if quaternion is not None and quaternion[0] is not None and quaternion[1] is not None and quaternion[2] and quaternion[3] is not None:
+            logger.exception(
+                f"Exception when reading BNO085 quaternion: {traceback.format_exc()}"
+            )
+        if quaternion is not None and quaternion[0] is not None and quaternion[
+                1] is not None and quaternion[2] and quaternion[3] is not None:
             self._state.quaternion = quaternion
         else:
             self._state.quaternion_errors += 1

@@ -5,6 +5,8 @@ import busio
 
 from base.component import Component
 
+logger = logging.getLogger(__name__)
+
 
 @dataclass
 class ICM20649State:
@@ -29,8 +31,17 @@ class ICM20649Component(Component):
         self._state = ICM20649State()
 
         self._icm20649 = adafruit_icm20649.ICM20649(i2c, address)
-        self._icm20649.initialize()
         self._icm20649.accelerometer_range = adafruit_icm20649.AccelRange.RANGE_30G
+
+        logger.info("ICM20649 initialized.")
+        logger.info(f"{self._icm20649.accelerometer_range=}")
+        logger.info(f"{self._icm20649.accelerometer_data_rate_divisor=}")
+        logger.info(f"{self._icm20649.accelerometer_data_rate=}")
+        logger.info(f"{self._icm20649.accel_dlpf_cutoff=}")
+        logger.info(f"{self._icm20649.gyro_range=}")
+        logger.info(f"{self._icm20649.gyro_data_rate_divisor=}")
+        logger.info(f"{self._icm20649.gyro_data_rate=}")
+        logger.info(f"{self._icm20649.gyro_dlpf_cutoff=}")
 
     @property
     def state(self):
@@ -42,8 +53,9 @@ class ICM20649Component(Component):
         try:
             acceleration = self._icm20649.acceleration
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
+            logger.exception(
+                f"Exception when reading ICM20649 acceleration: {traceback.format_exc()}"
+            )
         if acceleration is not None:
             self._state.acceleration = acceleration
         else:
@@ -54,8 +66,9 @@ class ICM20649Component(Component):
         try:
             magnetic = self._icm20649.magnetic
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
+            logger.exception(
+                f"Exception when reading ICM20649 magnetic: {traceback.format_exc()}"
+            )
         if magnetic is not None:
             self._state.magnetic = magnetic
         else:
@@ -66,8 +79,9 @@ class ICM20649Component(Component):
         try:
             gyro = self._icm20649.gyro
         except Exception as exception:
-            # TODO: Implement logging.
-            ...
+            logger.exception(
+                f"Exception when reading ICM20649 gyro: {traceback.format_exc()}"
+            )
         if gyro is not None:
             self._state.gyro = gyro
         else:

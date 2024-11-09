@@ -20,8 +20,8 @@ class FusionComponent(Component):
         self._state = FusionState()
 
         # Set up AHRS for imufusion
-        self.samplerate = 60 # Hz
-        
+        self.samplerate = 60  # Hz
+
         # Instantiate Algorithms
         self.offset = imufusion.Offset(samplerate)
         self.ahrs = imufusion.Ahrs()
@@ -29,18 +29,17 @@ class FusionComponent(Component):
         # Will need to be fucked with depending on what is needed for the imu we use
         self.ahrs.settings = imufusion.Settings(
             imufusion.CONVENTION_NWU,
-            0.5, # gain
-            2000, # gyroscope range
-            10, # acceleration rejection
-            10, # magnetic rejection
-            5 * samplerate # recovery trigger period = 5 seconds
-            )
+            0.5,  # gain
+            2000,  # gyroscope range
+            10,  # acceleration rejection
+            10,  # magnetic rejection
+            5 * samplerate  # recovery trigger period = 5 seconds
+        )
 
-        self.delta_time = 1/60
+        self.delta_time = 1 / 60
         self.euler = np.empty(1, 3)
         self.internal_state = np.empty(1, 6)
         self.flags = np.empty(1, 4)
-            
 
     @property
     def state(self):
@@ -62,25 +61,24 @@ class FusionComponent(Component):
         self.euler = np.append(self.euler, thiseuler, axis=0)
 
         ahrsinternalstates = self.ahrs.internal_states
-        self.internal_state = np.append(self.internal_state,np.array(
-            [
+        self.internal_state = np.append(
+            self.internal_state,
+            np.array([
                 ahrsinternalstates.acceleration_error,
                 ahrsinternalstates.accelerometer_ignored,
                 ahrsinternalstates.acceleration_recovery_trigger,
-                ahrsinternalstates.magnetic_error, 
+                ahrsinternalstates.magnetic_error,
                 ahrsinternalstates.magnetometer_ignored,
                 ahrsinternalstates.magnetic_recovery_trigger,
-                ]
-            ), axis=0)
+            ]),
+            axis=0)
 
         ahrsflags = self.ahrs.flags
-        self.flags = np.append(self.flags, np.array(
-            [
-                ahrsflags.initialising,
-                ahrsflags.angular_rate_recovery,
-                ahrsflags.acceleration_recovery,
-                ahrsflags.magnetic_recovery,
-                ]
-            ), axis=0)
-        
-
+        self.flags = np.append(self.flags,
+                               np.array([
+                                   ahrsflags.initialising,
+                                   ahrsflags.angular_rate_recovery,
+                                   ahrsflags.acceleration_recovery,
+                                   ahrsflags.magnetic_recovery,
+                               ]),
+                               axis=0)
