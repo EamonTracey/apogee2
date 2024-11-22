@@ -29,9 +29,15 @@ def fly(name: Optional[str]):
         format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
         datefmt="%Y%m%d%H%M%S",
         level=logging.INFO)
-    logger.info("Apogee Control System. Alpha Kappa Sigma.")
+    logger.info("Apogee Control System. Alpha Kappa Sigma. \u0391\u039a\u03a3.")
     logger.info("Developed by the Notre Dame Rocketry Team.")
+    logger.info(" ")
     logger.info(f"{name=}")
+    logger.info(" ")
+    logger.info("Jokes.")
+    logger.info("What did one flap say to the other flap? Smells like apogee")
+    logger.info("ACS needed a ballast, so we put Will's mom in the module. Problem was, we CATO'd.")
+    logger.info(" ")
 
     flight = Flight(name)
     flight.run()
