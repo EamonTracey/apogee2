@@ -1,14 +1,14 @@
 ; Read case file.
 /file/read-case "case.cas.h5"
 
+; Set air density to ideal gas.
+/define/materials/change-create air air yes ideal-gas no no no no no no
+
 ; Enable energy equation.
 /define/models/energy yes yes yes
 
 ; Set turbulence model to Komega SST.
 /define/models/viscous kw-sst yes
-
-; Set air density to ideal gas.
-/define/materials/change-create air air yes ideal-gas no no no no no no
 
 ; Define boundary conditions (angle of attack, mach number).
 /define/boundary-conditions/pressure-far-field farfield no 0 no {mach} no 273.15 yes no {flow_vector_x} no {flow_vector_y} no 0 no no yes 5 10
