@@ -37,6 +37,8 @@ def fly(name: Optional[str]):
     logger.info("Jokes.")
     logger.info("What did one flap say to the other flap? Smells like apogee")
     logger.info("ACS needed a ballast, so we put Will's mom in the module. Problem was, we CATO'd.")
+    logger.info("The rocket asked, What's your goal in life? ACS replied, Just trying to get as far away from here as possible")
+    logger.info("Knock knock. Who's there? Apogee. Apogee who? Apogee-z, Will's mom smells bad.")
     logger.info(" ")
 
     flight = Flight(name)
