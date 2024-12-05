@@ -6,6 +6,7 @@ click
 imufusion
 matplotlib
 numpy
+pandas
 RPi.GPIO
 scipy
 yapf
