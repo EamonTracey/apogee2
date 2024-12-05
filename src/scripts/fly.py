@@ -21,7 +21,7 @@ def fly(name: Optional[str]):
     if name is None:
         utc_date = datetime.datetime.now(datetime.UTC)
         utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
-        name = f"ACS {utc_date_string}"
+        name = f"ACS_{utc_date_string}"
 
     # Initialize logging.
     logging.basicConfig(
