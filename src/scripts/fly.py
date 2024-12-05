@@ -31,9 +31,7 @@ def fly(name: Optional[str]):
         level=logging.INFO)
     logger.info("Apogee Control System. Alpha Kappa Sigma. \u0391\u039a\u03a3.")
     logger.info("Developed by the Notre Dame Rocketry Team.")
-    logger.info(" ")
     logger.info(f"{name=}")
-    logger.info(" ")
     logger.info("Jokes.")
     logger.info("What did one flap say to the other flap? Smells like apogee")
     logger.info("ACS needed a ballast, so we put Will's mom in the module. Problem was, we CATO'd.")
@@ -51,8 +49,6 @@ def fly(name: Optional[str]):
                 Is how skibidi they will be
                 Did you pray today?""")
     logger.info("ACS operates on a TeasleysMom model of the gravity.")
-    logger.info("")
-    logger.info(" ")
 
     flight = Flight(name)
     flight.run()
