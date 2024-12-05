@@ -1,0 +1,42 @@
+20241204221107:scripts.fly:INFO:Apogee Control System. Alpha Kappa Sigma. ΑΚΣ.
+20241204221107:scripts.fly:INFO:Developed by the Notre Dame Rocketry Team.
+20241204221107:scripts.fly:INFO:name='pitchtestnumbertwo'
+20241204221107:scripts.fly:INFO:Jokes.
+20241204221107:scripts.fly:INFO:What did one flap say to the other flap? Smells like apogee
+20241204221107:scripts.fly:INFO:ACS needed a ballast, so we put Will's mom in the module. Problem was, we CATO'd.
+20241204221107:scripts.fly:INFO:The rocket asked, What's your goal in life? ACS replied, Just trying to get as far away from here as possible
+20241204221107:scripts.fly:INFO:Knock knock. Who's there? Apogee. Apogee who? Apogee-z, Will's mom smells bad.
+20241204221107:scripts.fly:INFO:Skibidi
+20241204221107:scripts.fly:INFO:It's beginning to look a gyatt like Rizzmas
+                Everywhere online
+                My sigma level is maxed
+                Your food has fanum taxed
+                With skibidis and rizzlers in Ohio
+                It's beginning to look a gyatt like Rizzmas
+                Baby Gronk rizzed up Livvy
+                But the prettiest sight to see
+                Is how skibidi they will be
+                Did you pray today?
+20241204221107:scripts.fly:INFO:ACS operates on a TeasleysMom model of the gravity.
+20241204221107:base.loop:INFO:Loop initialized.
+20241204221107:base.loop:INFO:self._state.frequency=30
+20241204221107:base.loop:INFO:self._state.period=0.03333333333333333
+20241204221107:flight.bmp390:INFO:BMP390 initialized.
+20241204221107:flight.bmp390:INFO:self._bmp390.pressure_oversampling=1
+20241204221107:flight.bmp390:INFO:self._bmp390.temperature_oversampling=1
+20241204221107:flight.bmp390:INFO:self._bmp390.filter_coefficient=0
+20241204221107:base.loop:INFO:Adding component BMP390Component with frequency 30 Hz.
+20241204221109:flight.bno085:INFO:BNO085 initialized.
+20241204221109:flight.bno085:INFO:self._bno085.calibration_status=2
+20241204221109:base.loop:INFO:Adding component BNO085Component with frequency 30 Hz.
+20241204221110:flight.icm20649:INFO:ICM20649 initialized.
+20241204221110:flight.icm20649:INFO:self._icm20649.accelerometer_range=3
+20241204221110:flight.icm20649:INFO:self._icm20649.accelerometer_data_rate_divisor=20
+20241204221110:flight.icm20649:INFO:self._icm20649.accelerometer_data_rate=53.57142857142857
+20241204221110:flight.icm20649:INFO:self._icm20649.accel_dlpf_cutoff=0
+20241204221110:flight.icm20649:INFO:self._icm20649.gyro_range=0
+20241204221110:flight.icm20649:INFO:self._icm20649.gyro_data_rate_divisor=10
+20241204221110:flight.icm20649:INFO:self._icm20649.gyro_data_rate=100.0
+20241204221110:flight.icm20649:INFO:self._icm20649.gyro_dlpf_cutoff=0
+20241204221110:base.loop:INFO:Adding component ICM20649Component with frequency 30 Hz.
+20241204221110:base.loop:INFO:Adding component LogComponent with frequency 30 Hz.
