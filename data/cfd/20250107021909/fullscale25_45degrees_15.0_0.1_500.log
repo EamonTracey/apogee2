@@ -1,0 +1,1918 @@
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -t4 -g
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/cortex/lnamd64/cortex.24.1.0 -f fluent -g (fluent "3ddp -pshmem  -host -r24.1.0 -t4 -mpi=intel -path/opt/crc/a/ansys/2024R1/v241/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/1066631.1.long/worker-241760-1126778/task.19/fluent-20250107-022006-1128857.trn".
+Auto-Transcript Start Time:  02:20:06, 07 Jan 2025 
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -pshmem -host -t4 -mpi=intel -path/opt/crc/a/ansys/2024R1/v241/fluent -ssh -cx d32cepyc185.crc.nd.edu:43599:42959
+Starting /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/lnamd64/3ddp_host/fluent.24.1.0 host -cx d32cepyc185.crc.nd.edu:43599:42959 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r24.1.0 -t4 -pshmem -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/opt/crc/a/ansys/2024R1/v241/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2024 R1
+
+              Copyright 1987-2024 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Nov 22 2023 10:07:25 EST  Build Id: 10184  
+ 
+Connected License Server List:	7504@linux5-lic.crc.nd.edu
+
+     --------------------------------------------------------------
+     This is an academic version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "d32cepyc185.crc.nd.edu" (unix).
+/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/bin/fluent -r24.1.0 3ddp -flux -node -t4 -pshmem -mpi=intel -ssh -mport 10.32.91.137:10.32.91.137:35811:0
+Starting /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/multiport/mpi/lnamd64/intel2021/bin/mpirun --rsh=ssh -f /tmp/fluent-appfile.etracey.1130564 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/lnamd64/3ddp_node/fluent_mpi.24.1.0 node -mpiw intel -pic shmem -mport 10.32.91.137:10.32.91.137:35811:0
+
+-------------------------------------------------------------------------------
+ID    Hostname              Core  O.S.      PID      Vendor                
+-------------------------------------------------------------------------------
+n3    d32cepyc185.crc.nd.e  4/64  Linux-64  1130778  AMD EPYC 7543 32-Core 
+n2    d32cepyc185.crc.nd.e  3/64  Linux-64  1130776  AMD EPYC 7543 32-Core 
+n1    d32cepyc185.crc.nd.e  2/64  Linux-64  1130774  AMD EPYC 7543 32-Core 
+n0*   d32cepyc185.crc.nd.e  1/64  Linux-64  1130772  AMD EPYC 7543 32-Core 
+host  d32cepyc185.crc.nd.e        Linux-64  1129726  AMD EPYC 7543 32-Core 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+-------------------------------------------------------------------------------
+
+
+Initializing SGE
+Done.
+Cleanup script file is /tmp/1066631.1.long/worker-241760-1126778/task.19/cleanup-fluent-d32cepyc185.crc.nd.edu-1129726.sh
+Key Behavioral Changes:
+Fluent Guided Meshing Workflows: 
+Workflow template files (.wft) are now saved by default whenever the mesh is saved. You can change the automatic creation of .wft files in Preferences. 
+Journaling: 
+When Ansys Fluent encounters an invalid input in a journal file that is being replayed, it now raises an error condition and aborts the journal processing. 
+Turbulence: 
+The value of kappa used in the Spalart-Allmaras model for interior terms was inconsistent with the reference publications of the model. Fluent historically used a value of 0.4187, but to produce results consistent with the published model, the value should be 0.41. This issue was first addressed in a previous Fluent version and access to the kappa value was given in the GUI while keeping the old default of 0.4187. In Fluent 2024 R1, the default value is now changed to 0.41. 
+Turbomachinery: 
+For Blade Film Cooling, you can now specify stationary holes on the surfaces of a moving/rotating cell zone in transient cases. 
+Boundaries previously referred to as "casings" in the Turbo Topology definition are now referred to as "shrouds." 
+Density-Based Solver: 
+The High Speed Numerics have been updated to increase the robustness of the Roe-FDS numerical flux against shock-instabilities and the carbuncle phenomenon. This modification may produce a slight solution change for cases combining Roe-FDS and HSN. 
+Multiphase Models: 
+Modeling of open channel flows in conjunction with the translation moving reference frame (MRF) has been improved resulting in more accurate and stable solution. In addition, a solution methodology has been suggested to provide better stability for high-speed hull simulations. 
+Parallel Processing: 
+Using dynamic process spawning now requires that you manually specify the interconnect as -pethernet for shared memory or distributed memory without InfiniBand, and -pib.ofed for distributed memory over InfiniBand. 
+Refer to the Ansys, Inc. Release Notes for a full listing of the new features included in Ansys Fluent 2024 R1. 
+> Fast-loading "/opt/crc/a/ansys/2024R1/v241/fluent/fluent24.1.0/addons/afd/lib/hdfio.bin"
+Done.
+WARNING: Rank:0 Machine d32cepyc185.crc.nd.edu has 25 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+Reading from d32cepyc185.crc.nd.edu:"/tmp/1066631.1.long/worker-241760-1126778/task.19/case.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+      421271 cells,     1 cell zone  ...
+         421271 polyhedra cells,  zone id: 1386
+     2389129 faces,     5 face zones ...
+            140 polygonal pressure-far-field faces,  zone id: 17
+            143 polygonal pressure-far-field faces,  zone id: 18
+           2146 polygonal pressure-far-field faces,  zone id: 19
+          53062 polygonal wall faces,  zone id: 20
+        2333638 polygonal interior faces,  zone id: 1385
+     1712407 nodes,     1 node zone  ...
+  Done.
+
+
+Building...
+     mesh
+	auto partitioning mesh by Metis (fast),
+	distributing mesh
+		parts....,
+		faces....,
+		nodes....,
+		cells....,
+        bandwidth reduction using Reverse Cuthill-McKee: 105091/6604 = 15.9132
+  Reading boundary layer flags ...
+  Done.
+
+     materials,
+     interface,
+     domains,
+	mixture
+     zones,
+	inlet
+	outlet
+	farfield
+	launchvehicle
+	interior--solid
+	solid
+     parallel,
+Done.
+Warning: Pressure far-field boundary condition can only be used with ideal gas law.
+  Please change either the boundary condition type or enable ideal gas law.
+  Solver cannot proceed until this is fixed.
+	Warning: Pressure far-field boundary condition can only be used with ideal gas law.
+  Please change either the boundary condition type or enable ideal gas law.
+  Solver cannot proceed until this is fixed.
+	
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> air is a fluid
+
+Density
+no data required.
+
+
+Note: Enabling energy equation as required by material density method.
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> (farfield outlet inlet)
+
+> (farfield outlet inlet)
+
+> (farfield outlet inlet)
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> (launchvehicle)
+
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> 
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+> adjoint/                parallel/               server/
+define/                 parametric-study/       solve/
+display/                plot/                   surface/
+exit                    preferences/            turbo-workflow/
+file/                   print-license-usage     views/
+mesh/                   report/
+
+> 
+Initialize using the hybrid initialization method.
+
+Checking case topology... 
+-This case has multiple farfield bc 
+-Case will be initialized with constant parameters
+
+	iter		scalar-0
+
+	1		1.000000e+00
+	2		3.229194e-04
+	3		4.984277e-05
+	4		1.190919e-05
+	5		3.125551e-06
+	6		9.186228e-07
+	7		2.497601e-07
+	8		1.115850e-07
+	9		6.810866e-08
+	10		3.735615e-08
+
+Hybrid initialization is done.
+
+Note: Settings to improve the robustness of pathline and
+      particle tracking have been automatically enabled.
+
+
+> 
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+     1  1.0000e+00  1.3699e-04  2.4572e-04  2.2833e-04  2.3438e-06  8.2506e-01  4.4837e-01  0:25:01  499
+     2  9.4270e-01  1.0381e-04  2.1150e-04  1.4118e-04  2.2943e-06  7.3083e-01  4.2090e-01  0:24:49  498
+     3  1.0000e+00  1.0762e-04  2.6186e-04  1.2999e-04  2.1147e-06  5.7251e-01  3.8167e-01  0:24:37  497
+     4  1.0000e+00  1.1325e-04  4.7641e-04  1.1139e-04  3.5357e-06  3.9512e-01  3.2643e-01  0:25:06  496
+     5  1.0000e+00  1.8588e-04  1.1323e-03  2.0268e-04  1.0102e-05  2.9040e-01  2.5689e-01  0:25:25  495
+     6  2.3366e+00  3.7720e-04  2.7662e-03  4.4663e-04  4.1881e-05  3.2401e-01  2.1795e-01  0:25:36  494
+     7  4.3620e+00  7.8734e-04  6.2915e-03  1.0202e-03  9.1939e-05  5.1690e-01  2.4263e-01  0:25:09  493
+     8  5.8570e+00  1.3853e-03  8.0399e-03  1.8650e-03  1.7412e-04  5.1834e-01  2.7611e-01  0:24:42  492
+     9  6.6853e+00  2.3551e-03  1.2529e-02  2.6423e-03  1.7184e-04  5.2520e-01  2.6661e-01  0:24:25  491
+    10  6.7835e+00  1.5785e-03  1.0234e-02  2.2691e-03  2.7714e-04  5.2242e-01  2.8577e-01  0:24:11  490
+    11  9.2417e+00  3.2212e-03  1.9252e-02  3.4916e-03  2.6449e-04  6.1375e-01  3.4188e-01  0:23:54  489
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    12  7.7829e+00  2.5532e-03  1.2017e-02  3.3805e-03  3.3548e-04  5.6989e-01  3.3583e-01  0:23:44  488
+    13  1.0564e+01  4.6553e-03  2.4093e-02  4.1641e-03  3.5064e-04  6.2860e-01  3.5973e-01  0:23:32  487
+    14  1.0571e+01  3.5589e-03  1.8233e-02  4.4768e-03  5.8592e-04  6.4939e-01  4.0209e-01  0:24:06  486
+    15  1.2335e+01  7.9351e-03  3.0841e-02  5.2142e-03  4.2809e-04  6.0109e-01  3.5997e-01  0:23:44  485
+    16  1.2914e+01  6.1088e-03  2.4109e-02  5.5348e-03  9.1776e-04  6.8877e-01  4.3833e-01  0:23:29  484
+    17  1.5892e+01  1.1418e-02  4.4078e-02  6.8485e-03  7.3403e-04  6.6329e-01  4.0689e-01  0:23:17  483
+    18  1.4779e+01  9.8094e-03  3.5782e-02  7.2755e-03  1.1459e-03  6.6112e-01  4.4730e-01  0:23:06  482
+    19  1.8231e+01  1.0902e-02  5.5619e-02  8.1980e-03  1.2634e-03  6.7564e-01  4.2730e-01  0:23:28  481
+    20  1.7945e+01  1.3003e-02  5.1759e-02  9.0029e-03  1.4160e-03  5.8246e-01  3.9030e-01  0:23:15  480
+    21  2.0200e+01  1.8734e-02  6.5154e-02  1.0356e-02  1.5878e-03  6.4532e-01  4.2372e-01  0:23:05  479
+    22  1.9684e+01  1.6086e-02  6.2248e-02  1.2694e-02  1.4704e-03  6.4456e-01  4.1726e-01  0:22:56  478
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    23  2.2773e+01  2.0400e-02  7.3918e-02  1.2137e-02  2.5603e-03  7.1113e-01  4.7489e-01  0:22:48  477
+    24  2.1892e+01  1.8780e-02  7.9820e-02  1.5302e-02  1.9852e-03  5.8386e-01  3.9179e-01  0:22:43  476
+    25  2.3899e+01  2.6093e-02  9.2560e-02  1.3681e-02  1.8865e-03  6.7657e-01  4.5310e-01  0:22:38  475
+    26  2.3603e+01  2.7968e-02  8.7418e-02  1.6182e-02  2.2573e-03  7.0327e-01  4.5093e-01  0:22:35  474
+    27  2.7396e+01  3.2994e-02  9.9874e-02  1.8585e-02  2.4078e-03  6.7211e-01  4.4243e-01  0:22:33  473
+    28  2.6800e+01  3.2575e-02  1.1086e-01  1.9753e-02  2.8900e-03  6.5130e-01  4.4794e-01  0:22:31  472
+    29  2.9713e+01  3.5417e-02  1.1497e-01  1.9426e-02  2.7848e-03  7.1528e-01  4.7330e-01  0:22:28  471
+    30  2.8050e+01  3.8039e-02  1.1563e-01  2.1135e-02  2.6599e-03  6.7309e-01  4.4708e-01  0:22:25  470
+    31  3.0125e+01  4.0438e-02  1.1865e-01  2.0845e-02  2.7391e-03  6.6142e-01  4.5307e-01  0:22:23  469
+    32  3.2011e+01  4.0858e-02  1.2838e-01  2.2298e-02  3.4930e-03  7.0448e-01  4.7277e-01  0:22:21  468
+    33  3.1512e+01  5.1220e-02  1.2308e-01  2.2164e-02  3.2529e-03  7.3491e-01  4.9789e-01  0:22:18  467
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    34  3.2236e+01  4.5242e-02  1.3735e-01  2.3869e-02  3.4718e-03  7.2580e-01  4.7467e-01  0:22:16  466
+    35  3.4485e+01  5.0824e-02  1.4279e-01  2.3638e-02  3.4309e-03  7.1483e-01  4.7910e-01  0:22:13  465
+    36  3.4416e+01  4.4677e-02  1.3946e-01  2.3348e-02  3.4233e-03  6.5306e-01  4.5249e-01  0:22:10  464
+    37  3.4980e+01  4.2029e-02  1.2521e-01  2.1652e-02  3.5617e-03  7.2784e-01  4.8858e-01  0:22:09  463
+    38  3.7339e+01  4.8240e-02  1.3981e-01  2.5981e-02  4.0257e-03  6.7594e-01  4.6355e-01  0:22:10  462
+    39  3.6319e+01  4.4862e-02  1.3613e-01  2.2689e-02  3.7667e-03  6.7604e-01  4.8111e-01  0:22:06  461
+    40  3.7876e+01  4.7967e-02  1.2304e-01  2.3752e-02  3.8177e-03  6.7426e-01  4.6732e-01  0:22:31  460
+    41  3.7641e+01  4.4436e-02  1.2933e-01  2.3445e-02  3.9829e-03  6.9356e-01  4.9426e-01  0:22:18  459
+    42  3.9591e+01  4.6209e-02  1.2028e-01  2.3500e-02  3.7978e-03  6.9387e-01  4.9890e-01  0:22:07  458
+    43  4.0683e+01  4.2393e-02  1.1145e-01  2.2170e-02  4.1267e-03  7.0519e-01  5.0595e-01  0:21:59  457
+    44  4.2111e+01  4.6708e-02  1.1817e-01  2.2172e-02  4.0577e-03  6.6561e-01  4.7173e-01  0:21:52  456
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    45  4.1286e+01  3.8922e-02  1.1441e-01  2.0151e-02  6.3224e-03  6.9217e-01  5.0489e-01  0:21:44  455
+    46  4.3521e+01  5.0221e-02  1.0545e-01  2.1111e-02  4.7141e-03  6.7656e-01  4.8459e-01  0:21:38  454
+    47  4.3739e+01  4.7615e-02  1.0948e-01  2.0639e-02  4.7933e-03  7.2235e-01  5.3612e-01  0:21:34  453
+    48  4.5988e+01  4.8586e-02  1.1660e-01  2.3560e-02  4.9874e-03  8.1348e-01  5.8798e-01  0:21:30  452
+    49  4.6525e+01  4.4350e-02  1.1836e-01  2.1697e-02  5.3108e-03  8.4278e-01  4.9667e-01  0:21:26  451
+    50  4.7144e+01  4.4233e-02  1.0747e-01  2.2684e-02  4.6996e-03  7.3838e-01  4.8592e-01  0:21:23  450
+    51  4.8784e+01  4.8055e-02  1.2123e-01  2.2957e-02  7.3432e-03  7.2201e-01  4.9585e-01  0:21:20  449
+    52  5.0845e+01  5.0511e-02  1.1233e-01  2.1967e-02  5.0402e-03  7.5305e-01  5.0196e-01  0:21:18  448
+    53  5.2537e+01  3.8770e-02  1.1962e-01  2.1443e-02  6.5064e-03  7.6697e-01  5.1901e-01  0:21:16  447
+    54  5.1244e+01  4.8428e-02  9.7972e-02  2.0628e-02  5.6619e-03  7.7170e-01  5.2655e-01  0:21:12  446
+    55  5.6773e+01  4.9015e-02  1.1436e-01  2.2372e-02  6.6816e-03  8.7003e-01  5.5751e-01  0:21:09  445
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    56  5.4651e+01  3.9121e-02  1.1212e-01  2.1388e-02  6.7153e-03  7.8457e-01  4.6710e-01  0:21:05  444
+    57  5.7518e+01  4.7834e-02  1.1524e-01  2.2548e-02  6.1984e-03  8.3454e-01  5.3771e-01  0:21:02  443
+    58  5.7873e+01  5.1603e-02  1.0817e-01  2.3024e-02  5.7672e-03  7.6206e-01  4.8248e-01  0:20:58  442
+    59  6.0941e+01  4.1086e-02  1.1086e-01  2.1729e-02  6.7213e-03  7.5909e-01  4.8366e-01  0:20:57  441
+    60  5.9649e+01  4.3567e-02  1.0398e-01  2.0965e-02  1.6415e-02  7.1125e-01  4.9302e-01  0:20:54  440
+    61  6.3984e+01  4.2248e-02  1.2372e-01  2.1831e-02  7.5506e-03  7.1822e-01  5.2110e-01  0:20:51  439
+    62  6.2529e+01  4.3725e-02  1.0029e-01  2.1776e-02  5.7366e-03  6.5912e-01  4.7685e-01  0:20:49  438
+    63  6.4264e+01  3.7247e-02  9.8205e-02  2.0074e-02  6.1190e-03  6.9778e-01  5.2159e-01  0:20:47  437
+    64  6.3326e+01  4.1438e-02  9.3778e-02  2.0117e-02  6.8659e-03  7.0021e-01  4.8244e-01  0:20:45  436
+    65  6.7917e+01  4.4473e-02  8.7721e-02  1.7799e-02  6.7211e-03  6.4025e-01  4.8529e-01  0:20:43  435
+    66  6.6351e+01  4.0629e-02  8.9783e-02  1.8938e-02  6.8685e-03  7.2545e-01  5.9299e-01  0:20:33  434
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    67  6.9781e+01  3.5449e-02  9.1937e-02  1.8552e-02  7.0093e-03  7.9673e-01  5.4216e-01  0:20:31  433
+    68  7.0866e+01  4.3042e-02  8.3412e-02  1.8245e-02  1.8377e-02  7.0121e-01  4.7451e-01  0:20:27  432
+    69  7.2210e+01  3.8537e-02  9.8673e-02  1.6845e-02  7.5311e-03  6.3060e-01  5.0875e-01  0:20:24  431
+    70  7.5756e+01  3.9384e-02  8.3253e-02  1.8293e-02  2.3334e-02  6.3189e-01  4.8845e-01  0:20:22  430
+    71  7.6324e+01  3.3323e-02  1.0939e-01  1.7827e-02  7.4445e-03  6.8470e-01  5.1446e-01  0:20:20  429
+    72  7.5176e+01  3.8086e-02  8.3982e-02  1.8509e-02  7.5989e-03  6.7868e-01  4.9185e-01  0:20:19  428
+    73  7.4739e+01  4.2102e-02  7.4260e-02  1.7968e-02  6.7470e-03  6.6225e-01  5.2887e-01  0:20:15  427
+    74  7.9248e+01  4.0926e-02  7.8077e-02  1.7446e-02  8.3479e-03  7.5101e-01  5.1236e-01  0:20:11  426
+    75  8.0743e+01  3.7040e-02  9.2234e-02  1.8283e-02  1.2169e-02  7.4606e-01  5.0505e-01  0:19:59  425
+    76  8.0970e+01  5.9928e-02  7.5790e-02  1.9659e-02  1.0011e-02  6.5796e-01  4.8824e-01  0:19:57  424
+    77  8.7145e+01  4.2766e-02  9.4722e-02  1.9526e-02  9.7544e-03  9.3028e-01  7.1659e-01  0:19:56  423
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    78  8.6582e+01  4.6692e-02  9.5012e-02  2.0751e-02  1.0259e-02  8.9835e-01  5.1493e-01  0:19:55  422
+    79  8.7453e+01  3.9775e-02  1.0333e-01  2.0509e-02  9.0001e-03  8.9337e-01  5.4262e-01  0:19:55  421
+    80  9.1676e+01  4.7674e-02  1.0651e-01  2.4109e-02  1.0921e-02  8.5755e-01  4.9515e-01  0:19:54  420
+    81  9.3389e+01  5.3008e-02  9.9297e-02  2.2762e-02  1.0855e-02  8.0040e-01  4.9612e-01  0:19:53  419
+    82  9.2870e+01  4.9505e-02  1.1417e-01  2.4138e-02  1.2346e-02  1.0407e+00  6.6484e-01  0:19:51  418
+    83  1.0112e+02  4.6834e-02  1.1940e-01  2.3892e-02  1.5787e-02  9.2613e-01  5.1378e-01  0:19:49  417
+    84  1.0597e+02  7.6276e-02  8.9082e-02  2.5816e-02  1.4288e-02  8.5461e-01  5.1078e-01  0:19:45  416
+    85  1.0490e+02  5.6024e-02  1.2303e-01  2.6647e-02  1.3311e-02  9.6276e-01  5.9283e-01  0:19:43  415
+    86  1.0440e+02  6.2394e-02  1.1171e-01  2.6334e-02  1.2849e-02  9.8036e-01  5.3886e-01  0:19:41  414
+    87  1.0800e+02  5.4534e-02  1.2494e-01  2.8730e-02  1.4813e-02  9.4316e-01  5.1376e-01  0:19:39  413
+    88  1.1298e+02  5.4518e-02  1.2919e-01  2.8491e-02  1.4191e-02  9.2669e-01  5.4285e-01  0:19:35  412
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+    89  1.1448e+02  4.7376e-02  1.2443e-01  2.5756e-02  1.3577e-02  9.3716e-01  5.3939e-01  0:19:31  411
+    90  1.1046e+02  4.1213e-02  1.1963e-01  2.4516e-02  1.5666e-02  9.9302e-01  5.7264e-01  0:19:27  410
+    91  1.1881e+02  4.8750e-02  1.2701e-01  2.7776e-02  1.7112e-02  9.4989e-01  5.1855e-01  0:19:24  409
+    92  1.2584e+02  6.1350e-02  1.1438e-01  2.6462e-02  1.9405e-02  9.8934e-01  5.4909e-01  0:19:19  408
+    93  1.2235e+02  5.1822e-02  1.2479e-01  2.6940e-02  1.5593e-02  9.5316e-01  5.2209e-01  0:19:18  407
+    94  1.2208e+02  5.2453e-02  1.2475e-01  2.6532e-02  1.6736e-02  9.7456e-01  5.2489e-01  0:19:14  406
+    95  1.2839e+02  5.6632e-02  1.3206e-01  2.8619e-02  1.4075e-02  9.8246e-01  5.4394e-01  0:19:10  405
+    96  1.3428e+02  5.4445e-02  1.2413e-01  2.8012e-02  1.6430e-02  9.3029e-01  5.0375e-01  0:19:06  404
+    97  1.2834e+02  4.8304e-02  1.1886e-01  2.6392e-02  1.5789e-02  9.6311e-01  5.2978e-01  0:19:02  403
+    98  1.3554e+02  4.6832e-02  1.3117e-01  2.7147e-02  2.3286e-02  1.0644e+00  5.7396e-01  0:18:58  402
+    99  1.3962e+02  5.7968e-02  1.1232e-01  2.6502e-02  2.0159e-02  9.5253e-01  5.1252e-01  0:18:56  401
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   100  1.5243e+02  5.3612e-02  1.2048e-01  2.6873e-02  2.1788e-02  1.0673e+00  5.7785e-01  0:18:53  400
+   101  1.3931e+02  5.3226e-02  1.1181e-01  2.6676e-02  1.5164e-02  9.4126e-01  5.0028e-01  0:18:49  399
+   102  1.4583e+02  4.8178e-02  1.2179e-01  2.7580e-02  2.0024e-02  1.0005e+00  5.4559e-01  0:18:46  398
+   103  1.5105e+02  5.4636e-02  1.2057e-01  2.8337e-02  1.8636e-02  1.0080e+00  5.6182e-01  0:18:42  397
+   104  1.6465e+02  4.7631e-02  1.2473e-01  2.6093e-02  2.0165e-02  9.5974e-01  5.1586e-01  0:18:40  396
+   105  1.5063e+02  4.4309e-02  1.2177e-01  2.7327e-02  1.8832e-02  9.8104e-01  5.3659e-01  0:18:37  395
+   106  1.6545e+02  5.0314e-02  1.2547e-01  2.9312e-02  2.2498e-02  1.0333e+00  5.5638e-01  0:18:35  394
+   107  1.6474e+02  5.0648e-02  1.1699e-01  2.8294e-02  2.0924e-02  9.9996e-01  5.3273e-01  0:18:32  393
+   108  1.7519e+02  5.9103e-02  1.3382e-01  2.9728e-02  1.6663e-02  9.9907e-01  5.2773e-01  0:18:29  392
+   109  1.6373e+02  4.8033e-02  1.1195e-01  2.7600e-02  1.8911e-02  1.0180e+00  5.3840e-01  0:18:26  391
+   110  1.8138e+02  4.9915e-02  1.4429e-01  2.9606e-02  1.9678e-02  9.7924e-01  5.0978e-01  0:18:24  390
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   111  1.7819e+02  5.2676e-02  1.1562e-01  2.7927e-02  1.9664e-02  1.0390e+00  5.4717e-01  0:18:21  389
+   112  1.9899e+02  5.3503e-02  1.3883e-01  3.0688e-02  2.6707e-02  1.0370e+00  5.4406e-01  0:18:21  388
+   113  1.8578e+02  4.1010e-02  1.1575e-01  2.7064e-02  1.6461e-02  9.6096e-01  5.0076e-01  0:18:18  387
+   114  2.1056e+02  5.3821e-02  1.3705e-01  3.3649e-02  2.7719e-02  1.1159e+00  5.7838e-01  0:18:17  386
+   115  1.9903e+02  5.4422e-02  1.1039e-01  2.7979e-02  1.7922e-02  9.6228e-01  5.0971e-01  0:18:16  385
+   116  2.1899e+02  5.1926e-02  1.3244e-01  2.9680e-02  1.7926e-02  1.0532e+00  5.5632e-01  0:18:13  384
+   117  1.9051e+02  4.6525e-02  1.1554e-01  2.9549e-02  2.2068e-02  9.9339e-01  5.1983e-01  0:18:09  383
+   118  2.3102e+02  5.7341e-02  1.5275e-01  3.6390e-02  2.7350e-02  9.7351e-01  5.1198e-01  0:18:04  382
+   119  2.0067e+02  4.8570e-02  1.1180e-01  2.7523e-02  2.2546e-02  1.0359e+00  5.5672e-01  0:18:04  381
+   120  2.5255e+02  6.0313e-02  1.4791e-01  3.3834e-02  3.6034e-02  1.1932e+00  6.5869e-01  0:18:04  380
+   121  2.1792e+02  4.0744e-02  1.1967e-01  2.8054e-02  2.0852e-02  9.8253e-01  5.1652e-01  0:18:02  379
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   122  2.5366e+02  5.3689e-02  1.4424e-01  3.3797e-02  3.2944e-02  1.1159e+00  5.8796e-01  0:17:59  378
+   123  2.2717e+02  5.7799e-02  1.0782e-01  2.9185e-02  2.1771e-02  9.6509e-01  5.0145e-01  0:17:58  377
+   124  2.6202e+02  5.5190e-02  1.2594e-01  3.1917e-02  2.2236e-02  1.0737e+00  5.5851e-01  0:17:56  376
+   125  2.2042e+02  6.2132e-02  1.1785e-01  3.2062e-02  2.2645e-02  9.9625e-01  5.1951e-01  0:17:53  375
+   126  2.5472e+02  5.4835e-02  1.4285e-01  3.4563e-02  2.9791e-02  9.9557e-01  5.1667e-01  0:17:51  374
+   127  2.3707e+02  5.8206e-02  1.2035e-01  2.9725e-02  2.2152e-02  1.0261e+00  5.3901e-01  0:17:49  373
+   128  2.8728e+02  5.7848e-02  1.2757e-01  3.3220e-02  3.5265e-02  1.0580e+00  5.6036e-01  0:17:46  372
+   129  2.5010e+02  4.7281e-02  1.2118e-01  2.8550e-02  2.0970e-02  9.9661e-01  5.3430e-01  0:17:44  371
+   130  2.7084e+02  5.0274e-02  1.4043e-01  3.1021e-02  3.1926e-02  1.1475e+00  5.9327e-01  0:17:44  370
+   131  2.5738e+02  5.2540e-02  1.2157e-01  2.9407e-02  2.0863e-02  9.9407e-01  5.1348e-01  0:17:41  369
+   132  2.9586e+02  5.8441e-02  1.3672e-01  3.3942e-02  4.9058e-02  1.0087e+00  5.2621e-01  0:17:37  368
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   133  2.7167e+02  4.8088e-02  1.4922e-01  3.0244e-02  2.1989e-02  9.6985e-01  5.1099e-01  0:17:34  367
+   134  3.0186e+02  5.2649e-02  1.3131e-01  3.1178e-02  4.2159e-02  1.0810e+00  5.5569e-01  0:17:31  366
+   135  2.8303e+02  5.0390e-02  1.1887e-01  2.8946e-02  3.6880e-02  1.0652e+00  5.6217e-01  0:17:29  365
+   136  3.2082e+02  5.6692e-02  1.2871e-01  2.9569e-02  4.1470e-02  1.0922e+00  5.9401e-01  0:17:26  364
+   137  3.2418e+02  4.6820e-02  1.4011e-01  3.0653e-02  2.7021e-02  1.0099e+00  5.2491e-01  0:17:22  363
+   138  3.1460e+02  5.1987e-02  1.0788e-01  2.6991e-02  3.5035e-02  1.0296e+00  5.3168e-01  0:17:18  362
+   139  3.1101e+02  5.8676e-02  1.4044e-01  3.2519e-02  2.3677e-02  1.0321e+00  5.4103e-01  0:17:14  361
+   140  3.2167e+02  5.7968e-02  1.1409e-01  3.1175e-02  2.1219e-02  9.8133e-01  5.1100e-01  0:17:10  360
+   141  3.1953e+02  5.4610e-02  1.2809e-01  3.0958e-02  5.8372e-02  9.7440e-01  5.1898e-01  0:17:14  359
+   142  3.3468e+02  5.0564e-02  1.4842e-01  2.9437e-02  4.1188e-02  1.0356e+00  5.4614e-01  0:17:11  358
+   143  3.0895e+02  5.8559e-02  1.1426e-01  2.9951e-02  2.6276e-02  1.0129e+00  5.2674e-01  0:17:07  357
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   144  3.4704e+02  5.9883e-02  1.2941e-01  2.9944e-02  3.7259e-02  1.1077e+00  5.8711e-01  0:17:02  356
+   145  3.4108e+02  5.1686e-02  1.3321e-01  2.8031e-02  5.6395e-02  9.7797e-01  5.0595e-01  0:16:58  355
+   146  3.4764e+02  6.0400e-02  1.5385e-01  3.1500e-02  3.2377e-02  1.1340e+00  5.7872e-01  0:16:54  354
+   147  3.3666e+02  5.5133e-02  1.4017e-01  3.3674e-02  2.6316e-02  1.0187e+00  5.3339e-01  0:16:54  353
+   148  3.5657e+02  6.2620e-02  1.3495e-01  3.2110e-02  2.6593e-02  9.9763e-01  5.1427e-01  0:16:50  352
+   149  3.3572e+02  4.9666e-02  1.4251e-01  2.9568e-02  2.3694e-02  1.0379e+00  5.4219e-01  0:16:46  351
+   150  3.3968e+02  6.2416e-02  1.3968e-01  3.2986e-02  3.0458e-02  1.0340e+00  5.3073e-01  0:16:42  350
+   151  3.2172e+02  5.5023e-02  1.2775e-01  3.1270e-02  2.7046e-02  1.0407e+00  5.4292e-01  0:16:39  349
+   152  3.6259e+02  7.3613e-02  1.3514e-01  3.5208e-02  2.8953e-02  1.0594e+00  5.5171e-01  0:16:36  348
+   153  3.4777e+02  5.0946e-02  1.3352e-01  3.0863e-02  2.8371e-02  9.9066e-01  5.1530e-01  0:16:33  347
+   154  3.6070e+02  6.1949e-02  1.4416e-01  3.2920e-02  4.5724e-02  1.0283e+00  5.3024e-01  0:16:31  346
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   155  3.4926e+02  6.1098e-02  1.4332e-01  3.1667e-02  2.6056e-02  1.0353e+00  5.3974e-01  0:16:26  345
+   156  3.7411e+02  5.8729e-02  1.3514e-01  3.1935e-02  3.8468e-02  1.0674e+00  5.4844e-01  0:16:22  344
+   157  3.7447e+02  5.6354e-02  1.4583e-01  3.2629e-02  4.1215e-02  9.9853e-01  5.1671e-01  0:16:19  343
+   158  3.8152e+02  5.5778e-02  1.5184e-01  3.0440e-02  3.3917e-02  1.0232e+00  5.3375e-01  0:16:16  342
+   159  3.6291e+02  5.9302e-02  1.2491e-01  2.9788e-02  2.6751e-02  1.0079e+00  5.2833e-01  0:16:11  341
+   160  3.9090e+02  5.3566e-02  1.3894e-01  3.3591e-02  3.5983e-02  1.0427e+00  5.4388e-01  0:16:08  340
+   161  3.8846e+02  4.6334e-02  1.4053e-01  3.2462e-02  2.5774e-02  9.9715e-01  5.2725e-01  0:16:04  339
+   162  3.7190e+02  6.5245e-02  1.2674e-01  3.4691e-02  2.3431e-02  1.0352e+00  5.3339e-01  0:15:58  338
+   163  3.8514e+02  5.6206e-02  1.2658e-01  3.2194e-02  2.5304e-02  1.0051e+00  5.2427e-01  0:15:55  337
+   164  4.1334e+02  6.0383e-02  1.4610e-01  3.4440e-02  2.7969e-02  9.9845e-01  5.2942e-01  0:15:50  336
+   165  3.9305e+02  4.5172e-02  1.1678e-01  2.9871e-02  2.8260e-02  1.0154e+00  5.3292e-01  0:15:45  335
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   166  3.8866e+02  6.5170e-02  1.2302e-01  3.3969e-02  3.0030e-02  1.0974e+00  5.9371e-01  0:15:40  334
+   167  4.1803e+02  6.1035e-02  1.1761e-01  3.0843e-02  3.1655e-02  1.0033e+00  5.2057e-01  0:15:37  333
+   168  4.1100e+02  5.8888e-02  1.3805e-01  3.1966e-02  3.5610e-02  1.0068e+00  5.3077e-01  0:15:33  332
+   169  4.2022e+02  5.1704e-02  1.4227e-01  3.1603e-02  3.0886e-02  1.0674e+00  5.6739e-01  0:15:29  331
+   170  4.0646e+02  5.7612e-02  1.1358e-01  2.9491e-02  2.4231e-02  1.0054e+00  5.2119e-01  0:15:26  330
+   171  4.4620e+02  6.5521e-02  1.3328e-01  3.3562e-02  2.7847e-02  1.0025e+00  5.2339e-01  0:15:23  329
+   172  4.0416e+02  5.3620e-02  1.4145e-01  3.1876e-02  4.7800e-02  1.0414e+00  5.3301e-01  0:15:20  328
+   173  4.7826e+02  5.2068e-02  1.3538e-01  3.2133e-02  3.6148e-02  1.0383e+00  5.4291e-01  0:15:18  327
+   174  4.2335e+02  6.5108e-02  1.1110e-01  3.1349e-02  4.1762e-02  1.1041e+00  5.8363e-01  0:15:15  326
+   175  4.8606e+02  6.3010e-02  1.2300e-01  3.1174e-02  3.5420e-02  1.0115e+00  5.2340e-01  0:15:13  325
+   176  4.2388e+02  5.4858e-02  1.3730e-01  3.2352e-02  2.4941e-02  9.8679e-01  5.0806e-01  0:14:47  324
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   177  4.8097e+02  7.6808e-02  1.4588e-01  3.5909e-02  3.6872e-02  1.1302e+00  5.7559e-01  0:14:51  323
+   178  4.2491e+02  6.5982e-02  1.2421e-01  3.2550e-02  8.5977e-02  9.8311e-01  5.0260e-01  0:14:53  322
+   179  5.0210e+02  5.3018e-02  1.8536e-01  3.4909e-02  5.6416e-02  1.1860e+00  6.0931e-01  0:14:55  321
+   180  4.2732e+02  5.6015e-02  1.3826e-01  3.3206e-02  4.3299e-02  9.9648e-01  5.0913e-01  0:14:57  320
+   181  5.0243e+02  5.2073e-02  1.6318e-01  3.5542e-02  4.0183e-02  1.0268e+00  5.3346e-01  0:14:56  319
+   182  4.2050e+02  6.0560e-02  1.4348e-01  3.6376e-02  2.2801e-02  9.8358e-01  5.0960e-01  0:14:56  318
+   183  4.9182e+02  5.7252e-02  1.5939e-01  3.7171e-02  3.6590e-02  1.1103e+00  5.5883e-01  0:15:14  317
+   184  4.2135e+02  5.1552e-02  1.5351e-01  3.7513e-02  2.5977e-02  9.9702e-01  5.1284e-01  0:15:08  316
+   185  4.7326e+02  6.4445e-02  1.6130e-01  3.7505e-02  3.4717e-02  1.1169e+00  5.7512e-01  0:14:38  315
+   186  4.3429e+02  6.7901e-02  1.1973e-01  3.1698e-02  2.7333e-02  1.0089e+00  5.1702e-01  0:14:39  314
+   187  4.6737e+02  5.9468e-02  1.6786e-01  3.7121e-02  3.1656e-02  1.1777e+00  5.9339e-01  0:14:39  313
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   188  4.2709e+02  6.0058e-02  1.3863e-01  3.3273e-02  3.3948e-02  1.0095e+00  5.2579e-01  0:14:38  312
+   189  4.9702e+02  5.1150e-02  1.5159e-01  3.2536e-02  3.6239e-02  1.0231e+00  5.2423e-01  0:14:41  311
+   190  4.5325e+02  6.4770e-02  1.3085e-01  3.3249e-02  2.6336e-02  1.0247e+00  5.2611e-01  0:14:40  310
+   191  4.8328e+02  6.4584e-02  1.5006e-01  3.5164e-02  2.7872e-02  1.0379e+00  5.3778e-01  0:14:36  309
+   192  4.3743e+02  5.7945e-02  1.3201e-01  3.3443e-02  3.4256e-02  1.0080e+00  5.2125e-01  0:14:33  308
+   193  4.8921e+02  5.4802e-02  1.5073e-01  3.3706e-02  2.9338e-02  1.0816e+00  5.5356e-01  0:14:30  307
+   194  4.4609e+02  5.4607e-02  1.1023e-01  2.8957e-02  2.2286e-02  1.0268e+00  5.3474e-01  0:14:26  306
+   195  5.2064e+02  5.8360e-02  1.5344e-01  3.5502e-02  3.7552e-02  1.0294e+00  5.3745e-01  0:14:24  305
+   196  4.6655e+02  4.4976e-02  1.2962e-01  3.1185e-02  2.1376e-02  9.8778e-01  5.1205e-01  0:14:21  304
+   197  4.8740e+02  5.4995e-02  1.2687e-01  3.2622e-02  3.7227e-02  1.1366e+00  5.7387e-01  0:13:56  303
+   198  4.6522e+02  6.0581e-02  1.2960e-01  3.1848e-02  2.8717e-02  1.0290e+00  5.3311e-01  0:13:36  302
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   199  5.2225e+02  6.4625e-02  1.4432e-01  3.6786e-02  3.2168e-02  1.0472e+00  5.4000e-01  0:13:44  301
+   200  4.7483e+02  5.4007e-02  1.3424e-01  3.3168e-02  2.5448e-02  1.0519e+00  5.5080e-01  0:13:26  300
+   201  5.0977e+02  6.1889e-02  1.3891e-01  3.3806e-02  6.8569e-02  1.0313e+00  5.3446e-01  0:13:37  299
+   202  5.2308e+02  5.7397e-02  1.5575e-01  3.4022e-02  3.5981e-02  1.0103e+00  5.2150e-01  0:13:43  298
+   203  5.0024e+02  5.2328e-02  1.4798e-01  3.1070e-02  3.4102e-02  1.1128e+00  5.7304e-01  0:13:47  297
+   204  5.4758e+02  5.6846e-02  1.3952e-01  3.2243e-02  3.2689e-02  1.0423e+00  5.4309e-01  0:13:50  296
+   205  5.3716e+02  5.7936e-02  1.1484e-01  3.0287e-02  3.5435e-02  1.0264e+00  5.3529e-01  0:13:28  295
+   206  5.4717e+02  7.2121e-02  1.1992e-01  3.2009e-02  3.6978e-02  1.0329e+00  5.3628e-01  0:13:09  294
+   207  5.4010e+02  6.3543e-02  1.3315e-01  3.5522e-02  2.4752e-02  1.0053e+00  5.1286e-01  0:13:16  293
+   208  5.5532e+02  5.2444e-02  1.2945e-01  3.3537e-02  3.4645e-02  1.1230e+00  5.7250e-01  0:12:57  292
+   209  5.6223e+02  5.9490e-02  1.3095e-01  3.3321e-02  3.1861e-02  1.0158e+00  5.1896e-01  0:13:04  291
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   210  5.7809e+02  6.0687e-02  1.2008e-01  3.0849e-02  3.3044e-02  1.0755e+00  5.5752e-01  0:12:46  290
+   211  5.4323e+02  5.2382e-02  1.4307e-01  3.3653e-02  2.7391e-02  1.0441e+00  5.4220e-01  0:12:57  289
+   212  5.9859e+02  5.5130e-02  1.3419e-01  3.3939e-02  1.0650e-01  1.0306e+00  5.4040e-01  0:13:04  288
+   213  6.0952e+02  5.3498e-02  1.3737e-01  3.0046e-02  3.6132e-02  1.0224e+00  5.2846e-01  0:12:46  287
+   214  6.4513e+02  5.6718e-02  1.2208e-01  2.9610e-02  3.0670e-02  1.0598e+00  5.4855e-01  0:12:55  286
+   215  5.9726e+02  5.3431e-02  1.2567e-01  3.2484e-02  3.4806e-02  1.0158e+00  5.2119e-01  0:13:00  285
+   216  6.6202e+02  4.6811e-02  1.2225e-01  2.8873e-02  4.9030e-02  1.1003e+00  5.7078e-01  0:12:44  284
+   217  6.8513e+02  6.1257e-02  1.0811e-01  3.1415e-02  2.9447e-02  1.0058e+00  5.1197e-01  0:12:52  283
+   218  7.0740e+02  4.3990e-02  1.1464e-01  3.0319e-02  4.4360e-02  1.0611e+00  5.3794e-01  0:12:37  282
+   219  6.4817e+02  5.4654e-02  1.2796e-01  3.0020e-02  4.8624e-02  1.0115e+00  5.1859e-01  0:12:22  281
+   220  7.4274e+02  5.3473e-02  1.3788e-01  3.3356e-02  4.0203e-02  1.0998e+00  5.6028e-01  0:12:09  280
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   221  7.0520e+02  4.9239e-02  1.1172e-01  2.8340e-02  3.2806e-02  1.0194e+00  5.2416e-01  0:11:56  279
+   222  7.5644e+02  5.3749e-02  1.1274e-01  2.9671e-02  3.4355e-02  1.1176e+00  5.7642e-01  0:11:46  278
+   223  7.0550e+02  4.8976e-02  1.1984e-01  2.9818e-02  3.0022e-02  1.0018e+00  5.1264e-01  0:11:42  277
+   224  7.9827e+02  4.4340e-02  1.2666e-01  3.1430e-02  3.1984e-02  1.0700e+00  5.5093e-01  0:11:37  276
+   225  7.0977e+02  5.7008e-02  1.0261e-01  2.9004e-02  2.6414e-02  1.0254e+00  5.3026e-01  0:11:33  275
+   226  8.2685e+02  5.3610e-02  1.2707e-01  3.2834e-02  3.8254e-02  1.0438e+00  5.3446e-01  0:11:34  274
+   227  7.4626e+02  4.5165e-02  1.2331e-01  2.9732e-02  3.0509e-02  1.0290e+00  5.2941e-01  0:11:29  273
+   228  8.9912e+02  5.0137e-02  1.3835e-01  3.4676e-02  2.8285e-02  1.0683e+00  5.4779e-01  0:11:46  272
+   229  7.7683e+02  5.5132e-02  9.1454e-02  3.0980e-02  3.0470e-02  1.0108e+00  5.1650e-01  0:11:35  271
+   230  9.5137e+02  5.5907e-02  1.3450e-01  3.3709e-02  3.8799e-02  1.0639e+00  5.4073e-01  0:11:46  270
+   231  8.0232e+02  4.5299e-02  1.0958e-01  2.9795e-02  3.0878e-02  1.0425e+00  5.4059e-01  0:11:34  269
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   232  1.0079e+03  4.8345e-02  1.3275e-01  3.4008e-02  4.1270e-02  1.0709e+00  5.5807e-01  0:11:27  268
+   233  9.0734e+02  6.4622e-02  8.9734e-02  3.0968e-02  2.9082e-02  1.0052e+00  5.1631e-01  0:11:16  267
+   234  1.0035e+03  5.2523e-02  1.2088e-01  3.3875e-02  3.5152e-02  1.1454e+00  5.9815e-01  0:11:11  266
+   235  9.5756e+02  5.0044e-02  1.0939e-01  3.2029e-02  3.2670e-02  1.0163e+00  5.1748e-01  0:11:26  265
+   236  1.0988e+03  4.5736e-02  1.2172e-01  3.2380e-02  3.5033e-02  1.0563e+00  5.3402e-01  0:11:19  264
+   237  1.0532e+03  5.7812e-02  9.8816e-02  3.1006e-02  2.7250e-02  1.0349e+00  5.3537e-01  0:11:13  263
+   238  1.2207e+03  4.6520e-02  1.1806e-01  3.1928e-02  4.2278e-02  1.0493e+00  5.4192e-01  0:11:06  262
+   239  1.0674e+03  4.2532e-02  1.0537e-01  2.9471e-02  2.5768e-02  1.0350e+00  5.3427e-01  0:10:59  261
+   240  1.3472e+03  4.9133e-02  1.1930e-01  3.7675e-02  4.7931e-02  1.0830e+00  5.6010e-01  0:10:52  260
+   241  1.2523e+03  6.8271e-02  7.2005e-02  2.9470e-02  3.3565e-02  1.0005e+00  5.1407e-01  0:10:47  259
+   242  1.4582e+03  4.5292e-02  1.0120e-01  3.0133e-02  3.9103e-02  1.0996e+00  5.5492e-01  0:10:43  258
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   243  1.3302e+03  3.3401e-02  9.4142e-02  2.8107e-02  2.8824e-02  9.9831e-01  5.1427e-01  0:10:40  257
+   244  1.5486e+03  3.6176e-02  9.8668e-02  3.4419e-02  3.1461e-02  1.0615e+00  5.5015e-01  0:10:40  256
+   245  1.5415e+03  4.5312e-02  7.0181e-02  3.0001e-02  3.2610e-02  9.8112e-01  5.0398e-01  0:10:33  255
+   246  1.8206e+03  3.4776e-02  8.5570e-02  3.0844e-02  3.3896e-02  1.0054e+00  5.2699e-01  0:10:30  254
+   247  1.8530e+03  2.9771e-02  7.6328e-02  2.9770e-02  2.4913e-02  9.2333e-01  4.8377e-01  0:10:26  253
+   248  2.2139e+03  2.6213e-02  6.5839e-02  2.9547e-02  3.0000e-02  1.0010e+00  5.3720e-01  0:10:22  252
+   249  2.5145e+03  2.9075e-02  5.3503e-02  2.8812e-02  2.1137e-02  8.7353e-01  4.6454e-01  0:10:19  251
+   250  3.2371e+03  2.1213e-02  4.5549e-02  2.9038e-02  2.3424e-02  8.7803e-01  5.0746e-01  0:10:18  250
+   251  3.9624e+03  1.8833e-02  3.8422e-02  2.6043e-02  1.7217e-02  7.7506e-01  4.2021e-01  0:10:17  249
+   252  5.3572e+03  1.4204e-02  2.8626e-02  2.4746e-02  1.5883e-02  7.0836e-01  4.4505e-01  0:10:17  248
+   253  7.2464e+03  1.1612e-02  2.0832e-02  2.0926e-02  1.0843e-02  7.4376e-01  4.4469e-01  0:10:14  247
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   254  9.3931e+03  9.7909e-03  1.9448e-02  2.0589e-02  9.7288e-03  6.5890e-01  3.6432e-01  0:10:12  246
+   255  1.2591e+04  9.8463e-03  1.6514e-02  2.0746e-02  1.0252e-02  4.8061e-01  3.3904e-01  0:10:08  245
+   256  1.7328e+04  9.6135e-03  1.5089e-02  2.2114e-02  1.0430e-02  4.2298e-01  3.3188e-01  0:10:04  244
+   257  2.3925e+04  9.2921e-03  1.5356e-02  2.2980e-02  1.0213e-02  4.5247e-01  3.2671e-01  0:10:00  243
+   258  3.2677e+04  9.8757e-03  1.7153e-02  2.4446e-02  1.0628e-02  4.4423e-01  3.0219e-01  0:09:59  242
+   259  4.4659e+04  1.1317e-02  1.8070e-02  2.7190e-02  1.0793e-02  4.6181e-01  3.1071e-01  0:09:59  241
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 24 cells 
+   260  6.0699e+04  1.4063e-02  1.9717e-02  3.2257e-02  1.1051e-02  4.5806e-01  2.9159e-01  0:09:59  240
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 438 cells 
+   261  8.3710e+04  1.7855e-02  2.3630e-02  4.2332e-02  1.6768e-02  4.4749e-01  2.6858e-01  0:09:59  239
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 1327 cells 
+   262  1.2394e+05  1.7273e-02  2.2545e-02  4.1612e-02  1.5155e-02  5.8743e-01  5.5602e-01  0:09:56  238
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 2208 cells 
+   263  1.5999e+05  1.8630e-02  2.9520e-02  3.7970e-02  1.1316e-02  6.8464e-01  2.9178e-01  0:09:52  237
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 3455 cells 
+   264  2.0818e+05  1.5722e-02  2.2686e-02  3.3571e-02  9.9021e-03  6.4459e-01  3.3438e-01  0:09:48  236
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 9334 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   265  2.7984e+05  1.3810e-02  1.6835e-02  2.9398e-02  1.1115e-02  6.2009e-01  3.7570e-01  0:09:44  235
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 22773 cells 
+   266  3.5448e+05  1.3598e-02  1.5956e-02  2.5990e-02  1.0863e-02  6.7858e-01  3.9211e-01  0:09:42  234
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 41066 cells 
+   267  4.3175e+05  1.3328e-02  1.7289e-02  2.2484e-02  1.1965e-02  6.2425e-01  3.7039e-01  0:09:40  233
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 69226 cells 
+   268  5.2636e+05  1.3221e-02  1.8816e-02  2.0754e-02  1.2628e-02  7.7503e-01  4.0744e-01  0:09:39  232
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 97001 cells 
+   269  6.4875e+05  1.3931e-02  1.9367e-02  2.2396e-02  1.2763e-02  6.7239e-01  3.8407e-01  0:09:38  231
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 127038 cells 
+   270  8.1546e+05  1.5678e-02  1.9143e-02  2.6646e-02  1.3852e-02  9.0341e-01  4.7038e-01  0:09:35  230
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 158406 cells 
+   271  1.0617e+06  1.6607e-02  1.9908e-02  3.0343e-02  1.2910e-02  7.9776e-01  4.2283e-01  0:09:32  229
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 188097 cells 
+   272  1.3967e+06  1.5825e-02  1.9861e-02  3.0736e-02  1.2788e-02  7.2303e-01  3.8360e-01  0:09:29  228
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 219828 cells 
+   273  1.8502e+06  1.4823e-02  1.9313e-02  2.8452e-02  1.1544e-02  7.3020e-01  3.6305e-01  0:09:26  227
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 243158 cells 
+   274  2.4210e+06  1.3915e-02  1.6765e-02  2.4694e-02  1.1033e-02  6.5775e-01  3.3211e-01  0:09:23  226
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 249722 cells 
+   275  3.1760e+06  1.2404e-02  1.4986e-02  2.1839e-02  1.0840e-02  7.2895e-01  3.5527e-01  0:09:21  225
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 248992 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   276  4.0218e+06  1.1397e-02  1.4602e-02  1.9028e-02  1.1853e-02  7.8645e-01  4.0719e-01  0:09:20  224
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 245724 cells 
+   277  5.0529e+06  1.1144e-02  1.6017e-02  1.9051e-02  1.2440e-02  7.5633e-01  3.8198e-01  0:09:18  223
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 242975 cells 
+   278  6.4397e+06  1.1330e-02  1.7698e-02  2.0472e-02  1.2978e-02  7.7809e-01  4.0545e-01  0:09:16  222
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 245073 cells 
+   279  8.3770e+06  1.2678e-02  1.8816e-02  2.5073e-02  1.5031e-02  8.2927e-01  4.3682e-01  0:09:13  221
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 251151 cells 
+   280  1.1099e+07  1.3819e-02  2.1587e-02  3.0589e-02  1.6584e-02  7.3628e-01  4.1815e-01  0:09:09  220
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 261337 cells 
+   281  1.4840e+07  1.6206e-02  2.5981e-02  3.6811e-02  1.7322e-02  6.9994e-01  3.9344e-01  0:09:06  219
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 272856 cells 
+   282  1.9962e+07  1.7054e-02  2.7977e-02  3.9326e-02  1.6509e-02  6.1179e-01  3.5739e-01  0:09:04  218
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 287184 cells 
+   283  2.4957e+07  1.5105e-02  2.4075e-02  3.4737e-02  1.6042e-02  7.4025e-01  3.9173e-01  0:09:01  217
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 293815 cells 
+   284  2.8596e+07  1.3303e-02  2.0706e-02  2.8452e-02  1.6907e-02  8.6341e-01  4.3110e-01  0:09:00  216
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 290161 cells 
+   285  3.4904e+07  1.2850e-02  1.9452e-02  2.4310e-02  1.6309e-02  9.0483e-01  4.1635e-01  0:08:57  215
+
+ absolute pressure limited to 5.000000e+10 in 1 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 282877 cells 
+   286  4.2432e+07  1.2052e-02  1.8123e-02  2.2639e-02  1.6496e-02  8.7422e-01  4.1448e-01  0:08:55  214
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 277309 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   287  5.3391e+07  1.2640e-02  1.9677e-02  2.3724e-02  1.9457e-02  8.8353e-01  4.2415e-01  0:08:53  213
+
+ absolute pressure limited to 5.000000e+10 in 10 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 277153 cells 
+   288  6.6673e+07  1.3707e-02  2.1915e-02  2.6842e-02  1.9786e-02  8.8588e-01  4.2010e-01  0:08:50  212
+
+ absolute pressure limited to 5.000000e+10 in 55 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 286104 cells 
+   289  8.6634e+07  1.5621e-02  2.4346e-02  3.2516e-02  1.9773e-02  8.1761e-01  4.0974e-01  0:08:47  211
+
+ absolute pressure limited to 5.000000e+10 in 189 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 301800 cells 
+   290  1.1412e+08  1.6425e-02  2.8270e-02  3.8745e-02  2.1215e-02  8.3303e-01  4.2157e-01  0:08:44  210
+
+ absolute pressure limited to 5.000000e+10 in 369 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 321046 cells 
+   291  1.4489e+08  1.6960e-02  2.9102e-02  4.1999e-02  2.0755e-02  8.8413e-01  4.3123e-01  0:08:42  209
+
+ absolute pressure limited to 5.000000e+10 in 23070 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 332317 cells 
+   292  1.6666e+08  1.5130e-02  2.6340e-02  3.9434e-02  1.9702e-02  8.5704e-01  4.0164e-01  0:08:40  208
+
+ absolute pressure limited to 5.000000e+10 in 70029 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 327934 cells 
+   293  1.6467e+08  1.2978e-02  2.3515e-02  3.2531e-02  2.1516e-02  9.4016e-01  4.4088e-01  0:08:37  207
+
+ absolute pressure limited to 5.000000e+10 in 121083 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 318903 cells 
+   294  1.6220e+08  1.2732e-02  2.2893e-02  2.7767e-02  2.1912e-02  9.4080e-01  4.4554e-01  0:08:34  206
+
+ absolute pressure limited to 5.000000e+10 in 171530 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 309666 cells 
+   295  1.7492e+08  1.3252e-02  2.2532e-02  2.6683e-02  2.3909e-02  9.8418e-01  4.8271e-01  0:08:32  205
+
+ absolute pressure limited to 5.000000e+10 in 225838 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 304062 cells 
+   296  1.9060e+08  1.3191e-02  2.5839e-02  2.8809e-02  2.7965e-02  9.6119e-01  4.7202e-01  0:08:29  204
+
+ absolute pressure limited to 5.000000e+10 in 313563 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 303013 cells 
+   297  1.9087e+08  1.4932e-02  2.8951e-02  3.1916e-02  2.6546e-02  8.9806e-01  4.4160e-01  0:08:28  203
+
+ absolute pressure limited to 5.000000e+10 in 360106 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 309013 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   298  1.8322e+08  1.5623e-02  3.0856e-02  3.5190e-02  2.5502e-02  9.6767e-01  4.7132e-01  0:08:25  202
+
+ absolute pressure limited to 5.000000e+10 in 384573 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 320058 cells 
+   299  1.6897e+08  1.6237e-02  3.6233e-02  3.7699e-02  2.6159e-02  9.3288e-01  4.5993e-01  0:08:23  201
+
+ absolute pressure limited to 5.000000e+10 in 396475 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 327945 cells 
+   300  1.3665e+08  1.6742e-02  3.8923e-02  3.8399e-02  2.2675e-02  9.2589e-01  4.5490e-01  0:08:21  200
+
+ absolute pressure limited to 5.000000e+10 in 388319 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 324812 cells 
+   301  1.2162e+08  1.9047e-02  4.1196e-02  4.0387e-02  3.6363e-02  9.6962e-01  4.7940e-01  0:08:18  199
+
+ absolute pressure limited to 5.000000e+10 in 415699 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 311896 cells 
+   302  1.3143e+08  2.3576e-02  5.2688e-02  4.0002e-02  3.8150e-02  1.0051e+00  5.0164e-01  0:08:14  198
+
+ absolute pressure limited to 5.000000e+10 in 409825 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 300417 cells 
+   303  1.4628e+08  2.5781e-02  5.4801e-02  4.4567e-02  4.8464e-02  1.0020e+00  5.0011e-01  0:08:11  197
+
+ absolute pressure limited to 5.000000e+10 in 420701 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 291235 cells 
+   304  1.5721e+08  2.5809e-02  6.5251e-02  4.3294e-02  4.1156e-02  1.0030e+00  5.0032e-01  0:08:10  196
+
+ absolute pressure limited to 5.000000e+10 in 421019 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 280408 cells 
+   305  1.7153e+08  2.7303e-02  6.5565e-02  4.5923e-02  3.8354e-02  1.0135e+00  5.0174e-01  0:08:08  195
+
+ absolute pressure limited to 5.000000e+10 in 421099 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 276690 cells 
+   306  1.9517e+08  2.7552e-02  6.4122e-02  5.6693e-02  3.7975e-02  1.0063e+00  5.0213e-01  0:08:07  194
+
+ absolute pressure limited to 5.000000e+10 in 421192 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 274305 cells 
+   307  2.1324e+08  3.0138e-02  6.0491e-02  6.1869e-02  3.6403e-02  1.0026e+00  4.9885e-01  0:08:07  193
+
+ absolute pressure limited to 5.000000e+10 in 421244 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 279751 cells 
+   308  2.4583e+08  3.0690e-02  6.5084e-02  6.8119e-02  3.4608e-02  1.0016e+00  4.9776e-01  0:08:04  192
+
+ absolute pressure limited to 5.000000e+10 in 421237 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 288500 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   309  2.7197e+08  2.6321e-02  6.2140e-02  7.0222e-02  3.3240e-02  1.0011e+00  4.9994e-01  0:08:02  191
+
+ absolute pressure limited to 5.000000e+10 in 421228 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 293921 cells 
+   310  2.8669e+08  2.5640e-02  5.9946e-02  7.1259e-02  2.9696e-02  9.9908e-01  4.9785e-01  0:07:59  190
+
+ absolute pressure limited to 5.000000e+10 in 421236 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 298244 cells 
+   311  3.1354e+08  2.6799e-02  5.9658e-02  7.4308e-02  3.0273e-02  9.9705e-01  4.9589e-01  0:07:55  189
+
+ absolute pressure limited to 5.000000e+10 in 421232 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 299995 cells 
+   312  3.3434e+08  2.5084e-02  5.8755e-02  7.5756e-02  3.4257e-02  1.0028e+00  4.9742e-01  0:08:05  188
+
+ absolute pressure limited to 5.000000e+10 in 421184 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 300068 cells 
+   313  2.8598e+08  2.5106e-02  6.5797e-02  7.9606e-02  3.7431e-02  9.9170e-01  4.9261e-01  0:08:12  187
+
+ absolute pressure limited to 5.000000e+10 in 421148 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 297687 cells 
+   314  2.4257e+08  3.0716e-02  6.9235e-02  8.4043e-02  4.0223e-02  9.9774e-01  4.9817e-01  0:08:18  186
+
+ absolute pressure limited to 5.000000e+10 in 421138 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 299370 cells 
+   315  2.2325e+08  3.3308e-02  6.6209e-02  8.8938e-02  4.0619e-02  1.0069e+00  5.0351e-01  0:08:22  185
+
+ absolute pressure limited to 5.000000e+10 in 421127 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 288519 cells 
+   316  2.3452e+08  3.3943e-02  7.2426e-02  7.5497e-02  4.4958e-02  1.0076e+00  5.0404e-01  0:08:25  184
+
+ absolute pressure limited to 5.000000e+10 in 421118 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 287415 cells 
+   317  2.4416e+08  3.2033e-02  7.0762e-02  7.0634e-02  4.1408e-02  1.0018e+00  5.0064e-01  0:08:11  183
+
+ absolute pressure limited to 5.000000e+10 in 421162 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 290267 cells 
+   318  2.7799e+08  3.1396e-02  6.4906e-02  6.2943e-02  3.8203e-02  1.0022e+00  5.0016e-01  0:08:15  182
+
+ absolute pressure limited to 5.000000e+10 in 421148 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 288813 cells 
+   319  2.8442e+08  2.9075e-02  7.0486e-02  6.3735e-02  4.0374e-02  1.0031e+00  4.9958e-01  0:08:16  181
+
+ absolute pressure limited to 5.000000e+10 in 421124 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 292613 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   320  2.8401e+08  2.9810e-02  6.6417e-02  6.6609e-02  3.6830e-02  1.0118e+00  5.0235e-01  0:08:18  180
+
+ absolute pressure limited to 5.000000e+10 in 421122 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 295142 cells 
+   321  2.8006e+08  3.0272e-02  6.5212e-02  6.7480e-02  4.0256e-02  1.0083e+00  5.0016e-01  0:08:19  179
+
+ absolute pressure limited to 5.000000e+10 in 421125 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 292712 cells 
+   322  2.8923e+08  3.0521e-02  6.9607e-02  6.1811e-02  4.2038e-02  1.0043e+00  5.0134e-01  0:08:20  178
+
+ absolute pressure limited to 5.000000e+10 in 421099 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 302861 cells 
+   323  2.9494e+08  3.0996e-02  7.2048e-02  6.2795e-02  4.1988e-02  1.0106e+00  5.0402e-01  0:08:21  177
+
+ absolute pressure limited to 5.000000e+10 in 421107 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 310368 cells 
+   324  2.9238e+08  3.0261e-02  6.5768e-02  6.3124e-02  4.3787e-02  1.0067e+00  5.0263e-01  0:08:20  176
+
+ absolute pressure limited to 5.000000e+10 in 421109 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 294956 cells 
+   325  3.1659e+08  3.1115e-02  7.0276e-02  6.2616e-02  4.4047e-02  1.0027e+00  5.0175e-01  0:08:18  175
+
+ absolute pressure limited to 5.000000e+10 in 421097 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 298597 cells 
+   326  3.2890e+08  2.9889e-02  6.6744e-02  6.1233e-02  4.2484e-02  1.0063e+00  5.0212e-01  0:08:15  174
+
+ absolute pressure limited to 5.000000e+10 in 421111 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 304812 cells 
+   327  3.3799e+08  2.9838e-02  6.9067e-02  5.7524e-02  4.2306e-02  1.0117e+00  5.0434e-01  0:08:13  173
+
+ absolute pressure limited to 5.000000e+10 in 421139 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 303414 cells 
+   328  3.6726e+08  2.9136e-02  6.9289e-02  5.7784e-02  4.1289e-02  1.0075e+00  5.0189e-01  0:08:10  172
+
+ absolute pressure limited to 5.000000e+10 in 421091 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 304205 cells 
+   329  3.7742e+08  2.6719e-02  6.4132e-02  5.9472e-02  4.2560e-02  1.0031e+00  4.9984e-01  0:08:08  171
+
+ absolute pressure limited to 5.000000e+10 in 421100 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 313399 cells 
+   330  3.8029e+08  2.7181e-02  6.2552e-02  5.9243e-02  4.5517e-02  1.0088e+00  5.0145e-01  0:08:06  170
+
+ absolute pressure limited to 5.000000e+10 in 421116 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 321731 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   331  4.1570e+08  2.8949e-02  7.0026e-02  6.0001e-02  4.1834e-02  1.0003e+00  5.0012e-01  0:08:04  169
+
+ absolute pressure limited to 5.000000e+10 in 421086 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 339116 cells 
+   332  4.3447e+08  2.7927e-02  6.7381e-02  6.1045e-02  4.1947e-02  1.0016e+00  5.0021e-01  0:08:01  168
+
+ absolute pressure limited to 5.000000e+10 in 421105 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 347638 cells 
+   333  4.4319e+08  2.5986e-02  6.4533e-02  5.7822e-02  4.4603e-02  1.0055e+00  5.0029e-01  0:07:56  167
+
+ absolute pressure limited to 5.000000e+10 in 421100 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 352846 cells 
+   334  4.7153e+08  2.8681e-02  7.1490e-02  5.8116e-02  4.4499e-02  1.0179e+00  5.0128e-01  0:07:54  166
+
+ absolute pressure limited to 5.000000e+10 in 421104 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 345828 cells 
+   335  4.9426e+08  2.9092e-02  7.4021e-02  5.6978e-02  4.4955e-02  1.0141e+00  5.0208e-01  0:07:52  165
+
+ absolute pressure limited to 5.000000e+10 in 421067 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 352496 cells 
+   336  4.8629e+08  2.7116e-02  6.5930e-02  5.5645e-02  4.6493e-02  1.0060e+00  5.0258e-01  0:07:50  164
+
+ absolute pressure limited to 5.000000e+10 in 421110 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 353917 cells 
+   337  5.3674e+08  2.6781e-02  6.7467e-02  5.5573e-02  4.8415e-02  1.0065e+00  5.0280e-01  0:07:47  163
+
+ absolute pressure limited to 5.000000e+10 in 421091 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 367778 cells 
+   338  5.7158e+08  2.6308e-02  6.6252e-02  5.6467e-02  4.2405e-02  1.0011e+00  5.0038e-01  0:07:43  162
+
+ absolute pressure limited to 5.000000e+10 in 421093 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 366325 cells 
+   339  5.4426e+08  2.4210e-02  5.8434e-02  5.2237e-02  4.4840e-02  9.9975e-01  4.9934e-01  0:07:44  161
+
+ absolute pressure limited to 5.000000e+10 in 421110 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 372472 cells 
+   340  6.0097e+08  2.4977e-02  6.3981e-02  5.3632e-02  4.5469e-02  1.0015e+00  4.9955e-01  0:07:42  160
+
+ absolute pressure limited to 5.000000e+10 in 421099 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 383959 cells 
+   341  6.4113e+08  2.4747e-02  6.6382e-02  5.7842e-02  4.4516e-02  1.0136e+00  5.0165e-01  0:07:40  159
+
+ absolute pressure limited to 5.000000e+10 in 421091 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 387382 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   342  6.4439e+08  2.4266e-02  6.1795e-02  5.4780e-02  4.5540e-02  1.0022e+00  4.9945e-01  0:07:36  158
+
+ absolute pressure limited to 5.000000e+10 in 421087 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 392344 cells 
+   343  6.5771e+08  2.4502e-02  6.3887e-02  5.4944e-02  4.4746e-02  1.0085e+00  5.0167e-01  0:07:33  157
+
+ absolute pressure limited to 5.000000e+10 in 421101 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 393714 cells 
+   344  7.2535e+08  2.4498e-02  6.7329e-02  5.2040e-02  4.2957e-02  1.0031e+00  5.0037e-01  0:07:29  156
+
+ absolute pressure limited to 5.000000e+10 in 421086 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 398972 cells 
+   345  7.5046e+08  2.3925e-02  6.6747e-02  4.9678e-02  4.4955e-02  1.0031e+00  4.9945e-01  0:07:25  155
+
+ absolute pressure limited to 5.000000e+10 in 421094 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 398345 cells 
+   346  7.7760e+08  2.3997e-02  6.5565e-02  5.0226e-02  4.7225e-02  1.0029e+00  5.0134e-01  0:07:22  154
+
+ absolute pressure limited to 5.000000e+10 in 421096 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 398649 cells 
+   347  8.1286e+08  2.4137e-02  6.7183e-02  4.9576e-02  4.7105e-02  1.0002e+00  4.9978e-01  0:07:26  153
+
+ absolute pressure limited to 5.000000e+10 in 421096 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 403179 cells 
+   348  8.6021e+08  2.5422e-02  6.9272e-02  5.1080e-02  6.4145e-02  1.0013e+00  4.9982e-01  0:07:11  152
+
+ absolute pressure limited to 5.000000e+10 in 421197 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 406734 cells 
+   349  1.1753e+09  2.2609e-02  5.7285e-02  4.7337e-02  5.1995e-02  9.9993e-01  4.9983e-01  0:06:57  151
+
+ absolute pressure limited to 5.000000e+10 in 421226 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 406246 cells 
+   350  1.5379e+09  1.9008e-02  5.6349e-02  5.4282e-02  4.2031e-02  9.9789e-01  4.9871e-01  0:06:46  150
+
+ absolute pressure limited to 5.000000e+10 in 421236 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 406274 cells 
+   351  1.7227e+09  1.7638e-02  5.5860e-02  4.9657e-02  3.4141e-02  9.8942e-01  4.9681e-01  0:06:38  149
+
+ absolute pressure limited to 5.000000e+10 in 421220 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 405899 cells 
+   352  1.6844e+09  1.6582e-02  5.5318e-02  4.8880e-02  3.1341e-02  9.9365e-01  4.9602e-01  0:06:32  148
+
+ absolute pressure limited to 5.000000e+10 in 421216 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 407135 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   353  1.7092e+09  1.6942e-02  5.2804e-02  5.1092e-02  2.9228e-02  9.7838e-01  4.9227e-01  0:06:25  147
+
+ absolute pressure limited to 5.000000e+10 in 421201 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 410299 cells 
+   354  1.7515e+09  1.5710e-02  4.7563e-02  5.4857e-02  2.8822e-02  9.4047e-01  4.8410e-01  0:06:19  146
+
+ absolute pressure limited to 5.000000e+10 in 421193 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414091 cells 
+   355  1.8030e+09  1.5780e-02  4.5599e-02  5.8727e-02  3.1056e-02  9.4383e-01  4.7827e-01  0:06:12  145
+
+ absolute pressure limited to 5.000000e+10 in 421210 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416146 cells 
+   356  2.0057e+09  1.6221e-02  4.6485e-02  6.6465e-02  2.9958e-02  9.6160e-01  4.7427e-01  0:06:06  144
+
+ absolute pressure limited to 5.000000e+10 in 421210 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416802 cells 
+   357  2.3167e+09  1.6121e-02  4.6688e-02  6.3578e-02  2.9988e-02  9.9334e-01  4.9222e-01  0:06:01  143
+
+ absolute pressure limited to 5.000000e+10 in 421207 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417169 cells 
+   358  2.4527e+09  1.5148e-02  4.8616e-02  6.1371e-02  2.9330e-02  9.8717e-01  4.8985e-01  0:05:57  142
+
+ absolute pressure limited to 5.000000e+10 in 421220 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417194 cells 
+   359  2.6537e+09  1.5260e-02  4.8083e-02  6.1298e-02  2.6957e-02  9.7353e-01  4.8408e-01  0:05:53  141
+
+ absolute pressure limited to 5.000000e+10 in 421203 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417349 cells 
+   360  2.7774e+09  1.4547e-02  4.6056e-02  6.0399e-02  2.8721e-02  9.9414e-01  4.9483e-01  0:05:51  140
+
+ absolute pressure limited to 5.000000e+10 in 421219 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417327 cells 
+   361  2.9245e+09  1.4690e-02  4.5732e-02  6.1807e-02  3.1376e-02  9.9567e-01  4.9631e-01  0:05:49  139
+
+ absolute pressure limited to 5.000000e+10 in 421219 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417453 cells 
+   362  3.3742e+09  1.4894e-02  4.5447e-02  5.9059e-02  3.3751e-02  9.9623e-01  4.9711e-01  0:05:45  138
+
+ absolute pressure limited to 5.000000e+10 in 421209 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417345 cells 
+   363  3.4777e+09  1.4338e-02  4.4569e-02  5.9164e-02  3.2727e-02  9.9408e-01  4.9555e-01  0:05:43  137
+
+ absolute pressure limited to 5.000000e+10 in 421193 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417419 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   364  3.5128e+09  1.3952e-02  4.5552e-02  5.7306e-02  4.0451e-02  9.8401e-01  4.9128e-01  0:05:40  136
+
+ absolute pressure limited to 5.000000e+10 in 421198 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417395 cells 
+   365  3.8637e+09  1.4677e-02  4.7586e-02  5.5737e-02  4.1025e-02  9.5822e-01  4.8332e-01  0:05:36  135
+
+ absolute pressure limited to 5.000000e+10 in 421213 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417388 cells 
+   366  4.2701e+09  1.5332e-02  4.8434e-02  5.5400e-02  3.6998e-02  9.9089e-01  4.9104e-01  0:05:32  134
+
+ absolute pressure limited to 5.000000e+10 in 421208 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417409 cells 
+   367  4.4853e+09  1.5327e-02  4.8091e-02  5.4874e-02  3.3866e-02  9.9318e-01  4.9317e-01  0:05:30  133
+
+ absolute pressure limited to 5.000000e+10 in 421186 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417404 cells 
+   368  4.6857e+09  1.4701e-02  4.8573e-02  5.2986e-02  4.0714e-02  9.9158e-01  4.9247e-01  0:05:28  132
+
+ absolute pressure limited to 5.000000e+10 in 421188 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417376 cells 
+   369  4.8533e+09  1.5516e-02  5.0273e-02  5.2290e-02  4.0376e-02  9.5903e-01  4.8303e-01  0:05:26  131
+
+ absolute pressure limited to 5.000000e+10 in 421184 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417375 cells 
+   370  5.1285e+09  1.5344e-02  5.0153e-02  5.3057e-02  3.9782e-02  9.7037e-01  4.8184e-01  0:05:23  130
+
+ absolute pressure limited to 5.000000e+10 in 421205 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417328 cells 
+   371  5.4281e+09  1.5540e-02  5.0230e-02  5.1384e-02  3.7319e-02  9.9461e-01  4.9393e-01  0:05:21  129
+
+ absolute pressure limited to 5.000000e+10 in 421178 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417321 cells 
+   372  5.7826e+09  1.5009e-02  4.8865e-02  5.0315e-02  3.8554e-02  9.8176e-01  4.8865e-01  0:05:17  128
+
+ absolute pressure limited to 5.000000e+10 in 421194 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417273 cells 
+   373  6.2250e+09  1.4808e-02  4.8801e-02  4.7896e-02  3.6729e-02  9.8280e-01  4.8568e-01  0:05:13  127
+
+ absolute pressure limited to 5.000000e+10 in 421163 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417384 cells 
+   374  6.2406e+09  1.5538e-02  5.2035e-02  4.4697e-02  4.0037e-02  9.8308e-01  4.8716e-01  0:05:11  126
+
+ absolute pressure limited to 5.000000e+10 in 421173 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417361 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   375  6.2385e+09  1.4917e-02  4.9820e-02  4.7980e-02  4.0896e-02  9.8734e-01  4.8856e-01  0:05:09  125
+
+ absolute pressure limited to 5.000000e+10 in 421178 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417417 cells 
+   376  6.9696e+09  1.5516e-02  5.0478e-02  4.7786e-02  3.8586e-02  9.8320e-01  4.8694e-01  0:05:07  124
+
+ absolute pressure limited to 5.000000e+10 in 421176 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417367 cells 
+   377  7.1152e+09  1.5345e-02  5.1679e-02  4.5997e-02  3.8884e-02  9.9595e-01  4.9563e-01  0:05:06  123
+
+ absolute pressure limited to 5.000000e+10 in 421158 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417355 cells 
+   378  7.1576e+09  1.5266e-02  5.1759e-02  4.0363e-02  4.2517e-02  9.9362e-01  4.9476e-01  0:05:05  122
+
+ absolute pressure limited to 5.000000e+10 in 421155 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417296 cells 
+   379  7.3678e+09  1.5385e-02  5.2032e-02  3.9582e-02  3.9928e-02  9.9107e-01  4.9278e-01  0:05:01  121
+
+ absolute pressure limited to 5.000000e+10 in 421153 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417291 cells 
+   380  7.3472e+09  1.5424e-02  5.3317e-02  3.9215e-02  4.0630e-02  9.9458e-01  4.9379e-01  0:04:57  120
+
+ absolute pressure limited to 5.000000e+10 in 421179 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417277 cells 
+   381  7.7857e+09  1.5634e-02  5.3534e-02  3.7502e-02  3.7144e-02  9.8237e-01  4.8751e-01  0:04:54  119
+
+ absolute pressure limited to 5.000000e+10 in 421153 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417254 cells 
+   382  7.8389e+09  1.5154e-02  5.0984e-02  3.4979e-02  4.0260e-02  9.9664e-01  4.9730e-01  0:04:52  118
+
+ absolute pressure limited to 5.000000e+10 in 421144 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417302 cells 
+   383  7.5824e+09  1.4907e-02  5.0819e-02  3.5341e-02  3.8675e-02  9.9702e-01  4.9707e-01  0:04:50  117
+
+ absolute pressure limited to 5.000000e+10 in 421151 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417209 cells 
+   384  7.9102e+09  1.4431e-02  4.8434e-02  3.2630e-02  4.0465e-02  9.9366e-01  4.9562e-01  0:04:48  116
+
+ absolute pressure limited to 5.000000e+10 in 421139 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417113 cells 
+   385  7.9064e+09  1.4704e-02  4.9664e-02  3.1998e-02  4.1608e-02  9.9684e-01  4.9677e-01  0:04:46  115
+
+ absolute pressure limited to 5.000000e+10 in 421161 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417305 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   386  7.7638e+09  1.5042e-02  5.1185e-02  3.1173e-02  3.9561e-02  9.9957e-01  4.9961e-01  0:04:43  114
+
+ absolute pressure limited to 5.000000e+10 in 421155 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417286 cells 
+   387  7.9629e+09  1.4448e-02  4.9705e-02  3.5330e-02  4.2164e-02  9.9747e-01  4.9907e-01  0:04:40  113
+
+ absolute pressure limited to 5.000000e+10 in 421150 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417303 cells 
+   388  8.0107e+09  1.5151e-02  5.1530e-02  3.3970e-02  4.1411e-02  9.8825e-01  4.9767e-01  0:04:37  112
+
+ absolute pressure limited to 5.000000e+10 in 421151 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417261 cells 
+   389  7.9600e+09  1.4392e-02  4.9211e-02  3.3834e-02  4.2490e-02  9.5359e-01  4.9368e-01  0:04:34  111
+
+ absolute pressure limited to 5.000000e+10 in 421151 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417107 cells 
+   390  8.0756e+09  1.4419e-02  4.8521e-02  3.4553e-02  3.6972e-02  9.6921e-01  4.8927e-01  0:04:32  110
+
+ absolute pressure limited to 5.000000e+10 in 421144 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417113 cells 
+   391  8.1276e+09  1.4704e-02  5.0282e-02  3.3111e-02  3.6898e-02  9.8829e-01  4.9167e-01  0:04:34  109
+
+ absolute pressure limited to 5.000000e+10 in 421137 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417162 cells 
+   392  7.9143e+09  1.4887e-02  4.9961e-02  3.4394e-02  3.9165e-02  9.8294e-01  4.8747e-01  0:04:31  108
+
+ absolute pressure limited to 5.000000e+10 in 421160 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417111 cells 
+   393  8.0366e+09  1.4868e-02  5.0743e-02  3.6222e-02  3.4738e-02  9.9857e-01  4.9828e-01  0:04:29  107
+
+ absolute pressure limited to 5.000000e+10 in 421138 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417099 cells 
+   394  7.9412e+09  1.5004e-02  5.0742e-02  3.7490e-02  3.6243e-02  9.9386e-01  4.9645e-01  0:04:26  106
+
+ absolute pressure limited to 5.000000e+10 in 421152 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417079 cells 
+   395  7.4900e+09  1.4173e-02  4.9006e-02  3.7039e-02  3.9054e-02  9.8908e-01  4.9137e-01  0:04:23  105
+
+ absolute pressure limited to 5.000000e+10 in 421147 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417284 cells 
+   396  7.6585e+09  1.3832e-02  4.6783e-02  3.5700e-02  3.6042e-02  9.9186e-01  4.9143e-01  0:04:19  104
+
+ absolute pressure limited to 5.000000e+10 in 421150 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417132 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   397  7.7286e+09  1.4010e-02  4.7703e-02  3.2227e-02  4.4066e-02  9.9393e-01  4.9457e-01  0:04:16  103
+
+ absolute pressure limited to 5.000000e+10 in 421128 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417175 cells 
+   398  7.0027e+09  1.6467e-02  5.6447e-02  3.0368e-02  4.6350e-02  9.8184e-01  4.8986e-01  0:04:21  102
+
+ absolute pressure limited to 5.000000e+10 in 421155 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417123 cells 
+   399  7.2393e+09  1.7077e-02  5.8352e-02  3.2452e-02  4.4444e-02  9.8833e-01  4.8941e-01  0:04:16  101
+
+ absolute pressure limited to 5.000000e+10 in 421150 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417263 cells 
+   400  7.3581e+09  1.5937e-02  5.5192e-02  3.4789e-02  4.3140e-02  9.9174e-01  4.9197e-01  0:04:13  100
+
+ absolute pressure limited to 5.000000e+10 in 421148 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417102 cells 
+   401  6.8369e+09  1.6803e-02  5.7797e-02  3.5623e-02  4.5554e-02  9.9774e-01  4.9765e-01  0:04:10   99
+
+ absolute pressure limited to 5.000000e+10 in 421157 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417274 cells 
+   402  7.3382e+09  1.7696e-02  6.0283e-02  3.5870e-02  3.8333e-02  9.9099e-01  4.9525e-01  0:04:07   98
+
+ absolute pressure limited to 5.000000e+10 in 421151 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417106 cells 
+   403  7.2734e+09  1.5879e-02  5.4256e-02  3.4685e-02  3.7465e-02  9.7537e-01  4.8862e-01  0:04:04   97
+
+ absolute pressure limited to 5.000000e+10 in 421146 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417271 cells 
+   404  6.6340e+09  1.5677e-02  5.4274e-02  3.3992e-02  3.7374e-02  9.9803e-01  4.9777e-01  0:04:01   96
+
+ absolute pressure limited to 5.000000e+10 in 421194 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417133 cells 
+   405  7.0108e+09  1.5191e-02  5.1437e-02  3.1700e-02  3.6151e-02  9.9527e-01  4.9622e-01  0:03:57   95
+
+ absolute pressure limited to 5.000000e+10 in 421151 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417106 cells 
+   406  6.8183e+09  1.3156e-02  4.4282e-02  3.5544e-02  3.6830e-02  9.9185e-01  4.9455e-01  0:03:53   94
+
+ absolute pressure limited to 5.000000e+10 in 421155 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417075 cells 
+   407  6.3816e+09  1.3924e-02  4.6882e-02  3.7200e-02  3.8537e-02  9.8773e-01  4.9336e-01  0:03:51   93
+
+ absolute pressure limited to 5.000000e+10 in 421170 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417093 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   408  6.8058e+09  1.4499e-02  4.8430e-02  3.9648e-02  3.9914e-02  9.9147e-01  4.9379e-01  0:03:49   92
+
+ absolute pressure limited to 5.000000e+10 in 421158 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417094 cells 
+   409  7.2805e+09  1.4855e-02  5.0724e-02  3.9215e-02  3.6507e-02  9.8458e-01  4.8716e-01  0:03:47   91
+
+ absolute pressure limited to 5.000000e+10 in 421175 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417106 cells 
+   410  7.0453e+09  1.4488e-02  4.9316e-02  3.7821e-02  3.8411e-02  9.6528e-01  4.7754e-01  0:03:45   90
+ temperature limited to 5.000000e+03 in 1 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421178 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417144 cells 
+   411  7.1759e+09  1.4402e-02  4.8118e-02  3.8163e-02  3.9392e-02  9.8949e-01  4.8676e-01  0:03:42   89
+ temperature limited to 5.000000e+03 in 33 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421188 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417049 cells 
+   412  7.7607e+09  1.4400e-02  4.8865e-02  3.6657e-02  3.5496e-02  9.9935e-01  4.9919e-01  0:03:39   88
+ temperature limited to 5.000000e+03 in 114 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421145 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417047 cells 
+   413  7.3788e+09  1.4320e-02  4.9077e-02  3.4193e-02  3.7522e-02  9.9936e-01  4.9941e-01  0:03:36   87
+ temperature limited to 5.000000e+03 in 266 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421145 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417060 cells 
+   414  6.7723e+09  1.3413e-02  4.5851e-02  3.6495e-02  3.9899e-02  9.9634e-01  4.9848e-01  0:03:33   86
+ temperature limited to 5.000000e+03 in 571 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 2 faces
+
+ absolute pressure limited to 5.000000e+10 in 421168 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417024 cells 
+   415  7.6972e+09  1.3078e-02  4.2411e-02  3.8237e-02  3.9384e-02  9.8916e-01  4.9672e-01  0:03:31   85
+ temperature limited to 5.000000e+03 in 990 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 27 faces
+
+ absolute pressure limited to 5.000000e+10 in 421174 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416933 cells 
+   416  8.7531e+09  1.3723e-02  4.5746e-02  3.9030e-02  3.8736e-02  9.9189e-01  4.9516e-01  0:03:29   84
+ temperature limited to 5.000000e+03 in 1282 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 184 faces
+
+ absolute pressure limited to 5.000000e+10 in 421173 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417012 cells 
+   417  8.7804e+09  1.3890e-02  4.7906e-02  3.7743e-02  4.5352e-02  9.9276e-01  4.9502e-01  0:03:28   83
+ temperature limited to 5.000000e+03 in 716 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 127 faces
+
+ absolute pressure limited to 5.000000e+10 in 421176 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416716 cells 
+   418  8.7750e+09  1.4611e-02  5.1038e-02  3.8578e-02  4.2358e-02  9.9195e-01  4.9273e-01  0:03:25   82
+ temperature limited to 5.000000e+03 in 1816 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 144 faces
+
+ absolute pressure limited to 5.000000e+10 in 421182 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416504 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   419  9.7781e+09  1.4807e-02  4.9524e-02  3.6186e-02  3.7206e-02  9.7105e-01  4.8257e-01  0:03:22   81
+ temperature limited to 5.000000e+03 on 88 faces
+
+ absolute pressure limited to 5.000000e+10 in 421171 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416308 cells 
+   420  9.2929e+09  1.3642e-02  4.5720e-02  3.5825e-02  3.6729e-02  9.6726e-01  4.7643e-01  0:03:19   80
+
+ absolute pressure limited to 5.000000e+10 in 421156 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416631 cells 
+   421  8.8177e+09  1.3564e-02  4.5302e-02  3.5560e-02  4.2326e-02  9.9230e-01  4.8658e-01  0:03:16   79
+
+ absolute pressure limited to 5.000000e+10 in 421162 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416757 cells 
+   422  1.0802e+10  1.4227e-02  4.7889e-02  3.8789e-02  4.4894e-02  9.7998e-01  4.7425e-01  0:03:13   78
+
+ absolute pressure limited to 5.000000e+10 in 421179 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416723 cells 
+   423  1.2618e+10  1.4364e-02  4.8007e-02  4.0676e-02  4.0290e-02  9.7734e-01  4.6940e-01  0:03:11   77
+
+ absolute pressure limited to 5.000000e+10 in 421143 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416846 cells 
+   424  1.1663e+10  1.4098e-02  4.6989e-02  4.1475e-02  4.2759e-02  9.9732e-01  4.9718e-01  0:03:10   76
+
+ absolute pressure limited to 5.000000e+10 in 421162 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416812 cells 
+   425  1.1782e+10  1.3862e-02  4.7461e-02  3.9474e-02  4.1553e-02  9.8598e-01  4.9372e-01  0:03:08   75
+
+ absolute pressure limited to 5.000000e+10 in 421170 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416662 cells 
+   426  1.4057e+10  1.4609e-02  4.9331e-02  3.8686e-02  3.8069e-02  9.7656e-01  4.8895e-01  0:03:05   74
+
+ absolute pressure limited to 5.000000e+10 in 421139 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416625 cells 
+   427  1.4452e+10  1.3815e-02  4.7376e-02  4.0835e-02  4.1839e-02  9.9831e-01  4.9829e-01  0:03:03   73
+
+ absolute pressure limited to 5.000000e+10 in 421154 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416889 cells 
+   428  1.4386e+10  1.3935e-02  4.8127e-02  3.7382e-02  4.0549e-02  9.9102e-01  4.9546e-01  0:03:05   72
+
+ absolute pressure limited to 5.000000e+10 in 421135 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417093 cells 
+   429  1.5676e+10  1.3339e-02  4.5747e-02  3.6600e-02  4.2930e-02  9.7830e-01  4.9188e-01  0:03:01   71
+
+ absolute pressure limited to 5.000000e+10 in 421128 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417095 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   430  1.7167e+10  1.3890e-02  4.7702e-02  4.0296e-02  4.6178e-02  9.9960e-01  4.9952e-01  0:02:57   70
+
+ absolute pressure limited to 5.000000e+10 in 421153 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416986 cells 
+   431  1.9408e+10  1.4216e-02  4.9061e-02  4.5221e-02  4.2857e-02  9.9809e-01  4.9887e-01  0:02:54   69
+
+ absolute pressure limited to 5.000000e+10 in 421163 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416955 cells 
+   432  2.1813e+10  1.3908e-02  4.8006e-02  4.2498e-02  3.7740e-02  9.9352e-01  4.9725e-01  0:02:51   68
+ temperature limited to 5.000000e+03 in 3 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421138 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416871 cells 
+   433  2.2873e+10  1.3723e-02  4.7762e-02  4.2116e-02  3.8918e-02  9.9981e-01  4.9969e-01  0:02:48   67
+ temperature limited to 5.000000e+03 in 6 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421137 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417064 cells 
+   434  2.5060e+10  1.4073e-02  4.8057e-02  3.9771e-02  3.8256e-02  9.9944e-01  4.9970e-01  0:02:46   66
+ temperature limited to 5.000000e+03 in 29 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421138 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 417119 cells 
+   435  2.6932e+10  1.3898e-02  4.8402e-02  3.4993e-02  3.5530e-02  9.9845e-01  4.9879e-01  0:02:43   65
+ temperature limited to 5.000000e+03 in 120 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 1 faces
+
+ absolute pressure limited to 5.000000e+10 in 421118 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416975 cells 
+   436  2.6103e+10  1.2555e-02  4.3659e-02  3.3734e-02  3.7533e-02  9.9234e-01  4.9689e-01  0:02:40   64
+ temperature limited to 5.000000e+03 in 204 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 3 faces
+
+ absolute pressure limited to 5.000000e+10 in 421108 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416939 cells 
+   437  2.6947e+10  1.2001e-02  4.0933e-02  3.5446e-02  3.8763e-02  9.7851e-01  4.9304e-01  0:02:37   63
+ temperature limited to 5.000000e+03 on 1 faces
+
+ absolute pressure limited to 5.000000e+10 in 421144 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416762 cells 
+   438  3.0150e+10  1.1813e-02  4.0684e-02  3.3523e-02  3.3964e-02  9.9012e-01  4.8921e-01  0:02:35   62
+ temperature limited to 5.000000e+03 in 176 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421114 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416807 cells 
+   439  3.1709e+10  1.1629e-02  4.0315e-02  3.5104e-02  3.2352e-02  9.9431e-01  4.9385e-01  0:02:32   61
+
+ absolute pressure limited to 5.000000e+10 in 421120 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416785 cells 
+   440  3.3891e+10  1.1173e-02  3.9265e-02  3.1106e-02  3.9195e-02  9.7235e-01  4.8327e-01  0:02:29   60
+
+ absolute pressure limited to 5.000000e+10 in 421137 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416874 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   441  3.4642e+10  1.1386e-02  4.0090e-02  3.8367e-02  3.8234e-02  9.9513e-01  4.9208e-01  0:02:27   59
+ temperature limited to 5.000000e+03 in 396 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421115 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416756 cells 
+   442  3.7279e+10  1.2333e-02  4.3329e-02  4.1081e-02  3.8968e-02  9.9428e-01  4.9510e-01  0:02:25   58
+ temperature limited to 5.000000e+03 in 538 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 16 faces
+
+ absolute pressure limited to 5.000000e+10 in 421124 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416816 cells 
+   443  4.3674e+10  1.3583e-02  4.7698e-02  4.3024e-02  3.3469e-02  9.7899e-01  4.8815e-01  0:02:22   57
+ temperature limited to 5.000000e+03 in 579 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 81 faces
+
+ absolute pressure limited to 5.000000e+10 in 421103 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416793 cells 
+   444  4.6616e+10  1.2873e-02  4.5758e-02  4.2430e-02  3.4887e-02  9.8327e-01  4.8173e-01  0:02:19   56
+ temperature limited to 5.000000e+03 in 14 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 92 faces
+
+ absolute pressure limited to 5.000000e+10 in 421128 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416587 cells 
+   445  5.0051e+10  1.1803e-02  4.1761e-02  4.4625e-02  3.3935e-02  9.9223e-01  4.8476e-01  0:02:16   55
+ temperature limited to 5.000000e+03 on 3 faces
+
+ absolute pressure limited to 5.000000e+10 in 421137 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416506 cells 
+   446  5.5527e+10  1.2600e-02  4.5092e-02  4.2996e-02  3.2824e-02  9.9935e-01  4.9943e-01  0:02:13   54
+ temperature limited to 5.000000e+03 in 21 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421099 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416333 cells 
+   447  5.8691e+10  1.3154e-02  4.7271e-02  4.4804e-02  3.1706e-02  9.9678e-01  4.9832e-01  0:02:11   53
+ temperature limited to 5.000000e+03 in 895 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421121 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416693 cells 
+   448  6.4577e+10  1.2155e-02  4.3308e-02  4.4552e-02  2.8623e-02  9.8330e-01  4.9582e-01  0:02:09   52
+ temperature limited to 5.000000e+03 in 1234 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 2 faces
+
+ absolute pressure limited to 5.000000e+10 in 421122 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416618 cells 
+   449  6.9288e+10  1.1675e-02  4.1646e-02  4.0057e-02  2.8160e-02  9.6171e-01  4.9102e-01  0:02:07   51
+ temperature limited to 5.000000e+03 in 1465 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 75 faces
+
+ absolute pressure limited to 5.000000e+10 in 421121 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416688 cells 
+   450  7.4024e+10  1.1219e-02  4.0117e-02  3.9605e-02  2.6746e-02  9.9625e-01  4.9726e-01  0:02:05   50
+ temperature limited to 5.000000e+03 in 1613 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 371 faces
+
+ absolute pressure limited to 5.000000e+10 in 421109 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416490 cells 
+   451  8.3621e+10  1.0712e-02  3.8422e-02  3.9001e-02  2.5583e-02  9.9342e-01  4.9548e-01  0:02:02   49
+ temperature limited to 5.000000e+03 in 24 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 257 faces
+
+ absolute pressure limited to 5.000000e+10 in 421101 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416251 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   452  7.9803e+10  1.0473e-02  3.7811e-02  4.3236e-02  2.5889e-02  9.7578e-01  4.8911e-01  0:01:59   48
+ temperature limited to 5.000000e+03 in 45 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421116 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416311 cells 
+   453  8.4062e+10  1.1015e-02  3.9597e-02  3.9490e-02  2.5627e-02  9.1813e-01  4.7673e-01  0:01:56   47
+ temperature limited to 5.000000e+03 in 108 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 1 faces
+
+ absolute pressure limited to 5.000000e+10 in 421110 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416478 cells 
+   454  9.7310e+10  1.1545e-02  4.1545e-02  4.0051e-02  2.5311e-02  9.9667e-01  4.9792e-01  0:01:54   46
+ temperature limited to 5.000000e+03 in 201 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 4 faces
+
+ absolute pressure limited to 5.000000e+10 in 421113 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416233 cells 
+   455  9.8308e+10  1.1543e-02  4.1664e-02  3.7200e-02  2.8435e-02  9.9907e-01  4.9916e-01  0:01:51   45
+ temperature limited to 1.000000e+00 in 24 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 120 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 7 faces
+
+ absolute pressure limited to 5.000000e+10 in 421128 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416228 cells 
+   456  9.3669e+10  1.1584e-02  4.1989e-02  3.9247e-02  2.7880e-02  9.9485e-01  4.9780e-01  0:01:49   44
+ temperature limited to 1.000000e+00 in 80 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1390 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 3 faces
+
+ absolute pressure limited to 5.000000e+10 in 421112 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416131 cells 
+   457  1.1386e+11  1.2778e-02  4.6580e-02  3.6185e-02  2.6344e-02  9.9279e-01  4.9603e-01  0:01:51   43
+ temperature limited to 1.000000e+00 in 20 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1668 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421094 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416324 cells 
+   458  1.2246e+11  1.2488e-02  4.5701e-02  4.2296e-02  2.5911e-02  9.6652e-01  4.9100e-01  0:01:48   42
+ temperature limited to 5.000000e+03 in 1862 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 94 faces
+
+ absolute pressure limited to 5.000000e+10 in 421119 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416160 cells 
+   459  1.1973e+11  1.3101e-02  4.7877e-02  4.3430e-02  2.1587e-02  9.3310e-01  4.8218e-01  0:01:45   41
+ temperature limited to 1.000000e+00 in 46 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1971 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 399 faces
+
+ absolute pressure limited to 5.000000e+10 in 421093 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416330 cells 
+   460  1.1857e+11  1.2392e-02  4.5196e-02  3.7680e-02  2.6262e-02  9.5050e-01  4.7907e-01  0:01:42   40
+ temperature limited to 5.000000e+03 in 672 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 441 faces
+
+ absolute pressure limited to 5.000000e+10 in 421125 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416129 cells 
+   461  1.4087e+11  1.3228e-02  4.8401e-02  4.1688e-02  2.5899e-02  9.8455e-01  4.8610e-01  0:01:39   39
+ temperature limited to 1.000000e+00 in 1 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1938 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 315 faces
+
+ absolute pressure limited to 5.000000e+10 in 421124 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416218 cells 
+   462  1.5499e+11  1.2554e-02  4.5894e-02  4.0297e-02  2.7280e-02  9.9746e-01  4.9730e-01  0:01:36   38
+ temperature limited to 5.000000e+03 in 2051 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 371 faces
+
+ absolute pressure limited to 5.000000e+10 in 421111 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416278 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   463  1.5801e+11  1.1622e-02  4.2565e-02  3.7742e-02  2.4171e-02  9.9122e-01  4.9479e-01  0:01:33   37
+ temperature limited to 1.000000e+00 in 4 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1885 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 536 faces
+
+ absolute pressure limited to 5.000000e+10 in 421079 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416361 cells 
+   464  1.5681e+11  1.1558e-02  4.2466e-02  3.2002e-02  3.0466e-02  9.8515e-01  4.9133e-01  0:01:30   36
+ temperature limited to 5.000000e+03 in 2222 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 740 faces
+
+ absolute pressure limited to 5.000000e+10 in 421100 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416459 cells 
+   465  1.5087e+11  1.2656e-02  4.6517e-02  3.6951e-02  3.1763e-02  9.7144e-01  4.8130e-01  0:01:28   35
+ temperature limited to 1.000000e+00 in 2 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1130 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 580 faces
+
+ absolute pressure limited to 5.000000e+10 in 421088 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416470 cells 
+   466  1.6692e+11  1.2484e-02  4.5878e-02  3.8390e-02  2.7752e-02  9.9922e-01  4.9941e-01  0:01:26   34
+ temperature limited to 1.000000e+00 in 5 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 168 faces
+
+ absolute pressure limited to 5.000000e+10 in 421104 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416370 cells 
+   467  1.8652e+11  1.2254e-02  4.5007e-02  3.9212e-02  2.3620e-02  9.9704e-01  4.9856e-01  0:01:23   33
+ temperature limited to 1.000000e+00 in 2 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 68 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421102 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416535 cells 
+   468  1.8443e+11  1.1807e-02  4.3384e-02  3.6503e-02  2.3764e-02  9.9173e-01  4.9680e-01  0:01:21   32
+ temperature limited to 1.000000e+00 in 8 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 325 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421094 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416354 cells 
+   469  2.0245e+11  1.1826e-02  4.3559e-02  4.0625e-02  2.0932e-02  9.7075e-01  4.9209e-01  0:01:18   31
+ temperature limited to 1.000000e+00 in 20 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 116 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421115 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416098 cells 
+   470  2.2689e+11  1.1671e-02  4.2947e-02  3.8094e-02  2.5108e-02  9.6617e-01  4.8651e-01  0:01:15   30
+ temperature limited to 1.000000e+00 in 29 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 3 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421105 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416320 cells 
+   471  1.9831e+11  1.2269e-02  4.5319e-02  3.7453e-02  2.3957e-02  9.9506e-01  4.8945e-01  0:01:12   29
+ temperature limited to 1.000000e+00 in 45 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 190 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421105 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416285 cells 
+   472  2.0469e+11  1.1438e-02  4.2093e-02  3.5885e-02  2.0627e-02  9.8641e-01  4.8407e-01  0:01:10   28
+ temperature limited to 1.000000e+00 in 21 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 196 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421116 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416246 cells 
+   473  2.2584e+11  1.0982e-02  4.0409e-02  3.8126e-02  2.1123e-02  9.7124e-01  4.7797e-01  0:01:07   27
+ temperature limited to 1.000000e+00 in 6 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 701 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 1 faces
+
+ absolute pressure limited to 5.000000e+10 in 421119 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416288 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   474  2.3233e+11  1.1683e-02  4.3045e-02  4.2613e-02  2.0680e-02  9.6890e-01  4.7079e-01  0:01:05   26
+ temperature limited to 1.000000e+00 in 35 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1621 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 30 faces
+
+ absolute pressure limited to 5.000000e+10 in 421094 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416331 cells 
+   475  2.5922e+11  1.2366e-02  4.5678e-02  4.4270e-02  1.9352e-02  9.9356e-01  4.8875e-01  0:01:03   25
+ temperature limited to 1.000000e+00 in 89 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1953 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 109 faces
+
+ absolute pressure limited to 5.000000e+10 in 421093 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416359 cells 
+   476  2.9426e+11  1.1545e-02  4.2599e-02  4.5678e-02  1.7729e-02  9.9358e-01  4.8881e-01  0:01:00   24
+ temperature limited to 1.000000e+00 in 137 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1986 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 306 faces
+
+ absolute pressure limited to 5.000000e+10 in 421104 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415854 cells 
+   477  3.1735e+11  1.1079e-02  4.0949e-02  4.2813e-02  1.6058e-02  9.6349e-01  4.7204e-01  0:00:58   23
+ temperature limited to 1.000000e+00 in 466 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1856 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 375 faces
+
+ absolute pressure limited to 5.000000e+10 in 421099 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415826 cells 
+   478  3.1046e+11  1.0287e-02  3.8014e-02  4.2210e-02  1.6068e-02  9.3469e-01  4.5683e-01  0:00:55   22
+ temperature limited to 1.000000e+00 in 841 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 2865 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 422 faces
+
+ absolute pressure limited to 5.000000e+10 in 421096 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415852 cells 
+   479  3.2784e+11  9.6584e-03  3.5643e-02  4.2078e-02  1.6313e-02  9.5726e-01  4.6233e-01  0:00:52   21
+ temperature limited to 1.000000e+00 in 1065 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1565 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 526 faces
+
+ absolute pressure limited to 5.000000e+10 in 421126 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415573 cells 
+   480  3.5117e+11  1.0251e-02  3.7834e-02  3.7184e-02  1.5324e-02  9.3757e-01  4.4524e-01  0:00:50   20
+ temperature limited to 1.000000e+00 in 1455 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 2434 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 631 faces
+
+ absolute pressure limited to 5.000000e+10 in 421108 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415721 cells 
+   481  3.4108e+11  9.6810e-03  3.5761e-02  4.0847e-02  1.8418e-02  9.9521e-01  4.9125e-01  0:00:48   19
+ temperature limited to 1.000000e+00 in 1803 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 2036 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 704 faces
+
+ absolute pressure limited to 5.000000e+10 in 421089 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415729 cells 
+   482  3.4757e+11  1.1117e-02  4.1038e-02  4.2392e-02  1.8581e-02  9.9855e-01  4.9910e-01  0:00:45   18
+ temperature limited to 1.000000e+00 in 2022 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1963 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 735 faces
+
+ absolute pressure limited to 5.000000e+10 in 421101 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415263 cells 
+   483  4.0349e+11  1.0203e-02  3.7728e-02  4.6633e-02  1.7017e-02  9.9098e-01  4.9671e-01  0:00:43   17
+ temperature limited to 1.000000e+00 in 2277 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1879 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 750 faces
+
+ absolute pressure limited to 5.000000e+10 in 421098 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415017 cells 
+   484  4.3152e+11  1.0708e-02  3.9649e-02  4.4015e-02  1.8266e-02  9.9285e-01  4.9706e-01  0:00:40   16
+ temperature limited to 1.000000e+00 in 1872 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1233 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 552 faces
+
+ absolute pressure limited to 5.000000e+10 in 421129 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414549 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   485  4.4814e+11  1.0701e-02  3.9650e-02  4.6750e-02  2.4436e-02  9.8262e-01  4.9267e-01  0:00:38   15
+ temperature limited to 1.000000e+00 in 2317 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1935 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 412 faces
+
+ absolute pressure limited to 5.000000e+10 in 421110 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415001 cells 
+   486  5.1832e+11  1.1376e-02  4.2271e-02  4.7268e-02  2.3670e-02  9.6294e-01  4.8308e-01  0:00:35   14
+ temperature limited to 1.000000e+00 in 3411 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 2391 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 585 faces
+
+ absolute pressure limited to 5.000000e+10 in 421095 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415508 cells 
+   487  5.7509e+11  1.1856e-02  4.4069e-02  4.9697e-02  2.0793e-02  9.5907e-01  4.7351e-01  0:00:33   13
+ temperature limited to 1.000000e+00 in 4911 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 2540 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 711 faces
+
+ absolute pressure limited to 5.000000e+10 in 421104 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414711 cells 
+   488  6.4720e+11  1.1738e-02  4.3619e-02  4.9849e-02  1.5813e-02  8.6110e-01  4.3804e-01  0:00:30   12
+ temperature limited to 1.000000e+00 in 2785 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 367 faces
+
+ absolute pressure limited to 5.000000e+10 in 421109 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414609 cells 
+   489  7.1547e+11  1.0998e-02  4.0840e-02  4.5084e-02  1.3805e-02  8.3589e-01  3.9419e-01  0:00:28   11
+ temperature limited to 1.000000e+00 in 6099 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1308 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 3 faces
+
+ absolute pressure limited to 5.000000e+10 in 421124 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414233 cells 
+   490  6.7658e+11  1.0403e-02  3.8630e-02  3.9680e-02  1.2870e-02  9.7745e-01  4.7547e-01  0:00:25   10
+ temperature limited to 1.000000e+00 in 6927 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 885 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 58 faces
+
+ absolute pressure limited to 5.000000e+10 in 421086 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414799 cells 
+   491  6.6030e+11  1.0692e-02  3.9720e-02  3.6062e-02  1.2705e-02  9.9142e-01  4.9056e-01  0:00:23    9
+ temperature limited to 1.000000e+00 in 8224 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1223 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 185 faces
+
+ absolute pressure limited to 5.000000e+10 in 421143 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 414838 cells 
+   492  7.4266e+11  1.0327e-02  3.8268e-02  3.6264e-02  1.3040e-02  9.6523e-01  4.8149e-01  0:00:20    8
+ temperature limited to 1.000000e+00 in 8837 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1302 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 435 faces
+
+ absolute pressure limited to 5.000000e+10 in 421116 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 415617 cells 
+   493  7.2777e+11  1.0002e-02  3.7161e-02  3.8157e-02  1.5785e-02  9.2137e-01  4.6236e-01  0:00:18    7
+ temperature limited to 1.000000e+00 in 11137 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1638 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 632 faces
+
+ absolute pressure limited to 5.000000e+10 in 421084 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416292 cells 
+   494  6.7561e+11  1.0681e-02  3.9718e-02  4.1654e-02  1.5805e-02  9.9048e-01  4.9162e-01  0:00:15    6
+ temperature limited to 1.000000e+00 in 2619 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1961 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 652 faces
+
+ absolute pressure limited to 5.000000e+10 in 421095 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416389 cells 
+   495  7.6724e+11  1.1344e-02  4.2110e-02  4.4703e-02  1.5671e-02  9.8072e-01  4.8487e-01  0:00:12    5
+ temperature limited to 1.000000e+00 in 2253 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 1400 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 353 faces
+
+ absolute pressure limited to 5.000000e+10 in 421116 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416240 cells 
+
+  iter  continuity  x-velocity  y-velocity  z-velocity      energy           k       omega     time/iter
+   496  8.8947e+11  1.1412e-02  4.2423e-02  4.7478e-02  1.4124e-02  9.4324e-01  4.6591e-01  0:00:10    4
+ temperature limited to 1.000000e+00 in 1225 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 459 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 27 faces
+
+ absolute pressure limited to 5.000000e+10 in 421100 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416353 cells 
+   497  9.1944e+11  1.1213e-02  4.1713e-02  4.7484e-02  1.4782e-02  9.9006e-01  4.9408e-01  0:00:07    3
+ temperature limited to 1.000000e+00 in 1391 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 658 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 26 faces
+
+ absolute pressure limited to 5.000000e+10 in 421146 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416343 cells 
+   498  9.9912e+11  1.1581e-02  4.3020e-02  4.6991e-02  1.2810e-02  9.6543e-01  4.8265e-01  0:00:05    2
+ temperature limited to 1.000000e+00 in 4 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 468 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 on 13 faces
+
+ absolute pressure limited to 5.000000e+10 in 421083 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416301 cells 
+   499  1.0265e+12  1.1315e-02  4.2039e-02  4.2773e-02  1.1869e-02  9.8784e-01  4.8282e-01  0:00:03    1
+ temperature limited to 1.000000e+00 in 448 cells on zone 1386 in domain 1
+  temperature limited to 5.000000e+03 in 438 cells on zone 1386 in domain 1
+ 
+ absolute pressure limited to 5.000000e+10 in 421107 cells on zone 1386 
+
+ turbulent viscosity limited to viscosity ratio of 1.000000e+05 in 416470 cells 
+   500  1.0058e+12  1.0663e-02  3.9608e-02  4.2379e-02  1.2682e-02  9.9332e-01  4.9116e-01  0:00:00    0
+
+> Halting due to end of file on input.
+Auto-Transcript Stop Time:  02:42:55, 07 Jan 2025 
+Total Transcript Time: 22 Minute 48 Second.
+
+Automatic transcript closed.
