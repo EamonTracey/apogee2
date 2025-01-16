@@ -2,8 +2,8 @@ import click
 
 from scripts.cfd import cfd
 from scripts.fly import fly
-from scripts.plotacs import plot
-#from scripts.simulate import simulate
+from scripts.plot import plot
+from scripts.simulate import simulate
 
 
 @click.group()
@@ -17,7 +17,7 @@ def apogee():
 apogee.add_command(cfd)
 apogee.add_command(fly)
 apogee.add_command(plot)
-#apogee.add_command(simulate)
+apogee.add_command(simulate)
 
 if __name__ == "__main__":
     apogee()
