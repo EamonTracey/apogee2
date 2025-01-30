@@ -1,7 +1,4 @@
 import click
-import pandas as pd
-import matplotlib.pyplot as plt
-
 
 @click.command(context_settings={"show_default": True})
 @click.argument("filepath", type=str, nargs=1)
@@ -14,7 +11,10 @@ import matplotlib.pyplot as plt
               is_flag=True,
               help="Full-flight altitude vs. time")
 def plot(filepath, significant: bool, altitudefull: bool):
-    """Process ACS flight data."""
+    """Plot and review ACS flight data."""
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
     # Displays a few important data points about the flight.
     if significant:
         df = pd.read_csv(filepath)
