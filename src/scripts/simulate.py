@@ -1,12 +1,5 @@
 import click
 
-from base.stage import Stage
-from simulation.dynamics import DynamicsSimulation
-from simulation.environment import Environment
-from simulation.motor import Motor
-from simulation.vehicle import Vehicle
-
-
 @click.command(context_settings={"show_default": True})
 @click.option("--vehicle", default="drjoe", help="The vehicle to simulate.")
 @click.option("--motor",
@@ -20,6 +13,12 @@ from simulation.vehicle import Vehicle
               help="The speed at which to run the software loop.")
 def simulate(vehicle: str, motor: str, environment: str, hertz: int):
     """Run a complete software-in-the-loop rocket flight simulation."""
+    from base.stage import Stage
+    from simulation.dynamics import DynamicsSimulation
+    from simulation.environment import Environment
+    from simulation.motor import Motor
+    from simulation.vehicle import Vehicle
+
     vehicle_file = f"data/vehicles/{vehicle}.json"
     vehicle = Vehicle.from_json(vehicle_file)
 
