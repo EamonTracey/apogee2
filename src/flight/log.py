@@ -11,9 +11,9 @@ from flight.filter import FilterState
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
-    "Filtered Altitude",
-    "Filtered Z Velocity",
-    "Filtered Z Acceleration",
+    "Filtered_Altitude",
+    "Filtered_Z_Velocity",
+    "Filtered_Z_Acceleration",
     "Altitude_BMP390",
     "Temperature_BMP390",
     "Acceleration_X_BNO085",
