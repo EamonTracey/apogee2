@@ -6,11 +6,7 @@ import click
               "--significant",
               is_flag=True,
               help="Display significant flight data.")
-@click.option("-af",
-              "--altitudefull",
-              is_flag=True,
-              help="Full-flight altitude vs. time")
-def plot(filepath, significant: bool, altitudefull: bool):
+def plot(filepath, significant: bool):
     """Plot and review ACS flight data."""
     import pandas as pd
 

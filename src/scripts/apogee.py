@@ -2,7 +2,7 @@ import click
 
 from scripts.cfd import cfd
 from scripts.fly import fly
-from scripts.plot import plot
+from scripts.results import results
 from scripts.simulate import simulate
 
 
