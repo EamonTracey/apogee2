@@ -3,6 +3,7 @@ adafruit-circuitpython-bmp3xx
 adafruit-circuitpython-bno08x
 adafruit-circuitpython-icm20x
 click
+filterpy
 imufusion
 matplotlib
 numpy
