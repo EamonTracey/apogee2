@@ -16,7 +16,7 @@ def apogee():
 
 apogee.add_command(cfd)
 apogee.add_command(fly)
-apogee.add_command(plot)
+apogee.add_command(results)
 apogee.add_command(simulate)
 
 if __name__ == "__main__":
