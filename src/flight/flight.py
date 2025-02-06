@@ -49,7 +49,7 @@ class Flight:
         # Phase Determination.
         phase_component = PhaseComponent(z_filter_state)
         phase_state = phase_component.state
-        self.loop.add_component(phase_state)
+        self.loop.add_component(phase_state, 30)
 
         # Log.
         log_path = f"{name}.csv"
