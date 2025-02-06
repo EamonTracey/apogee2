@@ -9,6 +9,7 @@ from base.loop import Loop
 from flight.bmp390 import BMP390Component
 from flight.bno085 import BNO085Component
 from flight.icm20649 import ICM20649Component
+from flight.phase import PhaseComponent
 from flight.filter import FilterComponent
 from flight.log import LogComponent
 
@@ -45,10 +46,15 @@ class Flight:
         z_filter_state = z_filter_component.state
         self.loop.add_component(z_filter_component, 30)
 
+        # Phase Determination.
+        phase_component = PhaseComponent(z_filter_state)
+        phase_state = phase_component.state
+        self.loop.add_component(phase_state)
+
         # Log.
         log_path = f"{name}.csv"
         log_component = LogComponent(log_path, loop_state, bmp390_state,
-                                     bno085_state, icm20649_state, z_filter_state)
+                                     bno085_state, icm20649_state, z_filter_state, phase_state) 
         self.loop.add_component(log_component, 30)
 
     def run(self):
