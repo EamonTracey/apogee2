@@ -11,6 +11,7 @@ from flight.filter import FilterState
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
+    "Phase",
     "Filtered_Altitude",
     "Filtered_Z_Velocity",
     "Filtered_Z_Acceleration",
@@ -54,7 +55,7 @@ class LogComponent(Component):
 
     def __init__(self, path: str, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
-                 icm20649_state: ICM20649State, z_filter_state: FilterState):
+                 icm20649_state: ICM20649State, z_filter_state: FilterState, phase_state: PhaseState):
         self._state = LogState()
 
         self._path = path
@@ -62,6 +63,7 @@ class LogComponent(Component):
         self._bmp390_state = bmp390_state
         self._bno085_state = bno085_state
         self._icm20649_state = icm20649_state
+        self._phase_state = phase_state
         self._z_filter_state = z_filter_state
 
         self._file = open(self._path, "w")
@@ -72,6 +74,7 @@ class LogComponent(Component):
         log = [
             self._loop_state.time - self._loop_state.first_time,
             self._loop_state.slip_count,
+            self._phase_state.phase
             self._z_filter_state.altitude_filtered,
             self._z_filter_state.velocity_filtered,
             self._z_filter_state.acceleration_filtered,
