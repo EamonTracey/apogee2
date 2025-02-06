@@ -8,4 +8,5 @@ class Stage(Enum):
     RAIL = 1
     BURN = 2
     COAST = 3
-    DESCENT = 4
+    OVERSHOOT = 4
+    DESCENT = 5
