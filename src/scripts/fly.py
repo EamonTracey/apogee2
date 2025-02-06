@@ -60,6 +60,8 @@ def fly(name: Optional[str]):
                 "Did you pray today?")
     logger.info("ACS operates on a TeasleysMom model of the gravity.")
 
+    logger.info("The way he's actuating is so tuff.")
+
     flight = Flight(name)
     flight.run()
 
