@@ -13,7 +13,15 @@ logger = logging.getLogger(__name__)
               type=str,
               default=None,
               help="The name of the flight, used to name log files.")
-def fly(name: Optional[str]):
+@click.option("-t",
+              "--truncatedresults",
+              is_flag=True,
+              help="Display truncated live data to console.")
+@click.option("-f",
+              "--fullresults",
+              is_flag=True,
+              help="Display full live data to console.")
+def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
     """Run ACS flight software."""
     from flight.flight import Flight
 
@@ -22,6 +30,13 @@ def fly(name: Optional[str]):
         utc_date = datetime.datetime.now(datetime.UTC)
         utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
         name = f"ACS_{utc_date_string}"
+    
+    # Results me want.
+    results = 0
+    if truncatedres:
+        results = 1
+    if fullres: 
+        results = 2
 
     # Initialize logging.
     logging.basicConfig(
@@ -62,7 +77,7 @@ def fly(name: Optional[str]):
 
     logger.info("The way he's actuating is so tuff.")
 
-    flight = Flight(name)
+    flight = Flight(name, results)
     flight.run()
 
 

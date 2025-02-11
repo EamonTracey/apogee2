@@ -53,7 +53,7 @@ class LogState:
 
 class LogComponent(Component):
 
-    def __init__(self, path: str, loop_state: LoopState,
+    def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, z_filter_state: FilterState, phase_state: PhaseState):
         self._state = LogState()
@@ -69,6 +69,7 @@ class LogComponent(Component):
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
         self._writer.writerow(HEADERS)
+        self._results = results
 
     def dispatch(self):
         log = [
@@ -95,3 +96,9 @@ class LogComponent(Component):
             self._icm20649_state.gyro_errors,
         ]
         self._writer.writerow(log)
+        
+        # If console output is selected.
+        if results == 1:
+            print(log[0], log[1], log[2], log[3], log[4], log[5])
+        elif results == 2:
+            print(log)
