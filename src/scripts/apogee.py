@@ -10,7 +10,7 @@ from scripts.simulate import simulate
 def apogee():
     """A suite of software tools for the 2024-25 Apogee Control System.
 
-    Authors: Eamon Tracey"""
+    Authors: Eamon Tracey, Zach Ebner"""
     pass
 
 
