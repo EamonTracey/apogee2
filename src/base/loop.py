@@ -19,6 +19,9 @@ class LoopState:
     step_count: int = 0
     slip_count: int = 0
 
+    # How often altimeter gets zeroed on Ground, in seconds
+    zero_period: int = 60*10
+
 
 class Loop:
 

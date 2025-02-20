@@ -33,9 +33,9 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
     
     # Results me want.
     results = 0
-    if truncatedres:
+    if truncatedresults:
         results = 1
-    if fullres: 
+    if fullresults: 
         results = 2
 
     # Initialize logging.

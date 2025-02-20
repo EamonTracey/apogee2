@@ -12,6 +12,7 @@ from flight.icm20649 import ICM20649Component
 from flight.phase import PhaseComponent
 from flight.filter import FilterComponent
 from flight.log import LogComponent
+from flight.active_states import ActiveStateComponent
 
 logger = logging.getLogger(__name__)
 
@@ -40,21 +41,29 @@ class Flight:
         icm20649_state = icm20649_component.state
         self.loop.add_component(icm20649_component, 30)
 
-        # Z-axis (vertical) Kalman Filter.
-        z_filter_component = FilterComponent(loop_state, bmp390_state,
-                                            icm20649_state, vertical = True)
-        z_filter_state = z_filter_component.state
-        self.loop.add_component(z_filter_component, 30)
+        # Kalman Filter and Phase States
+        active_states_component = ActiveStateComponent()
+        phase_state = active_states_component.get_phase_state
+        filter_state = active_states_component.get_filter_state
+
+        # Kalman Filter.
+        filter_component = FilterComponent(loop_state, bmp390_state,
+                                            icm20649_state, phase_state, vertical = True)
+        filter_state = filter_component.state
+        active_states_component.filter_state = filter_state
+        self.loop.add_component(filter_component, 30)
 
         # Phase Determination.
-        phase_component = PhaseComponent(z_filter_state)
+        phase_component = PhaseComponent(filter_state)
         phase_state = phase_component.state
-        self.loop.add_component(phase_state, 30)
+        active_states_component.phase_state = phase_state
+        self.loop.add_component(phase_component, 30)
+
 
         # Log.
         log_path = f"{name}.csv"
         log_component = LogComponent(log_path, results, loop_state, bmp390_state,
-                                     bno085_state, icm20649_state, z_filter_state, phase_state) 
+                                     bno085_state, icm20649_state, filter_state, phase_state) 
         self.loop.add_component(log_component, 30)
 
     def run(self):
