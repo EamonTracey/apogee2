@@ -1,0 +1,5 @@
+legacy/
+nohup.out
+
+*.log
+*.csv

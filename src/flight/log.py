@@ -6,7 +6,8 @@ from base.loop import LoopState
 from flight.bmp390 import BMP390State
 from flight.bno085 import BNO085State
 from flight.icm20649 import ICM20649State
-from flight.filter import FilterState
+from flight.active_states import FilterState
+from flight.active_states import PhaseState
 
 HEADERS = [
     "Time",
@@ -55,7 +56,7 @@ class LogComponent(Component):
 
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
-                 icm20649_state: ICM20649State, z_filter_state: FilterState, phase_state: PhaseState):
+                 icm20649_state: ICM20649State, filter_state: FilterState, phase_state: PhaseState):
         self._state = LogState()
 
         self._path = path
@@ -64,7 +65,7 @@ class LogComponent(Component):
         self._bno085_state = bno085_state
         self._icm20649_state = icm20649_state
         self._phase_state = phase_state
-        self._z_filter_state = z_filter_state
+        self._filter_state = filter_state
 
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
@@ -75,10 +76,10 @@ class LogComponent(Component):
         log = [
             self._loop_state.time - self._loop_state.first_time,
             self._loop_state.slip_count,
-            self._phase_state.phase
-            self._z_filter_state.altitude_filtered,
-            self._z_filter_state.velocity_filtered,
-            self._z_filter_state.acceleration_filtered,
+            self._phase_state.phase,
+            self._filter_state.altitude_filtered,
+            self._filter_state.velocity_filtered,
+            self._filter_state.acceleration_filtered,
             self._bmp390_state.altitude,
             self._bmp390_state.temperature,
             *self._bno085_state.acceleration,
