@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm nohup.out *.csv *.log
+rm -f nohup.out *.csv *.log

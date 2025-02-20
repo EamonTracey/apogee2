@@ -10,3 +10,6 @@ class Stage(Enum):
     COAST = 3
     OVERSHOOT = 4
     DESCENT = 5
+
+    def __str__(self):
+        return self.name
