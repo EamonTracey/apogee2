@@ -56,7 +56,8 @@ class LogComponent(Component):
 
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
-                 icm20649_state: ICM20649State, filter_state: FilterState, phase_state: PhaseState):
+                 icm20649_state: ICM20649State, filter_state: FilterState,
+                 phase_state: PhaseState):
         self._state = LogState()
 
         self._path = path
@@ -97,7 +98,7 @@ class LogComponent(Component):
             self._icm20649_state.gyro_errors,
         ]
         self._writer.writerow(log)
-        
+
         # If console output is selected.
         if self._results == 1:
             print(log[0], log[1], log[2], log[3], log[4], log[5])

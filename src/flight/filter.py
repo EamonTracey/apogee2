@@ -5,7 +5,7 @@ import numpy as np
 import logging
 import time
 
-from base.component import Component 
+from base.component import Component
 from base.stage import Stage
 
 from base.loop import LoopState
@@ -16,14 +16,13 @@ from flight.active_states import FilterState
 
 logger = logging.getLogger(__name__)
 
-
 ##TODO: Implement filtration for X,Y Accel and 3DOF Mag & Gyro
+
 
 class FilterComponent(Component):
 
     def __init__(self, loop_state: LoopState, bmp390_state: BMP390State,
-                 icm_state: ICM20649State, phase_state: PhaseState,
-                 vertical):
+                 icm_state: ICM20649State, phase_state: PhaseState, vertical):
 
         self._state = FilterState()
 
@@ -41,9 +40,7 @@ class FilterComponent(Component):
         logger.info("Kalman Filter Initialized.")
 
     def _initialize_filter(self):
-        sensor_matrix = [
-                [1, 0, 0],
-                [0, 0, 1]]
+        sensor_matrix = [[1, 0, 0], [0, 0, 1]]
 
         self.filter = KalmanFilter(dim_x=3, dim_z=len(sensor_matrix))
         self.filter.H = np.array(sensor_matrix)
@@ -60,13 +57,17 @@ class FilterComponent(Component):
     def dispatch(self):
 
         # Offset due to initial height and perioditcally zero altimeter
-        if (self._phase_state.phase == Stage.GROUND) and ((self._loop_state.time - self._loop_state.first_time) % self._loop_state.zero_period < 2 / self._loop_state.frequency):
+        if (self._phase_state.phase == Stage.GROUND) and (
+            (self._loop_state.time - self._loop_state.first_time) %
+                self._loop_state.zero_period < 2 / self._loop_state.frequency):
             self._altitude_offset = self._bmp390_state.altitude
 
-        altitude = self._meters_to_feet(self._bmp390_state.altitude - self._altitude_offset)
-    
+        altitude = self._meters_to_feet(self._bmp390_state.altitude -
+                                        self._altitude_offset)
+
         # Offset due to gravity
-        acceleration = self._meters_to_feet(self._icm_state.acceleration[2] - 9.80665)
+        acceleration = self._meters_to_feet(self._icm_state.acceleration[2] -
+                                            9.80665)
 
         measurements = [float(altitude), float(acceleration)]
 
@@ -84,12 +85,9 @@ class FilterComponent(Component):
 
         dp = 1
         ds = 0
-        di = (self._dt ** 2) / 2
+        di = (self._dt**2) / 2
 
-        phi = np.array([
-            [dp, self._dt, di],
-            [ds, dp, self._dt],
-            [ds, ds, dp]])
+        phi = np.array([[dp, self._dt, di], [ds, dp, self._dt], [ds, ds, dp]])
 
         self._prev_time = self._loop_state.time
 
@@ -97,4 +95,3 @@ class FilterComponent(Component):
 
     def _meters_to_feet(self, val):
         return val * 3.28084
-

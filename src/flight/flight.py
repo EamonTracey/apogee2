@@ -47,8 +47,11 @@ class Flight:
         filter_state = active_states_component.get_filter_state
 
         # Kalman Filter.
-        filter_component = FilterComponent(loop_state, bmp390_state,
-                                            icm20649_state, phase_state, vertical = True)
+        filter_component = FilterComponent(loop_state,
+                                           bmp390_state,
+                                           icm20649_state,
+                                           phase_state,
+                                           vertical=True)
         filter_state = filter_component.state
         active_states_component.filter_state = filter_state
         self.loop.add_component(filter_component, 30)
@@ -59,11 +62,11 @@ class Flight:
         active_states_component.phase_state = phase_state
         self.loop.add_component(phase_component, 30)
 
-
         # Log.
         log_path = f"{name}.csv"
-        log_component = LogComponent(log_path, results, loop_state, bmp390_state,
-                                     bno085_state, icm20649_state, filter_state, phase_state) 
+        log_component = LogComponent(log_path, results, loop_state,
+                                     bmp390_state, bno085_state,
+                                     icm20649_state, filter_state, phase_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
