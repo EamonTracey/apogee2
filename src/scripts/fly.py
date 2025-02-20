@@ -30,12 +30,12 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
         utc_date = datetime.datetime.now(datetime.UTC)
         utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
         name = f"ACS_{utc_date_string}"
-    
+
     # Results me want.
     results = 0
     if truncatedresults:
         results = 1
-    if fullresults: 
+    if fullresults:
         results = 2
 
     # Initialize logging.
@@ -52,16 +52,13 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
     logger.info("What did one flap say to the other flap? Smells like apogee.")
     logger.info(
         "ACS needed ballast, so we put Will's mom in the module. Problem was, "
-        "we CATO'd."
-    )
+        "we CATO'd.")
     logger.info(
         "The rocket asked, \"What's your goal in life?\" ACS replied, \"Just "
-        "trying to get as far away from here as possible.\""
-    )
+        "trying to get as far away from here as possible.\"")
     logger.info(
         "Knock knock. Who's there? Apogee. Apogee who? Apogee-z, Will's mom "
-        "smells bad."
-    )
+        "smells bad.")
     logger.info("Skibidi")
     logger.info("It's beginning to look a gyatt like Rizzmas"
                 "Everywhere online"

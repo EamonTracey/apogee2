@@ -1,5 +1,6 @@
 import click
 
+
 @click.command(context_settings={"show_default": True})
 @click.option("--vehicle", default="drjoe", help="The vehicle to simulate.")
 @click.option("--motor",

@@ -1,5 +1,6 @@
 import click
 
+
 @click.command(context_settings={"show_default": True})
 @click.argument("filepath", type=str, nargs=1)
 @click.option("-s",
@@ -19,4 +20,3 @@ def plot(filepath, significant: bool):
         print(f"How long as ACS on: {timeon} (s)")
         print(f"Apogee: {apogeeval} (ft)")
         print(f"Loop Slip Count: {slipcount}")
-

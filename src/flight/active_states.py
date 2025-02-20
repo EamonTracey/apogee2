@@ -7,9 +7,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class PhaseState:
     phase: Stage = Stage.GROUND
+
 
 @dataclass
 class FilterState:
@@ -25,12 +27,13 @@ class FilterState:
 
 
 class ActiveStateComponent(Component):
+
     def __init__(self, ):
         self.phase_state = PhaseState()
         self.filter_state = FilterState()
 
         logger.info("Initialized Active State Component")
-    
+
     @property
     def get_phase_state(self):
         return self.phase_state
@@ -41,8 +44,3 @@ class ActiveStateComponent(Component):
 
     def dispatch(self):
         pass
-
-        
-
-    
-
