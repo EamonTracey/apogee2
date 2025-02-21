@@ -7,15 +7,19 @@ from flight.bmp390 import BMP390State
 from flight.bno085 import BNO085State
 from flight.icm20649 import ICM20649State
 from flight.active_states import FilterState
-from flight.active_states import PhaseState
+from flight.active_states import StageState
 
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
-    "Phase",
-    "Filtered_Altitude",
-    "Filtered_Z_Velocity",
-    "Filtered_Z_Acceleration",
+    "Stage",
+    "Altitude",
+    "Velocity_X",
+    "Velocity_Y",
+    "Velocity_Z",
+    "Acceleration_X",
+    "Acceleration_Y",
+    "Acceleration_Z",
     "Altitude_BMP390",
     "Temperature_BMP390",
     "Acceleration_X_BNO085",
@@ -57,7 +61,7 @@ class LogComponent(Component):
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, filter_state: FilterState,
-                 phase_state: PhaseState):
+                 stage_state: StageState):
         self._state = LogState()
 
         self._path = path
@@ -65,7 +69,7 @@ class LogComponent(Component):
         self._bmp390_state = bmp390_state
         self._bno085_state = bno085_state
         self._icm20649_state = icm20649_state
-        self._phase_state = phase_state
+        self._stage_state = stage_state
         self._filter_state = filter_state
 
         self._file = open(self._path, "w")
@@ -73,14 +77,14 @@ class LogComponent(Component):
         self._writer.writerow(HEADERS)
         self._results = results
 
-    def dispatch(self):
+    def dispatch(self, time: float):
         log = [
-            self._loop_state.time - self._loop_state.first_time,
+            time,
             self._loop_state.slip_count,
-            self._phase_state.phase,
-            self._filter_state.altitude_filtered,
-            self._filter_state.velocity_filtered,
-            self._filter_state.acceleration_filtered,
+            self._stage_state.stage,
+            self._filter_state.altitude,
+            *self._filter_state.velocity,
+            *self._filter_state.acceleration,
             self._bmp390_state.altitude,
             self._bmp390_state.temperature,
             *self._bno085_state.acceleration,

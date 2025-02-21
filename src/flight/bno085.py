@@ -52,7 +52,7 @@ class BNO085Component(Component):
     def state(self):
         return self._state
 
-    def dispatch(self):
+    def dispatch(self, time: float):
         # Read the raw acceleration.
         acceleration = None
         try:

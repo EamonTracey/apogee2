@@ -45,7 +45,7 @@ class FusionComponent(Component):
     def state(self):
         return self._state
 
-    def dispatch(self):
+    def dispatch(self, time: float):
 
         accel = list(imu_state.acceleration) / 9.807
         gyro = list(imu_state.gyro)
