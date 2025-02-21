@@ -39,7 +39,7 @@ class BMP390Component(Component):
     def state(self):
         return self._state
 
-    def dispatch(self):
+    def dispatch(self, time: float):
         altitude = None
         try:
             altitude = self._bmp390.altitude

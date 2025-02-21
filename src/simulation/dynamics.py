@@ -4,6 +4,7 @@ from typing import Optional
 import numpy as np
 from scipy.spatial.transform import Rotation
 
+from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION
 from base.constants import PITCH, ROLL, YAW
 from base.stage import Stage
@@ -13,30 +14,40 @@ from simulation.vehicle import Vehicle
 
 
 @dataclass
-class DynamicsSimulationState:
+class DynamicsState:
     time: float = 0.0
+
+    # SI units.
 
     position: tuple[float, float, float] = (0.0, 0.0, 0.0)
     linear_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     angular_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     orientation: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 0.0)
 
+    mass: float = 0
+
     stage: Stage = Stage.GROUND
 
 
-class DynamicsSimulation:
+class DynamicsComponent(Component):
 
     def __init__(self, vehicle: Vehicle, motor: Motor,
                  environment: Environment):
+        self._state = DynamicsState()
+        self._state.mass = vehicle.calculate_mass(0)
+
         self._vehicle = vehicle
         self._motor = motor
         self._environment = environment
 
-        self._state = DynamicsSimulationState()
+        self._previous_time = 0
 
     @property
     def state(self):
         return self._state
+
+    def dispatch(self, time: float):
+        self._step(time - self._previous_time)
 
     def _calculate_derivatives(self, time, position, linear_momentum,
                                orientation, angular_momentum):
@@ -156,8 +167,10 @@ class DynamicsSimulation:
         elif self._state.stage == Stage.DESCENT:
             ...
 
-    def step(self, time_delta: float):
-        assert time_delta > 0
+    def _step(self, time_delta: float):
+        assert time_delta >= 0
+        if (time_delta == 0):
+            return
 
         # Unpack the simulation state into numpy objects.
         time = self._state.time
@@ -197,5 +210,6 @@ class DynamicsSimulation:
         # Update the flight stage.
         self._update_stage()
 
-        # Update the simulation time
+        # Update other simulation state items.
         self._state.time += time_delta
+        self._state.mass = self._motor.calculate_mass(self._state.time)

@@ -9,18 +9,20 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class LoopState:
+    # Frequency in Hertz.
     frequency: int = 0
+    # Period in seconds.
     period: float = 0
 
     components: list = field(default_factory=list)
 
+    # First Unix epoch time in seconds.
     first_time: float = 0
+    # Last Unix epoch time in seconds.
     time: float = 0
+
     step_count: int = 0
     slip_count: int = 0
-
-    # How often altimeter gets zeroed on Ground, in seconds
-    zero_period: int = 60 * 10
 
 
 class Loop:
@@ -44,7 +46,7 @@ class Loop:
         for component, frequency in self._state.components:
             if self._state.step_count % (self._state.frequency //
                                          frequency) == 0:
-                component.dispatch()
+                component.dispatch(self._state.time)
 
     def add_component(self, component: Component, frequency: int):
         assert frequency > 0
@@ -59,7 +61,9 @@ class Loop:
         iterator = range(steps) if steps > 0 else iter(int, 1)
 
         start = time.time()
-        self._state.first_time = start
+        if self._state.first_time == 0:
+            self._state.first_time = start
+
         for _ in iterator:
             self._state.time = start
             self._step()
