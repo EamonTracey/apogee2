@@ -6,13 +6,15 @@ from base.loop import LoopState
 from flight.bmp390 import BMP390State
 from flight.bno085 import BNO085State
 from flight.icm20649 import ICM20649State
-from flight.active_states import FilterState
-from flight.active_states import StageState
+from flight.filter import FilterState
+from flight.stage import StageState
+from flight.control import ControlState
 
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
     "Stage",
+    "Servo Angle",
     "Altitude",
     "Velocity_X",
     "Velocity_Y",
@@ -60,8 +62,8 @@ class LogComponent(Component):
 
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
-                 icm20649_state: ICM20649State, filter_state: FilterState,
-                 stage_state: StageState):
+                 icm20649_state: ICM20649State, filter_state: FilterState, 
+                 control_state: ControlState, stage_state: StageState):
         self._state = LogState()
 
         self._path = path
@@ -71,6 +73,7 @@ class LogComponent(Component):
         self._icm20649_state = icm20649_state
         self._stage_state = stage_state
         self._filter_state = filter_state
+        self._control_state = control_state
 
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
@@ -82,6 +85,7 @@ class LogComponent(Component):
             time,
             self._loop_state.slip_count,
             self._stage_state.stage,
+            self._control_state.servo_angle
             self._filter_state.altitude,
             *self._filter_state.velocity,
             *self._filter_state.acceleration,
