@@ -2,17 +2,20 @@ import click
 
 
 @click.command(context_settings={"show_default": True})
-@click.argument("path", type=str, nargs=1)
+@click.argument("path", type=click.STRING, nargs=-1)
 @click.option("-s",
               "--significant",
               is_flag=True,
               help="Display significant flight data.")
 def plot(path: str, significant: bool):
     """Plot and review ACS flight data."""
+    path = ' '.join(path)
+
     import matplotlib.pyplot as plt
     import pandas as pd
 
     df = pd.read_csv(path)
+
     plt.plot(df["Time"], df["Altitude_BMP390"], color="red")
     plt.xlabel("Time (s)")
     plt.ylabel("Altitude (ft)")
