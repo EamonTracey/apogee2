@@ -34,5 +34,7 @@ class SimulatedFilterComponent(Component):
 
     def dispatch(self, time: float):
         self._state.altitude = METERS_TO_FEET * self._dynamics_state.altitude
-        self._state.velocity = tuple(METERS_TO_FEET * lm / self._dynamics_state.mass for lm in self._dynamics_state.linear_momentum)
+        self._state.velocity = tuple(
+            METERS_TO_FEET * lm / self._dynamics_state.mass
+            for lm in self._dynamics_state.linear_momentum)
         # self._state.acceleration = (acceleration[0], acceleration[1], self.filter.x[2])

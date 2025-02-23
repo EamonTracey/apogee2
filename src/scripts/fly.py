@@ -27,7 +27,7 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
 
     # Naming is hard.
     if name is None:
-        utc_date = datetime.datetime.now(datetime.UTC)
+        utc_date = datetime.datetime.now(datetime.timezone.utc)
         utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
         name = f"ACS_{utc_date_string}"
 

@@ -62,7 +62,7 @@ class LogComponent(Component):
 
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
-                 icm20649_state: ICM20649State, filter_state: FilterState, 
+                 icm20649_state: ICM20649State, filter_state: FilterState,
                  control_state: ControlState, stage_state: StageState):
         self._state = LogState()
 
@@ -85,7 +85,7 @@ class LogComponent(Component):
             time,
             self._loop_state.slip_count,
             self._stage_state.stage,
-            self._control_state.servo_angle
+            self._control_state.servo_angle,
             self._filter_state.altitude,
             *self._filter_state.velocity,
             *self._filter_state.acceleration,
