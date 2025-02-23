@@ -14,7 +14,7 @@ HEADERS = [
     "Time",
     "Loop_Slip_Count",
     "Stage",
-    "Servo Angle",
+    "Servo_Angle",
     "Altitude",
     "Velocity_X",
     "Velocity_Y",
