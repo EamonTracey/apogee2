@@ -36,8 +36,8 @@ class StageComponent(Component):
 
     def dispatch(self, time: float):
         altitude = self._filter_state.altitude
-        velocity = self._filter_state.velocity
-        acceleration = self._filter_state.acceleration
+        velocity = self._filter_state.velocity[2]
+        acceleration = self._filter_state.acceleration[2]
 
         # GROUND -> BURN.
         if self._state.stage == Stage.GROUND:

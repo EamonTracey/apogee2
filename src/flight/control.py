@@ -1,14 +1,15 @@
 from dataclasses import dataclass
 import logging
-
 import sys
+
 import board
 import microcontroller
 import pwmio
 
+from base.component import Component
+from base.stage import Stage
 from flight.filter import FilterState
 from flight.stage import StageState
-from base.component import Component
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +89,7 @@ class ServoMotor:
 
         logging.debug(f"Actuating servo to {degrees} degrees")
 
-        degrees = map(degrees)
+        degrees = self.map(degrees)
 
         percentage = degrees / 270
         duty_cycle = ServoMotor.MOTOR_MIN + (ServoMotor.MOTOR_MAX -
