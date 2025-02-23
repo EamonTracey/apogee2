@@ -45,10 +45,10 @@ class ControlComponent(Component):
             self._first_time = time
 
         if self._first_time is not None and self._stage_state.stage == Stage.COAST:
-            if time - first_time > 4:
+            if time - self._first_time > 4:
                 self._state.servo_angle = 0
 
-            elif time - first_time > 2:
+            elif time - self._first_time > 2:
                 self._state.servo_angle = 45
 
         # Rotate Servo
