@@ -5,7 +5,7 @@ from filterpy.kalman import KalmanFilter
 import numpy as np
 
 from base.component import Component
-from base.constants import EARTH_GRAVITY_ACCELERATION
+from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
 from base.loop import LoopState
 from base.stage import Stage
 from flight.bmp390 import BMP390State
@@ -32,12 +32,12 @@ class FilterState:
 class FilterComponent(Component):
 
     def __init__(self, loop_state: LoopState, bmp390_state: BMP390State,
-                 icm_state: ICM20649State):
+                 icm20649_state: ICM20649State):
         self._state = FilterState()
 
         self._loop_state = loop_state
         self._bmp390_state = bmp390_state
-        self._icm_state = icm_state
+        self._icm20649_state = icm20649_state
 
         self._initialize_filter()
 
@@ -64,7 +64,9 @@ class FilterComponent(Component):
         altitude = METERS_TO_FEET * self._bmp390_state.altitude
 
         # Offset the Z acceleration of the accelerometer by gravity.
-        acceleration = tuple(METERS_TO_FEET * a for a in acceleration)
+        acceleration = [
+            METERS_TO_FEET * a for a in self._icm20649_state.acceleration
+        ]
         acceleration[2] -= METERS_TO_FEET * EARTH_GRAVITY_ACCELERATION
 
         measurements = [float(altitude), float(acceleration[2])]

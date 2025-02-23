@@ -7,10 +7,11 @@ import busio
 from base.loop import Loop
 from flight.bmp390 import BMP390Component
 from flight.bno085 import BNO085Component
-from flight.icm20649 import ICM20649Component
-from flight.stage import StageComponent
+from flight.control import ControlComponent
 from flight.filter import FilterComponent
+from flight.icm20649 import ICM20649Component
 from flight.log import LogComponent
+from flight.stage import StageComponent
 
 logger = logging.getLogger(__name__)
 
@@ -59,8 +60,8 @@ class Flight:
         log_path = f"{name}.csv"
         log_component = LogComponent(log_path, results, loop_state,
                                      bmp390_state, bno085_state,
-                                     icm20649_state, filter_state, stage_state,
-                                     control_state)
+                                     icm20649_state, filter_state,
+                                     control_state, stage_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
