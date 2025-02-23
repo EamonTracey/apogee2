@@ -32,7 +32,7 @@ class ControlComponent(Component):
         self._servo_motor = ServoMotor(board.D12)
 
         # First iteration in burnout.
-        self._first = True
+        self._first_time = None
 
     @property
     def state(self):
@@ -41,17 +41,15 @@ class ControlComponent(Component):
     def dispatch(self, time: float):
 
         # TEMPORARY: Actuate motor to max starting 2 seconds after burnout for 2 seconds, then close.
-        if self._first and self._stage_state.stage == Stage.COAST:
-            self._first = False
+        if self._first_time is None and self._stage_state.stage == Stage.COAST:
+            self._first_time = time
 
-            first_time = time
-
-        if self._stage_state.stage == Stage.COAST:
-            if time - first_time > 2:
-                self._state.servo_angle = 45
-
-            elif time - first_time > 4:
+        if self._first_time is not None and self._stage_state.stage == Stage.COAST:
+            if time - first_time > 4:
                 self._state.servo_angle = 0
+
+            elif time - first_time > 2:
+                self._state.servo_angle = 45
 
         # Rotate Servo
         self._servo_motor.rotate(self._state.servo_angle)
