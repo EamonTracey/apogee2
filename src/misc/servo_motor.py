@@ -18,7 +18,7 @@ class ServoMotor:
 
     def rotate(self, degrees: float):
         degrees = 135 - degrees
-        if not (135 >=  degrees >= 90):
+        if not (135 >= degrees >= 90):
             print("Servo motor rotation must be in the range 135-90 degrees.",
                   file=sys.stderr)
             return

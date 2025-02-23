@@ -76,7 +76,8 @@ class FilterComponent(Component):
 
         self._state.altitude = self.filter.x[0]
         self._state.velocity = (0, 0, self.filter.x[1])
-        self._state.acceleration = (acceleration[0], acceleration[1], self.filter.x[2])
+        self._state.acceleration = (acceleration[0], acceleration[1],
+                                    self.filter.x[2])
 
     def _generate_phi(self, time: float):
         dt = time - self._previous_time

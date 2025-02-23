@@ -12,12 +12,15 @@ from base.component import Component
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class ControlState:
     # Current Servo Angle.
-    servo_angle: float = 0 
+    servo_angle: float = 0
+
 
 class ControlComponent(Component):
+
     def __init__(self, filter_state: FilterState, stage_state: StageState):
 
         self._state = ControlState()
@@ -26,7 +29,7 @@ class ControlComponent(Component):
         self._stage_state = stage_state
 
         self._servo_motor = ServoMotor(board.D12)
-        
+
         # First iteration in burnout.
         self._first = True
 
@@ -35,7 +38,7 @@ class ControlComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-        
+
         # TEMPORARY: Actuate motor to max starting 2 seconds after burnout for 2 seconds, then close.
         if self._first and self._stage_state.stage == Stage.COAST:
             self._first = False
@@ -69,14 +72,18 @@ class ServoMotor:
         return 135 - n
 
     def rotate(self, degrees: float):
-        # Motor degrees of 135 is fully closed (0 degree flaps), 
+        # Motor degrees of 135 is fully closed (0 degree flaps),
         # Motor degrees of 90 is fully open. (45 degree flaps)
 
         if not (0 <= degrees <= 270):
-            logging.warning(f"ERROR: Servo motor rotation of {degrees} must be in the range 0-270 degrees.")
+            logging.warning(
+                f"ERROR: Servo motor rotation of {degrees} must be in the range 0-270 degrees."
+            )
             return
         if not (0 <= degrees <= 45):
-            logging.warning(f"ERROR: Unsafe servo actuation percentage ({degrees}), stay in [0, 45].")
+            logging.warning(
+                f"ERROR: Unsafe servo actuation percentage ({degrees}), stay in [0, 45]."
+            )
             return
 
         logging.debug(f"Actuating servo to {degrees} degrees")
@@ -90,4 +97,3 @@ class ServoMotor:
         self.motor.duty_cycle = duty_cycle
 
         self.degrees = degrees
-

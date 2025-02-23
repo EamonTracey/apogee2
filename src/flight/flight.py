@@ -40,8 +40,7 @@ class Flight:
         self.loop.add_component(icm20649_component, 30)
 
         # Kalman Filter.
-        filter_component = FilterComponent(loop_state,
-                                           bmp390_state,
+        filter_component = FilterComponent(loop_state, bmp390_state,
                                            icm20649_state)
         filter_state = filter_component.state
         self.loop.add_component(filter_component, 30)
@@ -60,7 +59,8 @@ class Flight:
         log_path = f"{name}.csv"
         log_component = LogComponent(log_path, results, loop_state,
                                      bmp390_state, bno085_state,
-                                     icm20649_state, filter_state, stage_state, control_state)
+                                     icm20649_state, filter_state, stage_state,
+                                     control_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
