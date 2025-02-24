@@ -1,0 +1,38 @@
+20250223123914:scripts.fly:INFO:Apogee Control System. Alpha Kappa Sigma. ΑΚΣ.
+20250223123914:scripts.fly:INFO:Developed by the Notre Dame Rocketry Team.
+20250223123914:scripts.fly:INFO:name='ACS_20250223173914'
+20250223123914:scripts.fly:INFO:Jokes.
+20250223123914:scripts.fly:INFO:What did one flap say to the other flap? Smells like apogee.
+20250223123914:scripts.fly:INFO:ACS needed ballast, so we put Will's mom in the module. Problem was, we CATO'd.
+20250223123914:scripts.fly:INFO:The rocket asked, "What's your goal in life?" ACS replied, "Just trying to get as far away from here as possible."
+20250223123914:scripts.fly:INFO:Knock knock. Who's there? Apogee. Apogee who? Apogee-z, Will's mom smells bad.
+20250223123914:scripts.fly:INFO:Skibidi
+20250223123914:scripts.fly:INFO:It's beginning to look a gyatt like RizzmasEverywhere onlineMy sigma level is maxedYour food has fanum taxedWith skibidis and rizzlers in OhioIt's beginning to look a gyatt like RizzmasBaby Gronk rizzed up LivvyBut the prettiest sight to seeIs how skibidi they will beDid you pray today?
+20250223123914:scripts.fly:INFO:ACS operates on a TeasleysMom model of the gravity.
+20250223123914:scripts.fly:INFO:The way he's actuating is so tuff.
+20250223123914:base.loop:INFO:Loop initialized.
+20250223123914:base.loop:INFO:self._state.frequency=30
+20250223123914:base.loop:INFO:self._state.period=0.03333333333333333
+20250223123914:flight.bmp390:INFO:BMP390 initialized.
+20250223123914:flight.bmp390:INFO:self._bmp390.pressure_oversampling=1
+20250223123914:flight.bmp390:INFO:self._bmp390.temperature_oversampling=1
+20250223123914:flight.bmp390:INFO:self._bmp390.filter_coefficient=0
+20250223123914:base.loop:INFO:Adding component BMP390Component with frequency 30 Hz.
+20250223123916:flight.bno085:INFO:BNO085 initialized.
+20250223123916:flight.bno085:INFO:self._bno085.calibration_status=1
+20250223123916:base.loop:INFO:Adding component BNO085Component with frequency 30 Hz.
+20250223123916:flight.icm20649:INFO:ICM20649 initialized.
+20250223123916:flight.icm20649:INFO:self._icm20649.accelerometer_range=3
+20250223123916:flight.icm20649:INFO:self._icm20649.accelerometer_data_rate_divisor=20
+20250223123916:flight.icm20649:INFO:self._icm20649.accelerometer_data_rate=53.57142857142857
+20250223123916:flight.icm20649:INFO:self._icm20649.accel_dlpf_cutoff=0
+20250223123916:flight.icm20649:INFO:self._icm20649.gyro_range=0
+20250223123916:flight.icm20649:INFO:self._icm20649.gyro_data_rate_divisor=10
+20250223123916:flight.icm20649:INFO:self._icm20649.gyro_data_rate=100.0
+20250223123916:flight.icm20649:INFO:self._icm20649.gyro_dlpf_cutoff=0
+20250223123916:base.loop:INFO:Adding component ICM20649Component with frequency 30 Hz.
+20250223123916:flight.filter:INFO:Kalman Filter Initialized.
+20250223123916:base.loop:INFO:Adding component FilterComponent with frequency 30 Hz.
+20250223123916:base.loop:INFO:Adding component StageComponent with frequency 30 Hz.
+20250223123916:base.loop:INFO:Adding component ControlComponent with frequency 30 Hz.
+20250223123916:base.loop:INFO:Adding component LogComponent with frequency 30 Hz.
