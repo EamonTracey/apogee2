@@ -39,7 +39,6 @@ class ControlComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-
         # TEMPORARY: Actuate motor to max starting 2 seconds after burnout for 2 seconds, then close.
         if self._first_time is None and self._stage_state.stage == Stage.COAST:
             self._first_time = time
