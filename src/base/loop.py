@@ -46,7 +46,7 @@ class Loop:
         for component, frequency in self._state.components:
             if self._state.step_count % (self._state.frequency //
                                          frequency) == 0:
-                component.dispatch(self._state.time)
+                component.dispatch(self._state.time - self._state.first_time)
 
     def add_component(self, component: Component, frequency: int):
         assert frequency > 0
