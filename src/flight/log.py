@@ -80,6 +80,10 @@ class LogComponent(Component):
         self._writer.writerow(HEADERS)
         self._results = results
 
+    @property
+    def state(self):
+        return self._state
+
     def dispatch(self, time: float):
         log = [
             time,
