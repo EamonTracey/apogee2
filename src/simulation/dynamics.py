@@ -25,6 +25,10 @@ class DynamicsState:
     angular_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     orientation: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 0.0)
 
+    # Acceleration is populated by _calculate_derivative via the forces it calculates.
+    # Acceleration is not considered part of the raw state of the dynamics simulation.
+    acceleration: tuple[float, float, float] = (0.0, 0.0, 0.0)
+
     mass: float = 0
 
     stage: Stage = Stage.GROUND
@@ -144,6 +148,7 @@ class DynamicsComponent(Component):
                     vehicle_roll,
                     np.cross(vehicle_roll, velocity_apparent_direction))
         force = force_thrust + force_gravity + force_axial + force_normal
+        self._state.acceleration = tuple(map(float, force / mass_total))
 
         # Compute the torque.
         torque_normal = np.array((0, 0, 0))
@@ -215,4 +220,5 @@ class DynamicsComponent(Component):
 
         # Update other simulation state items.
         self._state.time += time_delta
-        self._state.mass = self._vehicle.mass + self._motor.calculate_mass(self._state.time)
+        self._state.mass = self._vehicle.mass + self._motor.calculate_mass(
+            self._state.time)
