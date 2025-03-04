@@ -16,3 +16,18 @@ def quatern2euler(w, x, y, z):
     psi = np.arctan2(R21, R11)
 
     return (phi, theta, psi)
+
+
+def zenith_azimuth_to_quaternion(
+        zenith: float, azimuth: float) -> tuple[float, float, float, float]:
+    # input in degrees
+
+    zenith = np.radians(zenith)
+    azimuth = np.radians(azimuth)
+
+    w = np.cos(zenith / 2)
+    x = np.sin(zenith / 2) * np.sin(azimuth)
+    y = np.sin(zenith / 2) * np.cos(azimuth)
+    z = 0
+
+    return (w, x, y, z)

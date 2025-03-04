@@ -8,6 +8,7 @@ from scipy.spatial.transform import Rotation
 from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION
 from base.constants import PITCH, ROLL, YAW
+from base.math import zenith_azimuth_to_quaternion
 from base.stage import Stage
 from simulation.environment import Environment
 from simulation.motor import Motor
@@ -36,14 +37,20 @@ class DynamicsState:
 
 class DynamicsComponent(Component):
 
-    def __init__(self, vehicle: Vehicle, motor: Motor,
-                 environment: Environment):
+    def __init__(self,
+                 vehicle: Vehicle,
+                 motor: Motor,
+                 environment: Environment,
+                 rail_zenith: float = 0,
+                 rail_azimuth: float = 0):
         self._state = DynamicsState()
 
         self._vehicle = vehicle
         self._motor = motor
         self._environment = environment
 
+        self._state.orientation = zenith_azimuth_to_quaternion(
+            rail_zenith, rail_azimuth)
         self._state.mass = vehicle.mass + motor.calculate_mass(0)
 
         self._previous_time = 0
