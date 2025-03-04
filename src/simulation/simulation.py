@@ -1,30 +1,27 @@
 import logging
 from typing import Optional
 
-import board
-import busio
-
 from base.loop import Loop
-from flight.stage import StageComponent
+from simulation.dynamics import DynamicsComponent
+from simulation.environment import Environment
+from simulation.motor import Motor
+from simulation.vehicle import Vehicle
 
 logger = logging.getLogger(__name__)
 
 
 class Simulation:
 
-    def __init__(self, name: str):
-        self.loop = Loop(30)
+    def __init__(self, frequency: int, vehicle: Vehicle, motor: Motor, environment: Environment):
+        self.loop = Loop(frequency)
         loop_state = self.loop.state
 
-        # Simulated filter component.
-        simulated_filter_component = SimulatedFilterComponent(loop_state)
-        simulated_filter_state = simulated_filter_component.state
-        self.loop.add_component(simulated_filter_component, 30)
+        dynamics_component = DynamicsComponent(vehicle, motor, environment)
+        dynamics_state = dynamics_component.state
+        self.loop.add_component(dynamics_component, frequency)
 
-        # Stage Determination.
-        stage_component = StageComponent(filter_state)
-        stage_state = stage_component.state
-        self.loop.add_component(stage_component, 30)
+        self.dynamics_state = dynamics_state
 
     def run(self):
-        self.loop.run(0)
+        while self.dynamics_state.position[2] > -100:
+            self.loop.run(1)
