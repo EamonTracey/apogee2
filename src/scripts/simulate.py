@@ -2,6 +2,7 @@ import logging
 
 import click
 
+
 @click.command(context_settings={"show_default": True})
 @click.option("-f",
               "--frequency",
