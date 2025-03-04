@@ -3,3 +3,6 @@ nohup.out
 
 *.log
 *.csv
+
+vine-run-info
+*-workers
