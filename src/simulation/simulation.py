@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 class Simulation:
 
-    def __init__(self, frequency: int, vehicle: Vehicle, motor: Motor, environment: Environment):
+    def __init__(self, frequency: int, vehicle: Vehicle, motor: Motor,
+                 environment: Environment):
         self.loop = Loop(frequency)
         loop_state = self.loop.state
 

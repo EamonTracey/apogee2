@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 from typing import Optional
 
 import numpy as np
@@ -11,6 +12,8 @@ from base.stage import Stage
 from simulation.environment import Environment
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -32,11 +35,12 @@ class DynamicsComponent(Component):
     def __init__(self, vehicle: Vehicle, motor: Motor,
                  environment: Environment):
         self._state = DynamicsState()
-        self._state.mass = vehicle.mass + motor.calculate_mass(0)
 
         self._vehicle = vehicle
         self._motor = motor
         self._environment = environment
+
+        self._state.mass = vehicle.mass + motor.calculate_mass(0)
 
         self._previous_time = 0
 
@@ -46,6 +50,7 @@ class DynamicsComponent(Component):
 
     def dispatch(self, time: float):
         self._step(time - self._previous_time)
+        self._previous_time = time
 
     def _calculate_derivatives(self, time, position, linear_momentum,
                                orientation, angular_momentum):
@@ -122,7 +127,7 @@ class DynamicsComponent(Component):
         # Compute the mach number.
         mach_number = 0
         # TODO: speed of sound using environment
-        speed_of_sound = 343
+        speed_of_sound = 1125.33
         mach_number = velocity_apparent_magnitude / speed_of_sound
 
         # Compute the force.
@@ -133,9 +138,9 @@ class DynamicsComponent(Component):
         force_normal = np.array((0, 0, 0))
         if velocity_apparent_magnitude != 0:
             force_axial = -1 * self._vehicle.calculate_axial(
-                angle_of_attack, mach_number) * vehicle_roll
+                0, angle_of_attack, mach_number) * vehicle_roll
             force_normal = -1 * self._vehicle.calculate_normal(
-                angle_of_attack, mach_number) * np.cross(
+                0, angle_of_attack, mach_number) * np.cross(
                     vehicle_roll,
                     np.cross(vehicle_roll, velocity_apparent_direction))
         force = force_thrust + force_gravity + force_axial + force_normal
@@ -210,4 +215,4 @@ class DynamicsComponent(Component):
 
         # Update other simulation state items.
         self._state.time += time_delta
-        self._state.mass = self._motor.calculate_mass(self._state.time)
+        self._state.mass = self._vehicle.mass + self._motor.calculate_mass(self._state.time)
