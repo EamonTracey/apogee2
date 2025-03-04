@@ -5,7 +5,7 @@ from base.component import Component
 from simulation.dynamics import DynamicsState
 
 HEADERS = [
-    "Time"
+    "Time",
     "Stage",
     "Mass",
     "Position_X",
