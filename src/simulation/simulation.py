@@ -13,16 +13,17 @@ logger = logging.getLogger(__name__)
 class Simulation:
 
     def __init__(self, frequency: int, vehicle: Vehicle, motor: Motor,
-                 environment: Environment):
+                 environment: Environment, zenith: float, azimuth: float):
         self.loop = Loop(frequency)
         loop_state = self.loop.state
 
-        dynamics_component = DynamicsComponent(vehicle, motor, environment)
+        dynamics_component = DynamicsComponent(vehicle, motor, environment,
+                                               zenith, azimuth)
         dynamics_state = dynamics_component.state
         self.loop.add_component(dynamics_component, frequency)
 
         self.dynamics_state = dynamics_state
 
     def run(self):
-        while self.dynamics_state.position[2] > -100:
+        while self.dynamics_state.position[2] > -1:
             self.loop.run(1)

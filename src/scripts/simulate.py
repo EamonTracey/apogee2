@@ -20,7 +20,16 @@ import click
               "--environment",
               default="threeoaks_basic",
               help="The environment (e.g., temperature, pressure, wind).")
-def simulate(vehicle: str, motor: str, environment: str, frequency: int):
+@click.option("-z",
+              "--zenith",
+              default=0.0,
+              help="The zenith angle of the launch rail.")
+@click.option("-a",
+              "--azimuth",
+              default=0.0,
+              help="The azimuth angle of the launch rail.")
+def simulate(vehicle: str, motor: str, environment: str, frequency: int,
+             zenith: float, azimuth: float):
     """Run a complete software-in-the-loop rocket flight simulation."""
     from base.stage import Stage
     from simulation.dynamics import DynamicsComponent
@@ -44,7 +53,8 @@ def simulate(vehicle: str, motor: str, environment: str, frequency: int):
     environment_file = f"data/environments/{environment}.json"
     environment = Environment.from_json(environment_file)
 
-    simulation = Simulation(frequency, vehicle, motor, environment)
+    simulation = Simulation(frequency, vehicle, motor, environment, zenith,
+                            azimuth)
     simulation.run()
 
 
