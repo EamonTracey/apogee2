@@ -14,7 +14,7 @@ from flight.icm20649 import ICM20649State
 logger = logging.getLogger(__name__)
 
 # TODO: Implement filtration for X,Y Accel/velo/pos? and 3DOF Mag & ICMGyro/BNOGyro.
-# Also include Z accel w/grav for fusion. 
+# Also include Z accel w/grav for fusion.
 # TODO: Continuously zero the altitude at ground.
 
 

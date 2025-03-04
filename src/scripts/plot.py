@@ -1,5 +1,6 @@
 import click
 
+
 @click.command(context_settings={"show_default": True})
 @click.argument("path", type=click.STRING, nargs=-1, required=True)
 @click.option("-s",
@@ -13,13 +14,10 @@ import click
     help="Include to plot full duration ACS is on. Default is flight only.")
 @click.option("-p",
               "--plot_choice",
-              type=click.Choice(
-                  ["Alt", "Velz", "Accelz", "Servo"]),
+              type=click.Choice(["Alt", "Velz", "Accelz", "Servo"]),
               help="Plot selected data vs. time.")
-
 ## TODO: Add functionality to plot multiple datasets on same plot
 ## TODO: More data options as ACS algorithm improves (prediction, target, zenith, etc.)
-
 def plot(path: str, significant: bool, alldata: bool, plot_choice: str):
     """A suite of tools to plot analyze flight data post-launch."""
     import matplotlib.pyplot as plt
@@ -30,15 +28,16 @@ def plot(path: str, significant: bool, alldata: bool, plot_choice: str):
 
     # Prints to console a few important data points about the flight.
     if significant:
-        
+
         time_on = df["Time"].iloc[-1]
         apogee_val = df["Altitude"].max()
         max_servo = df["Servo_Angle"].max()
         if "OVERSHOOT" not in df['Stage'].values:
             overshoot_time = 0.0
         else:
-            overshoot_time = (df.loc[df["Stage"] == "OVERSHOOT", "Time"].max() -
-                            df.loc[df["Stage"] == "OVERSHOOT", "Time"].min())
+            overshoot_time = (
+                df.loc[df["Stage"] == "OVERSHOOT", "Time"].max() -
+                df.loc[df["Stage"] == "OVERSHOOT", "Time"].min())
 
         print(f"Apogee: {apogee_val} ft")
         print(f"How long as ACS on: {time_on} sec")
@@ -56,7 +55,7 @@ def plot(path: str, significant: bool, alldata: bool, plot_choice: str):
     else:
         rangevals = range(0, df.index[-1])
 
-    # Altitude Plot 
+    # Altitude Plot
     if plot_choice == "Alt":
 
         plt.plot(df.iloc[rangevals, df.columns.get_loc("Time")],
