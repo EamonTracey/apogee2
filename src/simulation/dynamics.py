@@ -17,8 +17,6 @@ from simulation.vehicle import Vehicle
 class DynamicsState:
     time: float = 0.0
 
-    # SI units.
-
     position: tuple[float, float, float] = (0.0, 0.0, 0.0)
     linear_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
     angular_momentum: tuple[float, float, float] = (0.0, 0.0, 0.0)
@@ -34,7 +32,7 @@ class DynamicsComponent(Component):
     def __init__(self, vehicle: Vehicle, motor: Motor,
                  environment: Environment):
         self._state = DynamicsState()
-        self._state.mass = vehicle.calculate_mass(0)
+        self._state.mass = vehicle.mass + motor.calculate_mass(0)
 
         self._vehicle = vehicle
         self._motor = motor
