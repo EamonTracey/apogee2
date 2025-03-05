@@ -8,8 +8,8 @@ import click
 logger = logging.getLogger(__name__)
 
 SCRIPT = """#!/usr/bin/bash
-module load ansys/2024R1
-/opt/crc/a/ansys/2024R1/v241/fluent/bin/fluent 3ddp -t{} -g < journal.jou > log 2>&1
+module load ansys/2023R1
+/opt/crc/a/ansys/2023R1/v231/fluent/bin/fluent 3ddp -t{} -g < journal.jou > log 2>&1
 """
 
 
