@@ -16,7 +16,7 @@
 /define/boundary-conditions/pressure-far-field outlet no 0 no {mach} no 273.15 yes no {flow_vector_x} no {flow_vector_y} no 0 no no yes 5 10
 
 ; Make wall stationary and no slip.
-/define/boundary-conditions/wall launchvehicle no 0 no 0 no yes heat-flux no 0 no yes motion-bc-stationary yes shear-bc-noslip yes rough-bc-standard no 0 no 0.5 no 1
+/define/boundary-conditions/wall launchvehicle 0 no 0 no yes heat-flux no 0 no yes motion-bc-stationary yes shear-bc-noslip yes rough-bc-standard no 0 no 0.5 no 1
 
 ; Make all methods second order.
 /solve/set/discretization-scheme/pressure 12
