@@ -158,11 +158,15 @@ normal_output = [q if q >= 0 else 0 for q in normal_output]
 
 import csv
 
-headers = ["angle of actuation", "angle of attack", "mach number", "axial force", "normal force"]
+headers = [
+    "angle of actuation", "angle of attack", "mach number", "axial force",
+    "normal force"
+]
 fp = open("cfd.csv", "w")
 writer = csv.writer(fp)
 writer.writerow(headers)
-assert len(axial_input) == len(axial_output) == len(normal_input) == len(normal_output)
+assert len(axial_input) == len(axial_output) == len(normal_input) == len(
+    normal_output)
 for i in range(len(axial_input)):
     assert axial_input[i] == normal_input[i]
     writer.writerow([*axial_input[i], axial_output[i], normal_output[i]])

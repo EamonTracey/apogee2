@@ -6,13 +6,9 @@ import numpy as np
 
 class Environment:
 
-    def __init__(
-        self,
-        altitudes: tuple[float, ...],
-        winds: tuple[tuple[float, float, float], ...],
-    ):
-        self._altitudes = tuple(altitudes)
-        self._winds = winds
+    def __init__(self, ground_temperature: float, ground_pressure: float):
+        self._ground_temperature = ground_temperature
+        self._ground_pressure = ground_pressure
 
         self._validate_environment()
 
@@ -21,13 +17,20 @@ class Environment:
 
     @classmethod
     def from_json(cls, file_path: str) -> Self:
-        #        with open(file_path, "r") as file:
-        #            environment_json = json.load(file)
-        #
-        #        environment = cls(**environment_json)
-        #        return environment
-        return Environment((), ())
+        with open(file_path, "r") as file:
+            environment_json = json.load(file)
+            environment = cls(**environment_json)
+            return environment
+
+    @property
+    def ground_temperature(self):
+        return self._ground_temperature
+
+    @property
+    def ground_pressure(self):
+        return self._ground_pressure
 
     def calculate_wind(self, altitude: float) -> float:
+        # TODO: implement
         ...
         return 0

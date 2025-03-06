@@ -10,6 +10,7 @@ from base.constants import EARTH_GRAVITY_ACCELERATION
 from base.constants import PITCH, ROLL, YAW
 from base.math import zenith_azimuth_to_quaternion
 from base.stage import Stage
+from simulation.constants import CFD_AIR_DENSITY
 from simulation.environment import Environment
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
@@ -132,13 +133,20 @@ class DynamicsComponent(Component):
         # Compute the angle of attack.
         angle_of_attack = 0
         if velocity_apparent_magnitude != 0:
-            angle_of_attack = np.arccos(
-                np.dot(velocity_apparent_direction, vehicle_roll))
+            angle_of_attack = np.rad2deg(
+                np.arccos(np.dot(velocity_apparent_direction, vehicle_roll)))
+
+        # Earth atmosphere model.
+        # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
+        air_temperature = self._environment.ground_temperature - 0.00356 * position[
+            2]
+        air_pressure = self._environment.ground_pressure * (air_temperature /
+                                                            518.6)**5.256
+        air_density = air_pressure / 1718 / air_temperature
 
         # Compute the mach number.
-        mach_number = 0
-        # TODO: speed of sound using environment
-        speed_of_sound = 1125.33
+        # https://www.grc.nasa.gov/www/k-12/VirtualAero/BottleRocket/airplane/sound.html.
+        speed_of_sound = np.sqrt(1.4 * air_pressure / air_density)
         mach_number = velocity_apparent_magnitude / speed_of_sound
 
         # Compute the force.
@@ -148,12 +156,14 @@ class DynamicsComponent(Component):
         force_axial = np.array((0, 0, 0))
         force_normal = np.array((0, 0, 0))
         if velocity_apparent_magnitude != 0:
-            force_axial = -1 * self._vehicle.calculate_axial(
+            aerodynamic_multiplier = air_density / CFD_AIR_DENSITY
+            force_axial = -aerodynamic_multiplier * self._vehicle.calculate_axial_force(
                 0, angle_of_attack, mach_number) * vehicle_roll
-            force_normal = -1 * self._vehicle.calculate_normal(
+            force_normal = -aerodynamic_multiplier * self._vehicle.calculate_normal_force(
                 0, angle_of_attack, mach_number) * np.cross(
                     vehicle_roll,
                     np.cross(vehicle_roll, velocity_apparent_direction))
+
         force = force_thrust + force_gravity + force_axial + force_normal
         self._state.acceleration = tuple(map(float, force / mass_total))
 
