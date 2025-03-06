@@ -3,17 +3,61 @@
     "length": 9.25,
     "center_of_mass": 4.5918635171,
     "center_of_pressure": 6.625,
-    "inertia": [34.497158648, 34.497158648, 0.03114227062],
+    "inertia": [
+        7.75556952648169,
+        7.75556952648169,
+        0.02356886137483644
+    ],
     "axial_force": {
-        "angles_of_actuation": [0],
-        "angles_of_attack": [0],
-        "mach_numbers": [0, 0.3, 0.4, 0.5, 0.6],
-        "forces": [[[0, 8.0436639841, 14.003349066, 21.581658538, 30.870764066]]]
+        "angles_of_actuation": [
+            0
+        ],
+        "angles_of_attack": [
+            0
+        ],
+        "mach_numbers": [
+            0,
+            0.3,
+            0.4,
+            0.5,
+            0.6
+        ],
+        "forces": [
+            [
+                [
+                    0,
+                    8.0436639841,
+                    14.003349066,
+                    21.581658538,
+                    30.870764066
+                ]
+            ]
+        ]
     },
     "normal_force": {
-        "angles_of_actuation": [0],
-        "angles_of_attack": [0],
-        "mach_numbers": [0, 0.3, 0.4, 0.5, 0.6],
-        "forces": [[[0, 0, 0, 0, 0]]]
+        "angles_of_actuation": [
+            0
+        ],
+        "angles_of_attack": [
+            0
+        ],
+        "mach_numbers": [
+            0,
+            0.3,
+            0.4,
+            0.5,
+            0.6
+        ],
+        "forces": [
+            [
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            ]
+        ]
     }
 }

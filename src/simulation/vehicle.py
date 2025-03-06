@@ -71,12 +71,22 @@ class Vehicle:
         vehicle = cls(**vehicle_json)
         return vehicle
 
-    def calculate_axial(self, angle_of_actuation: float,
-                        angle_of_attack: float, mach_number: float) -> float:
-        return self._axial_interpolator(
+    def calculate_axial_force(self, angle_of_actuation: float,
+                              angle_of_attack: float,
+                              mach_number: float) -> float:
+        axial_force = self._axial_interpolator(
             (angle_of_actuation, angle_of_attack, mach_number))
+        if axial_force < 0:
+            axial_force = 0
 
-    def calculate_normal(self, angle_of_actuation: float,
-                         angle_of_attack: float, mach_number: float) -> float:
-        return self._normal_interpolator(
+        return axial_force
+
+    def calculate_normal_force(self, angle_of_actuation: float,
+                               angle_of_attack: float,
+                               mach_number: float) -> float:
+        normal_force = self._normal_interpolator(
             (angle_of_actuation, angle_of_attack, mach_number))
+        if normal_force < 0:
+            normal_force = 0
+
+        return normal_force

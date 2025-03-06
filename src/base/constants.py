@@ -1,6 +1,11 @@
 import numpy as np
 
-# All values use SI units.
+# American units everywhere:
+#     time -> seconds
+#     length -> feet
+#     mass -> slugs
+#     temperature -> rankine
+#     force -> lbf
 
 # The mangitude of  gravitational acceleration experienced by an object near Earth's surface.
 EARTH_GRAVITY_ACCELERATION = 32.17  # ft/s^2
