@@ -1,6 +1,8 @@
 legacy/
 nohup.out
 
+data/cfd
+
 *.log
 *.csv
 
