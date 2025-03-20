@@ -1,4 +1,5 @@
 {
     "ground_temperature": 491.67,
-    "ground_pressure": 2114.713317826897
+    "ground_pressure": 2114.713317826897,
+    "ground_wind": [0, 0, 0]
 }
