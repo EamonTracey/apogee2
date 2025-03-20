@@ -13,10 +13,9 @@ from flight.icm20649 import ICM20649State
 
 logger = logging.getLogger(__name__)
 
-# TODO: Implement filtration for X,Y Accel/velo/pos? and 3DOF Mag & ICMGyro/BNOGyro.
-# Also include Z accel w/grav for fusion.
+# TODO: Implement filtration for 3DOF Mag & ICMGyro/BNOGyro.
 # TODO: Continuously zero the altitude at ground.
-
+# TODO: Fix error with x/y accel not being zero at init causing velo to be goofy
 
 @dataclass
 class FilterState:
@@ -53,30 +52,30 @@ class FilterComponent(Component):
         logger.info("Kalman Filter Initialized.")
 
     def _initialize_filters(self):
+
         self.filter_matrix_list = {}
 
         self.filter_matrix_list['Zdir'] = [[1, 0, 0], [0, 0, 1]]
         self.filter_matrix_list['Ydir'] = [[0, 0, 1]]
-        self.fitler_matrix_list['Xdir'] = [[0, 0, 1]]
+        self.filter_matrix_list['Xdir'] = [[0, 0, 1]]
 
         self.filter_list = {}
 
         # Z direction filter
         self.filter_list['Zdir'] = KalmanFilter(dim_x=3,
-                                                dim_z=len(sensor_matrixZ))
+                                                dim_z=len(self.filter_matrix_list['Zdir']))
 
         # Y direction filter
         self.filter_list['Ydir'] = KalmanFilter(dim_x=3,
-                                                dim_z=len(sensor_matrixY))
+                                                dim_z=len(self.filter_matrix_list['Ydir']))
 
         # X direction filter
         self.filter_list['Xdir'] = KalmanFilter(dim_x=3,
-                                                dim_z=len(sensor_matrixX))
+                                                dim_z=len(self.filter_matrix_list['Xdir']))
 
         for unit in self.filter_list:
 
             self.filter_list[unit].H = np.array(self.filter_matrix_list[unit])
-
             self.filter_list[unit].P *= 1
             self.filter_list[unit].R *= 1
             self.filter_list[unit].Q *= 1
@@ -93,19 +92,19 @@ class FilterComponent(Component):
         acceleration = [
             METERS_TO_FEET * a for a in self._icm20649_state.acceleration
         ]
-        acceleration[2] -= METERS_TO_FEET * EARTH_GRAVITY_ACCELERATION
+        acceleration[2] += EARTH_GRAVITY_ACCELERATION
 
         params_list = {}
-        params_list['Zdir'] = np.array(
-            [float(altitude), float(acceleration[2])])
+        params_list['Zdir'] = np.array([float(altitude), float(acceleration[2])])
         params_list['Ydir'] = np.array([float(acceleration[1])])
         params_list['Xdir'] = np.array([float(acceleration[0])])
 
         for unit in self.filter_list:
-
             self.filter_list[unit].F = self._generate_phi(time, unit)
             self.filter_list[unit].predict()
             self.filter_list[unit].update(params_list[unit])
+
+        self._previous_time = time
 
         self._state.altitude = self.filter_list['Zdir'].x[0]
         self._state.velocity = (self.filter_list['Xdir'].x[1],
@@ -117,12 +116,11 @@ class FilterComponent(Component):
 
     def _generate_phi(self, time: float, unit):
         dt = time - self._previous_time
-        self._previous_time = time
 
-        if unit == 'Xdir' or unit == 'Ydir' or unit == 'Zdir':
+        if (unit == 'Xdir') or (unit == 'Ydir') or (unit == 'Zdir'):
             dp = 1
             ds = 0
-            di = dt**2 / 2
+            di = dt**2 / 2       
             phi = np.array([[dp, dt, di], [ds, dp, dt], [ds, ds, dp]])
 
         return phi

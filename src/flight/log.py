@@ -113,6 +113,6 @@ class LogComponent(Component):
 
         # If console output is selected.
         if self._results == 1:
-            print(log[0], log[1], log[2], log[3], log[4], log[5], log[6])
+            print(log[0], log[1], log[2], log[3], log[4], log[5], log[6], log[7], log[8], log[9], log[10])
         elif self._results == 2:
             print(log)
