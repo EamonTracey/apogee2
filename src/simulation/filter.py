@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-class SimulatedFilterState:
+class FilterState:
     # Filtered altitude in feet.
     altitude: float = 0
 
@@ -21,10 +21,10 @@ class SimulatedFilterState:
     acceleration: tuple[float, float, float] = (0, 0, 0)
 
 
-class SimulatedFilterComponent(Component):
+class FilterComponent(Component):
 
     def __init__(self, dynamics_state: DynamicsState):
-        self._state = SimulatedFilterState()
+        self._state = FilterState()
 
         self._dynamics_state = DynamicsState()
 
