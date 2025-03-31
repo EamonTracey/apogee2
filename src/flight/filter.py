@@ -94,6 +94,9 @@ class FilterComponent(Component):
         ]
         acceleration[2] += EARTH_GRAVITY_ACCELERATION
 
+        # TODO: Continuously Zero Altimeter at ground - on init and every minute before burn detected
+        # How to do this when cannot access state? good question i dont know
+
         params_list = {}
         params_list['Zdir'] = np.array([float(altitude), float(acceleration[2])])
         params_list['Ydir'] = np.array([float(acceleration[1])])
@@ -106,14 +109,20 @@ class FilterComponent(Component):
 
         self._previous_time = time
 
-        self._state.altitude = self.filter_list['Zdir'].x[0]
-        self._state.velocity = (self.filter_list['Xdir'].x[1],
-                                self.filter_list['Ydir'].x[1],
-                                self.filter_list['Zdir'].x[1])
-        self._state.acceleration = (self.filter_list['Xdir'].x[2],
-                                    self.filter_list['Ydir'].x[2],
-                                    self.filter_list['Zdir'].x[2])
+        # X/Y Velo derivation - currently buggy and bad so no use
+        #self._state.altitude = self.filter_list['Zdir'].x[0]
+        #self._state.velocity = (self.filter_list['Xdir'].x[1],
+        #                        self.filter_list['Ydir'].x[1],
+        #                        self.filter_list['Zdir'].x[1])
+        #self._state.acceleration = (self.filter_list['Xdir'].x[2],
+        #                            self.filter_list['Ydir'].x[2],
+        #                            self.filter_list['Zdir'].x[2])
 
+        self._state.altitude = self.filter_list['Zdir'].x[0]
+        self._state.velocity = (0, 0, self.filter_list['Zdir'].x[1])
+        self._state.acceleration = (0, 0, self.filter_list['Zdir'].x[2])
+        
+        
     def _generate_phi(self, time: float, unit):
         dt = time - self._previous_time
 
