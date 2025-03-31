@@ -12,7 +12,7 @@ from flight.filter import FilterState
 from flight.stage import StageState
 from flight.predict import PredictState
 
-from flight.constants import APOGEE ALTITUDE
+from flight.constants import APOGEE_ALTITUDE
 
 logger = logging.getLogger(__name__)
 
@@ -54,13 +54,13 @@ class ControlComponent(Component):
         if self._stage_state == Stage.GROUND or self._stage_state == Stage.BURN:
             self._state.servo_angle = 0
 
-        elif self._stage.state == Stage.OVERSHOOT:
+        elif self._stage_state == Stage.OVERSHOOT:
             self._state.servo_angle = 45
 
-        elif self._stage.state == Stage.DESCENT:
+        elif self._stage_state == Stage.DESCENT:
             self._state.servo_angle = 0
 
-        elif self._stage.state == Stage.COAST:
+        elif self._stage_state == Stage.COAST:
             # First iteration in coast?
             if self._time_previous is None:
                 self._time_previous = time
