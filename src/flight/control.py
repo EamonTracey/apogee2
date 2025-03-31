@@ -12,6 +12,8 @@ from flight.filter import FilterState
 from flight.stage import StageState
 from flight.predict import PredictState
 
+from flight.constants import APOGEE ALTITUDE
+
 logger = logging.getLogger(__name__)
 
 
@@ -34,8 +36,13 @@ class ControlComponent(Component):
 
         self._servo_motor = ServoMotor(board.D12)
 
-        # First iteration in burnout.
-        self._first_time = None
+        self._error_previous = None
+        self._time_previous = None
+        self._integral_previous = None
+        self._pi_previous = None
+
+        self._first = True
+
 
     @property
     def state(self):
@@ -43,19 +50,62 @@ class ControlComponent(Component):
 
     def dispatch(self, time: float):
         
-        
+        # Motor Control Algorithm.
+        if self._stage_state == Stage.GROUND or self._stage_state == Stage.BURN:
+            self._state.servo_angle = 0
 
+        elif self._stage.state == Stage.OVERSHOOT:
+            self._state.servo_angle = 45
 
-        # TEMPORARY: Actuate motor to max starting 2 seconds after burnout for 2 seconds, then close.
-        if self._first_time is None and self._stage_state.stage == Stage.COAST:
-            self._first_time = time
+        elif self._stage.state == Stage.DESCENT:
+            self._state.servo_angle = 0
 
-        if self._first_time is not None and self._stage_state.stage == Stage.COAST:
-            if time - self._first_time > 4:
+        elif self._stage.state == Stage.COAST:
+            # First iteration in coast?
+            if self._time_previous is None:
+                self._time_previous = time
+                self._error_previous = self._predict_state.apogee_prediction - APOGEE_ALTITUDE
+                self._integral_previous = 0
+                self._pi_previous = 0
                 self._state.servo_angle = 0
 
-            elif time - self._first_time > 2:
-                self._state.servo_angle = 45
+            else:
+                # Error Calculation.
+                apogee_error = self._predict_state.apogee_prediction - APOGEE_ALTITUDE
+
+                dt = time - self._time_previous
+
+                # PI Terms.
+                proportional = apogee_error
+                integral = self._integral_previous + ((apogee_error + self._error_previous) * dt / 2)
+
+                # Predetermined Proportional Constants.
+                Kp = 50
+                Ki = 8
+                Kg = 0.01
+
+                # Max Servo Speed - Test 10.1.4 DT.1
+                max_servo_delta = dt * 45 / 0.35
+
+                # PI Control.
+                pi_delta = dt * (Kp * proportional + Ki * integral) * Kg
+                if pi_delta >= max_servo_delta:
+                    pi_delta = max_servo_delta
+                elif pi_delta <= -max_servo_delta:
+                    pi_delta = -max_servo_delta
+                pi = pi_delta + self._pi_previous
+
+                if pi >= 45:
+                    pi = 45
+                elif pi <= 0:
+                    pi = 0
+
+                self._error_previous = apogee_error
+                self._time_previous = time
+                self._integral_previous = integral
+                self._pi_previous = pi
+
+                self._state.servo_angle = pi
 
         # Rotate Servo
         self._servo_motor.rotate(self._state.servo_angle)
