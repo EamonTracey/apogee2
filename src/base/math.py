@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 
-def quatern2euler(w, x, y, z):
+def quatern2euler(x, y, z, w):
     # Precompute elements of the rotation matrix
     R11 = 2 * w**2 - 1 + 2 * x**2
     R21 = 2 * (x * y - w * z)

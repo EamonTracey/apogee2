@@ -22,7 +22,7 @@ class BNO085State:
     # Angular velocity in radians per second.
     gyro: tuple[float, float, float] = (0, 0, 0)
 
-    # Orientation as a (w, x, y, z) quaternion.
+    # Orientation as a (x, y, z, w) quaternion.
     quaternion: tuple[float, float, float, float] = (0, 0, 0, 0)
 
     # Count the number of times each reading fails.

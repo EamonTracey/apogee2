@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-import imufusion
 import numpy as np
 
 from base.component import Component
