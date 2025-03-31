@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import logging
 
 from flight.filter import FilterState
+from flight.constants import SIM_APOGEE
 
 logger = logging.getLogger(__name__)
 
@@ -9,7 +10,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PredictState:
     # Predicted apogee in feet.
-    apogee_prediction: float = 0
+    apogee_prediction: float = SIM_APOGEE 
 
 
 class PredictComponent(Component):
@@ -26,7 +27,6 @@ class PredictComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-
         pass
 
 

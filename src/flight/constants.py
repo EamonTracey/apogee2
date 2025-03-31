@@ -7,3 +7,5 @@ BURNOUT_ACCELERATION = 0  # feet / second ^ 2
 BURNOUT_ALTITUDE_CRITICAL = 1200  # feet
 APOGEE_ALTITUDE = 5100  # feet
 DESCENT_VELOCITY = 0  # feet / second
+
+SIM_APOGEE = 5400 # feet <- placeholder

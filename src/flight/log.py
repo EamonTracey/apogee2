@@ -15,6 +15,7 @@ HEADERS = [
     "Loop_Slip_Count",
     "Stage",
     "Servo_Angle",
+    "Predicted_Apogee",
     "Altitude",
     "Velocity_X",
     "Velocity_Y",
@@ -63,7 +64,7 @@ class LogComponent(Component):
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, filter_state: FilterState,
-                 control_state: ControlState, stage_state: StageState):
+                 control_state: ControlState, stage_state: StageState, predict_state: PredictState):
         self._state = LogState()
 
         self._path = path
@@ -74,6 +75,7 @@ class LogComponent(Component):
         self._stage_state = stage_state
         self._filter_state = filter_state
         self._control_state = control_state
+        self._predict_state = predict_state
 
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
@@ -90,6 +92,7 @@ class LogComponent(Component):
             self._loop_state.slip_count,
             self._stage_state.stage,
             self._control_state.servo_angle,
+            self._predict_state.apogee_prediction,
             self._filter_state.altitude,
             *self._filter_state.velocity,
             *self._filter_state.acceleration,
@@ -113,6 +116,6 @@ class LogComponent(Component):
 
         # If console output is selected.
         if self._results == 1:
-            print(log[0], log[1], log[2], log[3], log[4], log[5], log[6], log[7], log[8], log[9], log[10])
+            print(log[0], log[1], log[2], log[3], log[4], log[5], log[6], log[7], log[8], log[9], log[10], log[11])
         elif self._results == 2:
             print(log)
