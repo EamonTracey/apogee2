@@ -12,6 +12,7 @@ from flight.filter import FilterComponent
 from flight.icm20649 import ICM20649Component
 from flight.log import LogComponent
 from flight.stage import StageComponent
+from flight.predict import PredictComponent
 
 logger = logging.getLogger(__name__)
 

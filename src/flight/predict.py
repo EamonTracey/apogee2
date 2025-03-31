@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 import logging
 
+from base.component import Component
 from flight.filter import FilterState
+from flight.stage import StageState
+
+
 from flight.constants import SIM_APOGEE
 
 logger = logging.getLogger(__name__)
@@ -15,10 +19,11 @@ class PredictState:
 
 class PredictComponent(Component):
 
-    def __init__(self, filter_state: FilterState):
+    def __init__(self, filter_state: FilterState, stage_state: StageState):
         self._state = PredictState
 
         self._filter_state = filter_state
+        self._stage_state = stage_state
 
         logger.info("Prediction Component Initialized.")
     

@@ -10,6 +10,7 @@ from base.component import Component
 from base.stage import Stage
 from flight.filter import FilterState
 from flight.stage import StageState
+from flight.predict import PredictState
 
 logger = logging.getLogger(__name__)
 
@@ -22,12 +23,14 @@ class ControlState:
 
 class ControlComponent(Component):
 
-    def __init__(self, filter_state: FilterState, stage_state: StageState):
+    def __init__(self, filter_state: FilterState, stage_state: StageState, 
+                 predict_state: PredictState):
 
         self._state = ControlState()
 
         self._filter_state = filter_state
         self._stage_state = stage_state
+        self._predict_state = predict_state
 
         self._servo_motor = ServoMotor(board.D12)
 

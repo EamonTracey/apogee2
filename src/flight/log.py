@@ -9,7 +9,8 @@ from flight.icm20649 import ICM20649State
 from flight.filter import FilterState
 from flight.stage import StageState
 from flight.control import ControlState
-
+from flight.predict import PredictState
+ 
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
