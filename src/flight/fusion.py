@@ -15,8 +15,11 @@ logger = logging.getLogger(__name__)
 @dataclass
 class FusionState:
 
+    # Outputs quaternion in x, y, z, w
+    quaternion: tuple[float, float, float, float] = (0, 0, 0, 0)
+
     # Outputs euler in Pitch, Yaw, Roll. 
-    euler: tuple[float, float, float] = 0
+    euler: tuple[float, float, float] = (0, 0, 0)
 
 
 class FusionComponent(Component):
