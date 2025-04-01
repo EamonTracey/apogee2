@@ -4,6 +4,7 @@ import logging
 from base.component import Component
 from flight.filter import FilterState
 from flight.stage import StageState
+from flight.fusion import FusionState
 
 
 from flight.constants import SIM_APOGEE
@@ -19,11 +20,12 @@ class PredictState:
 
 class PredictComponent(Component):
 
-    def __init__(self, filter_state: FilterState, stage_state: StageState):
+    def __init__(self, filter_state: FilterState, stage_state: StageState, fusion_state: FusionState):
         self._state = PredictState
 
         self._filter_state = filter_state
         self._stage_state = stage_state
+        self._fusion_state = fusion_state
 
         logger.info("Prediction Component Initialized.")
     

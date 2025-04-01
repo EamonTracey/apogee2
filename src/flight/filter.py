@@ -58,6 +58,7 @@ class FilterComponent(Component):
         self.filter_matrix_list['Zdir'] = [[1, 0, 0], [0, 0, 1]]
         self.filter_matrix_list['Ydir'] = [[0, 0, 1]]
         self.filter_matrix_list['Xdir'] = [[0, 0, 1]]
+        self.filter_matrix_list['Gyro'] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
         self.filter_list = {}
 
@@ -72,6 +73,10 @@ class FilterComponent(Component):
         # X direction filter
         self.filter_list['Xdir'] = KalmanFilter(dim_x=3,
                                                 dim_z=len(self.filter_matrix_list['Xdir']))
+
+        # Gyro filter
+        self.filter_list['Gyro'] = KalmanFilter(dim_x=3,
+                                                dim_z=len(self.filter_matrix_list['Gyro']))
 
         for unit in self.filter_list:
 
@@ -88,6 +93,10 @@ class FilterComponent(Component):
     def dispatch(self, time: float):
         altitude = METERS_TO_FEET * self._bmp390_state.altitude
 
+        gyro_x = self._icm20649_state.gyro[0]
+        gyro_y = self._icm20649_state.gyro[1]
+        gyro_z = self._icm20649_state.gyro[2]
+
         # Offset the Z acceleration of the accelerometer by gravity.
         acceleration = [
             METERS_TO_FEET * a for a in self._icm20649_state.acceleration
@@ -101,6 +110,7 @@ class FilterComponent(Component):
         params_list['Zdir'] = np.array([float(altitude), float(acceleration[2])])
         params_list['Ydir'] = np.array([float(acceleration[1])])
         params_list['Xdir'] = np.array([float(acceleration[0])])
+        params_list['Gyro'] = np.array([float(gyro_x), float(gyro_y), float(gyro_z)])
 
         for unit in self.filter_list:
             self.filter_list[unit].F = self._generate_phi(time, unit)
@@ -121,6 +131,9 @@ class FilterComponent(Component):
         self._state.altitude = self.filter_list['Zdir'].x[0]
         self._state.velocity = (0, 0, self.filter_list['Zdir'].x[1])
         self._state.acceleration = (0, 0, self.filter_list['Zdir'].x[2])
+        slef._state.gyro = (self.filter_list['Gyro'].x[0], 
+                            self.filter_list['Gyro'].x[1],
+                            self.filter_list['Gyro'].x[2])
         
         
     def _generate_phi(self, time: float, unit):
@@ -131,5 +144,8 @@ class FilterComponent(Component):
             ds = 0
             di = dt**2 / 2       
             phi = np.array([[dp, dt, di], [ds, dp, dt], [ds, ds, dp]])
+
+        elif unit == 'Gyro':
+            phi = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
 
         return phi

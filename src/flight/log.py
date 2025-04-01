@@ -10,6 +10,7 @@ from flight.filter import FilterState
 from flight.stage import StageState
 from flight.control import ControlState
 from flight.predict import PredictState
+from flight.fusion import FusionState
  
 HEADERS = [
     "Time",
@@ -45,6 +46,13 @@ HEADERS = [
     "Gyro_X_ICM20649",
     "Gyro_Y_ICM20649",
     "Gyro_Z_ICM20649",
+    "Quaternion_Fused_X",
+    "Quaternion_Fused_Y",
+    "Quaternion_Fused_Z",
+    "Quaternion_Fused_W",
+    "Euler_Fused_Pitch",
+    "Euler_Fused_Yaw",
+    "Euler_Fused_Roll",
     "Altitude_Errors_BMP390",
     "Temperature_Errors_BMP390",
     "Acceleration_Errors_BNO085",
@@ -65,7 +73,8 @@ class LogComponent(Component):
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, filter_state: FilterState,
-                 control_state: ControlState, stage_state: StageState, predict_state: PredictState):
+                 control_state: ControlState, stage_state: StageState, 
+                 predict_state: PredictState, fusion_state: FusionState):
         self._state = LogState()
 
         self._path = path
@@ -77,6 +86,7 @@ class LogComponent(Component):
         self._filter_state = filter_state
         self._control_state = control_state
         self._predict_state = predict_state
+        self._fusion_state = fusion_state
 
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
@@ -105,6 +115,8 @@ class LogComponent(Component):
             *self._bno085_state.quaternion,
             *self._icm20649_state.acceleration,
             *self._icm20649_state.gyro,
+            *self._fusion_state.quaternion,
+            *self._fusion_state.euler,
             self._bmp390_state.altitude_errors,
             self._bmp390_state.temperature_errors,
             self._bno085_state.acceleration_errors,
