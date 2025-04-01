@@ -8,7 +8,7 @@ import numpy as np
 #     force -> lbf
 
 # The mangitude of  gravitational acceleration experienced by an object near Earth's surface.
-EARTH_GRAVITY_ACCELERATION = 32.17  # ft/s^2
+EARTH_GRAVITY_ACCELERATION = 32.17404  # ft/s^2
 
 # Axes.
 YAW = np.array([1, 0, 0])

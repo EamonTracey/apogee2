@@ -31,3 +31,15 @@ def zenith_azimuth_to_quaternion(
     z = 0
 
     return (w, x, y, z)
+
+def quatern_prod(a, b) -> tuple[float, float, float, float]:
+    
+    q1 = a(1)*b(1) - a(2)*b(2)
+    #bruh discrepency brb
+
+
+    return (q1, q2, q3, q4)
+
+
+
+
