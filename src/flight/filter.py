@@ -91,7 +91,7 @@ class FilterComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-        altitude = METERS_TO_FEET * self._bmp390_state.altitude
+        altitude = METERS_TO_FEET * self._bmp390_state.altitude - 330
 
         gyro_x = self._icm20649_state.gyro[0]
         gyro_y = self._icm20649_state.gyro[1]

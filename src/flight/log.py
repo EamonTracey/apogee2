@@ -53,6 +53,7 @@ HEADERS = [
     "Euler_Fused_Pitch",
     "Euler_Fused_Yaw",
     "Euler_Fused_Roll",
+    "Euler_Fused_Zenith",
     "Altitude_Errors_BMP390",
     "Temperature_Errors_BMP390",
     "Acceleration_Errors_BNO085",
@@ -117,6 +118,7 @@ class LogComponent(Component):
             *self._icm20649_state.gyro,
             *self._fusion_state.quaternion,
             *self._fusion_state.euler,
+            self._fusion_state.zenith
             self._bmp390_state.altitude_errors,
             self._bmp390_state.temperature_errors,
             self._bno085_state.acceleration_errors,
@@ -129,6 +131,9 @@ class LogComponent(Component):
 
         # If console output is selected.
         if self._results == 1:
-            print(log[0], log[1], log[2], log[3], log[4], log[5], log[6], log[7], log[8], log[9], log[10], log[11])
+            print(log[0], log[1], log[2], log[3], log[4],
+                  log[5], log[8], log[11], 
+                  log[33], log[34], log[35], log[36], 
+                  log[37], log[38], log[39], log[40])
         elif self._results == 2:
             print(log)
