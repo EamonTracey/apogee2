@@ -2,7 +2,12 @@ import math
 import numpy as np
 
 
-def quatern2euler(x, y, z, w):
+def quatern2euler(q):
+    # Separate Components
+    qx = q[0]
+    qy = q[1]
+    qz = q[2]
+    qw = q[3]
 
     # Precompute elements of the rotation matrix
     R11 = 2 * w**2 - 1 + 2 * x**2
@@ -16,7 +21,7 @@ def quatern2euler(x, y, z, w):
     theta = -np.arctan(R31 / np.sqrt(1 - R31**2))
     psi = np.arctan2(R21, R11)
 
-    return (phi, theta, psi)
+    return (psi, theta, phi)
 
 
 
@@ -37,18 +42,17 @@ def zenith_azimuth_to_quaternion(
 def quatern_prod(a, b) -> tuple[float, float, float, float]:
 
     # Calculates the quaternion product of quaternion a and b. Not communative.    
-    q1 = a(1)*b(1) - a(2)*b(2) - a(3)*b(3) - a(4)*b(4)
-    q2 = a(1)*b(2) + a(2)*b(1) + a(3)*b(4) - a(4)*b(3)
-    q3 = a(1)*b(3) - a(2)*b(4) + a(3)*b(1) + a(4)*b(2)
-    q4 = a(1)*b(4) + a(2)*b(3) - a(3)*b(2) + a(4)*b(1)
+    q1 = a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3]
+    q2 = a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2]
+    q3 = a[0]*b[2] - a[1]*b[3] + a[2]*b[0] + a[3]*b[1]
+    q4 = a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + a[3]*b[0]
 
     return (q1, q2, q3, q4)
 
 def quatern_conj(q) -> tuple[float, float, float, float]:
 
     # Converts a quaternion to its conjugate
-    return (q(1), -q(2), -q(3), -q(4))
-
+    return (q[0], -q[1], -q[2], -q[3])
 
 
 
