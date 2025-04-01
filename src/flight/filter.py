@@ -49,6 +49,8 @@ class FilterComponent(Component):
 
         self._previous_time = 0
 
+        self._zero_offset = 0
+
         logger.info("Kalman Filter Initialized.")
 
     def _initialize_filters(self):
@@ -91,7 +93,12 @@ class FilterComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-        altitude = METERS_TO_FEET * self._bmp390_state.altitude - 330
+     
+        # temporary:  zeroing when acs turns on
+        if self._previous_time <= 0.02:
+             self._zero_offset = METERS_TO_FEET * self._bmp390_state.altitude
+
+        altitude = METERS_TO_FEET * self._bmp390_state.altitude - self._zero_offset
 
         gyro_x = self._icm20649_state.gyro[0]
         gyro_y = self._icm20649_state.gyro[1]
@@ -131,7 +138,7 @@ class FilterComponent(Component):
         self._state.altitude = self.filter_list['Zdir'].x[0]
         self._state.velocity = (0, 0, self.filter_list['Zdir'].x[1])
         self._state.acceleration = (0, 0, self.filter_list['Zdir'].x[2])
-        slef._state.gyro = (self.filter_list['Gyro'].x[0], 
+        self._state.gyro = (self.filter_list['Gyro'].x[0], 
                             self.filter_list['Gyro'].x[1],
                             self.filter_list['Gyro'].x[2])
         

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from math import pi
 import numpy as np
 
 from base.component import Component
@@ -9,6 +10,8 @@ from flight.stage import StageState
 from flight.bno085 import BNO085State
 
 from base.math import quatern2euler
+from base.math import quatern_prod
+from base.math import quatern_conj
 from base.constants import EARTH_GRAVITY_ACCELERATION
 
 import logging
@@ -21,7 +24,7 @@ class FusionState:
     # Outputs quaternion in (x, y, z, w)
     quaternion: tuple[float, float, float, float] = (0, 0, 0, 0)
 
-    # Outputs euler in (Yaw, Pitch, Roll)
+    # Outputs euler in (Roll, Yaw, Pitch)
     euler: tuple[float, float, float] = (0, 0, 0)
 
     # Outputs zenith angle
@@ -45,50 +48,9 @@ class FusionComponent(Component):
     def state(self):
         return self._state
 
-    def dispatch(self, time: float):
-        
-        # Use BNO085 onboard fusion to gather quaternion data for when not launched 
-        # and descending.
-        if self._stage_state == Stage.GROUND or self._stage_state == Stage.DESCENT:
-
-            self._state.quaternion = self._bno085_state.quaternion
-            
-            # Calculate Euler Angles
-            euler_calculated = quatern2euler(self._bno085_state.quaternion)
-
-            self._previous_time = time
-
-        # At high accelerations, the BNO085's orientation determination is unreliable.
-        # For this reason, manual sensor fusion is used.
-        # NOTE: Gyro drift starts to kick in pretty heavily after around 15-20 seconds.
-
-        else: 
-            quat = self._state.quaternion
-            gyro = self._filter_state.gyro
-            accel = self._filter_state.acceleration
-            dt = time - self._previous_time
-
-            # Calculate quaternions manually using gyro and acceleration (fusion)
-            quat_calc = madgwickFilter(quat, gyro, accel, dt, 0.025)
-
-            self._state.quaternion = quat_calc
-            
-            # Calculate euler angles
-            euler_calculated = tuple(x * (180/pi) for x in quatern2euler(quat_calc))
-
-        self._state.euler = euler_calculated
-
-        # Calculate Zenith angle.
-        v_up_earth = (0, 0, 0, 1)
-        v_rot_earth_calculated = quatern_prod(self._state.quaternion, 
-                                              quatern_prod(v_up_earth, 
-                                                           quatern_conj(self._state.quaternion)))
-        zenith_calculated = np.degrees(np.arccos(v_rot_earth_calculated[3]))
-
-        self._state.zenith = zenith_calculated
 
     # Sensor fusion.
-    def madgwickFilter(quat, gyro, accel, dt, beta):
+    def madgwickFilter(self, quat, gyro, accel, dt, beta):
 
         g = EARTH_GRAVITY_ACCELERATION
 
@@ -107,10 +69,10 @@ class FusionComponent(Component):
             accel = accel / np.linalg.norm(accel)
 
             # Quaternion elements
-            qx = q[0]
-            qy = q[1]
-            qz = q[2]
-            qw = q[3]
+            qx = quat[0]
+            qy = quat[1]
+            qz = quat[2]
+            qw = quat[3]
 
             # Estimate gravity direction from quaternion
             g_dir = (2*(qx*qz - qw*qy), 2*(qw*qx + qy*qz), qw**2 - qx**2 - qy**2 + qz**2)
@@ -123,11 +85,61 @@ class FusionComponent(Component):
             correction = np.array([error[0], error[1], error[2], 0])
             dq = dq - beta * correction
 
-        qnew = np.array(q) + dq * dt
-        qnewer = qnew / norm(q)
+        qnew = np.array(quat) + dq * dt
+        qnewer = qnew / np.linalg.norm(quat)
 
         return tuple(qnewer)
+
+    def dispatch(self, time: float):
+        
+        # Use BNO085 onboard fusion to gather quaternion data for when not launched 
+        # and descending.
+        if self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.DESCENT:
+
+            self._state.quaternion = self._bno085_state.quaternion
             
+            # Calculate Euler Angles
+            euler_calculated = tuple(x * (180/pi) for x in quatern2euler(self._bno085_state.quaternion))
+
+            self._previous_time = time
+
+        # At high accelerations, the BNO085's orientation determination is unreliable.
+        # For this reason, manual sensor fusion is used.
+        # NOTE: Gyro drift starts to kick in pretty heavily after around 15-20 seconds.
+
+        elif self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
+            quat = self._state.quaternion
+            gyro = self._filter_state.gyro
+            accel = self._filter_state.acceleration
+            dt = time - self._previous_time
+
+            # Calculate quaternions manually using gyro and acceleration (fusion)
+            quat_calc = self.madgwickFilter(quat, gyro, accel, dt, 0.025)
+
+            self._state.quaternion = quat_calc
+            
+            # Calculate euler angles
+            euler_calculated = tuple(x * (180/pi) for x in quatern2euler(quat_calc))
+
+
+        self._state.euler = euler_calculated
+
+        # Calculate Zenith angle.
+        v_up_earth = (0, 0, 1, 0)
+        v_rot_earth_calculated = quatern_prod(self._state.quaternion, 
+                                              quatern_prod(v_up_earth, 
+                                                           quatern_conj(self._state.quaternion)))
+        zenith_calculated = np.degrees(np.arccos(v_rot_earth_calculated[2]))
+
+        self._state.zenith = zenith_calculated
+
+        # If pitch angle is between -1 and 1 degrees or btwn -179 and 179 the zenith angle nan's, likely
+        # due to gimbal lock-y stuff.. This is a manual override for those circumstances
+        if (self._state.euler[2] <= 1 and self._state.euler[2] >= -1):
+            self._state.zenith = 0
+
+        elif self._state.euler[2] > 179 or self._state.euler[2] < -179:
+            self._state.zenith = 179
             
 
 

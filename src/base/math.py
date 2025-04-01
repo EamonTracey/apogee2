@@ -4,10 +4,10 @@ import numpy as np
 
 def quatern2euler(q):
     # Separate Components
-    qx = q[0]
-    qy = q[1]
-    qz = q[2]
-    qw = q[3]
+    x = q[0]
+    y = q[1]
+    z = q[2]
+    w = q[3]
 
     # Precompute elements of the rotation matrix
     R11 = 2 * w**2 - 1 + 2 * x**2
@@ -52,7 +52,7 @@ def quatern_prod(a, b) -> tuple[float, float, float, float]:
 def quatern_conj(q) -> tuple[float, float, float, float]:
 
     # Converts a quaternion to its conjugate
-    return (q[0], -q[1], -q[2], -q[3])
+    return (-q[0], -q[1], -q[2], q[3])
 
 
 
