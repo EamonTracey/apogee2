@@ -39,8 +39,10 @@ class FusionComponent(Component):
         self._filter_state = filter_state
         self._stage_state = stage_state
         self._bno085_state = bno085_state
-
-        self._first = True
+        
+        # remove after testing - ensures a few seconds when ACS turns on of bno085 quaternions so it can normalize.
+        # won't be necessary in flight.
+        self._time_threshhold = 4 
 
         self._previous_time = 0
        
@@ -66,14 +68,14 @@ class FusionComponent(Component):
 
         else:
             # Normalize acceleration
-            accel = accel / np.linalg.norm(accel)
+            accel = accel / np.linalg.norm(accel) if np.linalg.norm(accel) != 0 else accel
 
             # Quaternion elements
             qx = quat[0]
             qy = quat[1]
             qz = quat[2]
             qw = quat[3]
-
+ 
             # Estimate gravity direction from quaternion
             g_dir = (2*(qx*qz - qw*qy), 2*(qw*qx + qy*qz), qw**2 - qx**2 - qy**2 + qz**2)
             
@@ -86,21 +88,21 @@ class FusionComponent(Component):
             dq = dq - beta * correction
 
         qnew = np.array(quat) + dq * dt
-        qnewer = qnew / np.linalg.norm(quat)
-
-        return tuple(qnewer)
+        quatnorm = np.linalg.norm(quat)
+        qnewer = tuple(x / quatnorm for x in qnew) if quatnorm != 0 else qnew
+        return qnewer
 
     def dispatch(self, time: float):
         
         # Use BNO085 onboard fusion to gather quaternion data for when not launched 
         # and descending.
-        if self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.DESCENT:
-
+        if self._time_threshhold > time or self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.DESCENT:
+            
             self._state.quaternion = self._bno085_state.quaternion
             
             # Calculate Euler Angles
             euler_calculated = tuple(x * (180/pi) for x in quatern2euler(self._bno085_state.quaternion))
-
+                
             self._previous_time = time
 
         # At high accelerations, the BNO085's orientation determination is unreliable.
@@ -120,6 +122,8 @@ class FusionComponent(Component):
             
             # Calculate euler angles
             euler_calculated = tuple(x * (180/pi) for x in quatern2euler(quat_calc))
+
+            self._previous_time = time
 
 
         self._state.euler = euler_calculated

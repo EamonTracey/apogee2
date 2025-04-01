@@ -95,8 +95,8 @@ class FilterComponent(Component):
     def dispatch(self, time: float):
      
         # temporary:  zeroing when acs turns on
-        if self._previous_time <= 0.02:
-             self._zero_offset = METERS_TO_FEET * self._bmp390_state.altitude
+        #if self._previous_time <= 0.02:
+        #     self._zero_offset = METERS_TO_FEET * self._bmp390_state.altitude
 
         altitude = METERS_TO_FEET * self._bmp390_state.altitude - self._zero_offset
 
@@ -131,13 +131,13 @@ class FilterComponent(Component):
         #self._state.velocity = (self.filter_list['Xdir'].x[1],
         #                        self.filter_list['Ydir'].x[1],
         #                        self.filter_list['Zdir'].x[1])
-        #self._state.acceleration = (self.filter_list['Xdir'].x[2],
-        #                            self.filter_list['Ydir'].x[2],
-        #                            self.filter_list['Zdir'].x[2])
+
 
         self._state.altitude = self.filter_list['Zdir'].x[0]
         self._state.velocity = (0, 0, self.filter_list['Zdir'].x[1])
-        self._state.acceleration = (0, 0, self.filter_list['Zdir'].x[2])
+        self._state.acceleration = (self.filter_list['Xdir'].x[2],
+                                    self.filter_list['Ydir'].x[2],
+                                    self.filter_list['Zdir'].x[2])        
         self._state.gyro = (self.filter_list['Gyro'].x[0], 
                             self.filter_list['Gyro'].x[1],
                             self.filter_list['Gyro'].x[2])
