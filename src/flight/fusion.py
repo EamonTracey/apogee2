@@ -56,6 +56,9 @@ class FusionComponent(Component):
 
         g = EARTH_GRAVITY_ACCELERATION
 
+        # Temporary restructuring of quaternion tuple for use in this 
+        quat = (quat[3], quat[0], quat[1], quat[2])
+
         # Add back gravity into filtered acceleration (needed for quat)
         accel = np.array([accel[0], accel[1], accel[2] + g])
         
@@ -63,7 +66,7 @@ class FusionComponent(Component):
         # If acceleration is 1.15*g <- hard to extrapolate velocity vector
         if np.linalg.norm(accel) > 1.15*g:
             gyro_corrected = gyro
-            omega = (gyro_corrected[0], gyro_corrected[1], gyro_corrected[2], 0)
+            omega = (0, gyro_corrected[0], gyro_corrected[1], gyro_corrected[2])
             dq = 0.5 * np.array(quatern_prod(quat, omega))
 
         else:
@@ -71,26 +74,29 @@ class FusionComponent(Component):
             accel = accel / np.linalg.norm(accel) if np.linalg.norm(accel) != 0 else accel
 
             # Quaternion elements
-            qx = quat[0]
-            qy = quat[1]
-            qz = quat[2]
-            qw = quat[3]
+            qw = quat[0]
+            qx = quat[1]
+            qy = quat[2]
+            qz = quat[3]
  
             # Estimate gravity direction from quaternion
             g_dir = (2*(qx*qz - qw*qy), 2*(qw*qx + qy*qz), qw**2 - qx**2 - qy**2 + qz**2)
             
             # Gradient descent error (cross measured and estimated gravity)
-            error = np.cross(np.array(g_dir), np.array(accel))
+            error = np.cross(np.array(g_dir), accel)
 
             # Convert error into quaternion derivative (scaled)
-            dq = 0.5 * np.array(quatern_prod(quat, (gyro[0], gyro[1], gyro[2], 0)))
-            correction = np.array([error[0], error[1], error[2], 0])
+            dq = 0.5 * np.array(quatern_prod(quat, (0, gyro[0], gyro[1], gyro[2])))
+            correction = np.array([0, error[0], error[1], error[2]])
             dq = dq - beta * correction
 
         qnew = np.array(quat) + dq * dt
         quatnorm = np.linalg.norm(quat)
         qnewer = tuple(x / quatnorm for x in qnew) if quatnorm != 0 else qnew
-        return qnewer
+
+        # Restructure quat 
+        qnewest = (qnewer[1], qnewer[2], qnewer[3], qnewer[0])
+        return qnewest
 
     def dispatch(self, time: float):
         
@@ -133,6 +139,7 @@ class FusionComponent(Component):
         v_rot_earth_calculated = quatern_prod(self._state.quaternion, 
                                               quatern_prod(v_up_earth, 
                                                            quatern_conj(self._state.quaternion)))
+        
         zenith_calculated = np.degrees(np.arccos(v_rot_earth_calculated[2]))
 
         self._state.zenith = zenith_calculated
