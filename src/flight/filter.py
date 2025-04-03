@@ -95,8 +95,8 @@ class FilterComponent(Component):
     def dispatch(self, time: float):
      
         # temporary:  zeroing when acs turns on
-        #if self._previous_time <= 0.02:
-        #     self._zero_offset = METERS_TO_FEET * self._bmp390_state.altitude
+        if self._previous_time <= 0.02:
+             self._zero_offset = METERS_TO_FEET * self._bmp390_state.altitude
 
         altitude = METERS_TO_FEET * self._bmp390_state.altitude - self._zero_offset
 
@@ -108,7 +108,7 @@ class FilterComponent(Component):
         acceleration = [
             METERS_TO_FEET * a for a in self._icm20649_state.acceleration
         ]
-        acceleration[2] += EARTH_GRAVITY_ACCELERATION
+        acceleration[2] -= EARTH_GRAVITY_ACCELERATION
 
         # TODO: Continuously Zero Altimeter at ground - on init and every minute before burn detected
         # How to do this when cannot access state? good question i dont know

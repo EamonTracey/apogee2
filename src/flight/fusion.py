@@ -8,6 +8,7 @@ from base.stage import Stage
 from flight.filter import FilterState
 from flight.stage import StageState
 from flight.bno085 import BNO085State
+from flight.icm20649 import ICM20649State
 
 from base.math import quatern2euler
 from base.math import quatern_prod
@@ -33,12 +34,13 @@ class FusionState:
 
 class FusionComponent(Component):
 
-    def __init__(self, bno085_state: BNO085State, filter_state: FilterState, stage_state: StageState):
+    def __init__(self, bno085_state: BNO085State, icm20649_state: ICM20649State, filter_state: FilterState, stage_state: StageState):
         self._state = FusionState()
 
         self._filter_state = filter_state
         self._stage_state = stage_state
         self._bno085_state = bno085_state
+        self._icm20649_state = icm20649_state
         
         # remove after testing - ensures a few seconds when ACS turns on of bno085 quaternions so it can normalize.
         # won't be necessary in flight.
@@ -52,7 +54,7 @@ class FusionComponent(Component):
 
 
     # Sensor fusion.
-    def madgwickFilter(self, quat, gyro, accel, dt, beta):
+    def teasleyFilter(self, quat, gyro, accel, dt, beta):
 
         g = EARTH_GRAVITY_ACCELERATION
 
@@ -60,7 +62,7 @@ class FusionComponent(Component):
         quat = (quat[3], quat[0], quat[1], quat[2])
 
         # Add back gravity into filtered acceleration (needed for quat)
-        accel = np.array([accel[0], accel[1], accel[2] + g])
+        accel = np.array([accel[0], accel[1], accel[2]])
         
         # Gyroscope interpolation (angular velocity -> change in angular positon
         # If acceleration is 1.15*g <- hard to extrapolate velocity vector
@@ -89,7 +91,7 @@ class FusionComponent(Component):
             dq = 0.5 * np.array(quatern_prod(quat, (0, gyro[0], gyro[1], gyro[2])))
             correction = np.array([0, error[0], error[1], error[2]])
             dq = dq - beta * correction
-
+       
         qnew = np.array(quat) + dq * dt
         quatnorm = np.linalg.norm(quat)
         qnewer = tuple(x / quatnorm for x in qnew) if quatnorm != 0 else qnew
@@ -102,7 +104,7 @@ class FusionComponent(Component):
         
         # Use BNO085 onboard fusion to gather quaternion data for when not launched 
         # and descending.
-        if self._time_threshhold > time or self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.DESCENT:
+        if self._time_threshhold > time or self._stage_state.stage == Stage.DESCENT:
             
             self._state.quaternion = self._bno085_state.quaternion
             
@@ -115,14 +117,14 @@ class FusionComponent(Component):
         # For this reason, manual sensor fusion is used.
         # NOTE: Gyro drift starts to kick in pretty heavily after around 15-20 seconds.
 
-        elif self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
+        elif self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
             quat = self._state.quaternion
             gyro = self._filter_state.gyro
-            accel = self._filter_state.acceleration
+            accel = self._icm20649_state.acceleration
             dt = time - self._previous_time
 
             # Calculate quaternions manually using gyro and acceleration (fusion)
-            quat_calc = self.madgwickFilter(quat, gyro, accel, dt, 0.025)
+            quat_calc = self.teasleyFilter(quat, gyro, accel, dt, 0.025)
 
             self._state.quaternion = quat_calc
             

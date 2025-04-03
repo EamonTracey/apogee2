@@ -54,7 +54,7 @@ class Flight:
         self.loop.add_component(stage_component, 30)
 
         # Fusion. 
-        fusion_component = FusionComponent(bno085_state, filter_state, stage_state)
+        fusion_component = FusionComponent(bno085_state, icm20649_state, filter_state, stage_state)
         fusion_state = fusion_component.state
         self.loop.add_component(fusion_component, 30)
 
