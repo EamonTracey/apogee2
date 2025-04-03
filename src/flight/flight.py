@@ -15,6 +15,10 @@ from flight.stage import StageComponent
 from flight.predict import PredictComponent
 from flight.fusion import FusionComponent
 
+from simulation.environment import Environment
+from simulation.vehicle import Vehicle
+from simulation.motor import Motor
+
 logger = logging.getLogger(__name__)
 
 
@@ -59,7 +63,8 @@ class Flight:
         self.loop.add_component(fusion_component, 30)
 
         # Apogee Prediction.
-        predict_component = PredictComponent(filter_state, stage_state, fusion_state)
+        predict_component = PredictComponent(filter_state, stage_state, fusion_state, 
+                                             Vehicle, Environment, Motor)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)
 
