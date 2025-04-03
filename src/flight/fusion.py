@@ -35,11 +35,7 @@ class FusionComponent(Component):
         self._state = FusionState()
 
         self._stage_state = stage_state
-        self._bno085_state = bno085_state
-        
-        # remove after testing - ensures a few seconds when ACS turns on of bno085 quaternions so it can normalize.
-        # won't be necessary in flight.
-        self._time_threshhold = 4 
+        self._bno085_state = bno085_state 
 
         self._previous_time = 0
        
@@ -72,11 +68,12 @@ class FusionComponent(Component):
         
         # Use BNO085 onboard fusion to gather quaternion data for when not launched 
         # and descending.
-        if self._time_threshhold > time or self._stage_state.stage == Stage.DESCENT:
+        if self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.DESCENT:
             
+            # Utilize BNO085 quaternions
             self._state.quaternion = self._bno085_state.quaternion
             
-            # Calculate Euler Angles
+            # Calculate euler Angles
             self._state.euler = tuple(x * (180/pi) for x in quatern2euler(self._bno085_state.quaternion))
                 
             self._previous_time = time
@@ -85,7 +82,7 @@ class FusionComponent(Component):
         # For this reason, manual sensor fusion is used.
         # NOTE: Gyro drift starts to kick in pretty heavily after around 15-20 seconds.
 
-        elif self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
+        elif self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
             
             # Calculate quaternions manually using gyro (fusion)
             self._state.quaternion = self.teasleyFilter(self._state.quaternion, self._bno085_state.gyro, time - self._previous_time)
@@ -103,7 +100,6 @@ class FusionComponent(Component):
         # Avoid arccos > 1
         if v_rot_earth_calculated[2] > 1:
             v_rot_earth_calculated = (v_rot_earth_calculated[0], v_rot_earth_calculated[1], 1, v_rot_earth_calculated[3])
-            
         if v_rot_earth_calculated[2] < -1: 
             v_rot_earth_calculated = (v_rot_earth_calculated[0], v_rot_earth_calculated[1], -1, v_rot_earth_calculated[3])
 
