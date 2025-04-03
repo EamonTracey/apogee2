@@ -66,7 +66,7 @@ class FusionComponent(Component):
         
         # Gyroscope interpolation (angular velocity -> change in angular positon
         # If acceleration is 1.15*g <- hard to extrapolate velocity vector
-        if np.linalg.norm(accel) > 1.15*g:
+        if np.linalg.norm(accel) > 4.15*g:
             gyro_corrected = gyro
             omega = (0, gyro_corrected[0], gyro_corrected[1], gyro_corrected[2])
             dq = 0.5 * np.array(quatern_prod(quat, omega))
@@ -119,7 +119,7 @@ class FusionComponent(Component):
 
         elif self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.BURN or self._stage_state.stage == Stage.COAST: 
             quat = self._state.quaternion
-            gyro = self._filter_state.gyro
+            gyro = self._bno085_state.gyro
             accel = self._icm20649_state.acceleration
             dt = time - self._previous_time
 
@@ -141,18 +141,24 @@ class FusionComponent(Component):
         v_rot_earth_calculated = quatern_prod(self._state.quaternion, 
                                               quatern_prod(v_up_earth, 
                                                            quatern_conj(self._state.quaternion)))
-        
+        # Avoid arccos > 1
+        if v_rot_earth_calculated[2] > 1:
+            v_rot_earth_calculated = (v_rot_earth_calculated[0], v_rot_earth_calculated[1], 1, v_rot_earth_calculated[3])
+            
+        if v_rot_earth_calculated[2] < -1: 
+            v_rot_earth_calculated = (v_rot_earth_calculated[0], v_rot_earth_calculated[1], -1, v_rot_earth_calculated[3])
+
         zenith_calculated = np.degrees(np.arccos(v_rot_earth_calculated[2]))
 
         self._state.zenith = zenith_calculated
 
         # If pitch angle is between -1 and 1 degrees or btwn -179 and 179 the zenith angle nan's, likely
         # due to gimbal lock-y stuff.. This is a manual override for those circumstances
-        if (self._state.euler[2] <= 1 and self._state.euler[2] >= -1):
-            self._state.zenith = 0
+        #if (self._state.euler[2] <= 1 and self._state.euler[2] >= -1):
+        #    self._state.zenith = 0
 
-        elif self._state.euler[2] > 179 or self._state.euler[2] < -179:
-            self._state.zenith = 179
+        #elif self._state.euler[2] > 179 or self._state.euler[2] < -179:
+        #    self._state.zenith = 179
             
 
 
