@@ -119,7 +119,6 @@ class LogComponent(Component):
             *self._fusion_state.quaternion,
             *self._fusion_state.euler,
             self._fusion_state.zenith,
-            *self._filter_state.gyro,
             self._bmp390_state.altitude_errors,
             self._bmp390_state.temperature_errors,
             self._bno085_state.acceleration_errors,
