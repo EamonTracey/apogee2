@@ -8,24 +8,16 @@ import pwmio
 
 from base.component import Component
 from base.stage import Stage
-from flight.filter import FilterState
-from flight.stage import StageState
-from flight.predict import PredictState
+from flight.blackboard import FilterState, StageState, PredictState
 
 from flight.constants import APOGEE_ALTITUDE
 
 logger = logging.getLogger(__name__)
 
 
-@dataclass
-class ControlState:
-    # Current Servo Angle.
-    servo_angle: float = 0
-
-
 class ControlComponent(Component):
 
-    def __init__(self, filter_state: FilterState, stage_state: StageState, 
+    def __init__(self, filter_state: FilterState, stage_state: StageState,
                  predict_state: PredictState):
 
         self._state = ControlState()
@@ -43,13 +35,12 @@ class ControlComponent(Component):
 
         self._first = True
 
-
     @property
     def state(self):
         return self._state
 
     def dispatch(self, time: float):
-        
+
         # Motor Control Algorithm.
         if self._stage_state == Stage.GROUND or self._stage_state == Stage.BURN:
             self._state.servo_angle = 0
@@ -77,7 +68,8 @@ class ControlComponent(Component):
 
                 # PI Terms.
                 proportional = apogee_error
-                integral = self._integral_previous + ((apogee_error + self._error_previous) * dt / 2)
+                integral = self._integral_previous + (
+                    (apogee_error + self._error_previous) * dt / 2)
 
                 # Predetermined Proportional Constants.
                 Kp = 50

@@ -7,29 +7,9 @@ import adafruit_bno08x.i2c
 import busio
 
 from base.component import Component
+from flight.blackboard import BNO085State
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class BNO085State:
-    # Acceleration in meters per second squared.
-    acceleration: tuple[float, float, float] = (0, 0, 0)
-
-    # Magnetic field in microteslas.
-    magnetic: tuple[float, float, float] = (0, 0, 0)
-
-    # Angular velocity in radians per second.
-    gyro: tuple[float, float, float] = (0, 0, 0)
-
-    # Orientation as a (x, y, z, w) quaternion.
-    quaternion: tuple[float, float, float, float] = (0, 0, 0, 0)
-
-    # Count the number of times each reading fails.
-    acceleration_errors: int = 0
-    magnetic_errors: int = 0
-    gyro_errors: int = 0
-    quaternion_errors: int = 0
 
 
 class BNO085Component(Component):

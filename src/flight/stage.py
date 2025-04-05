@@ -19,11 +19,6 @@ from flight.constants import (
 logger = logging.getLogger(__name__)
 
 
-@dataclass
-class StageState:
-    stage: Stage = Stage.GROUND
-
-
 class StageComponent(Component):
 
     def __init__(self, filter_state: FilterState):

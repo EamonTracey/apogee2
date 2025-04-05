@@ -6,21 +6,9 @@ import adafruit_bmp3xx
 import busio
 
 from base.component import Component
+from flight.blackboard import BMP390State
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class BMP390State:
-    # Altitude in meters.
-    altitude: float = 0
-
-    # Temperature in Celsius.
-    temperature: float = 0
-
-    # Count the number of times each reading fails.
-    altitude_errors: int = 0
-    temperature_errors: int = 0
 
 
 class BMP390Component(Component):

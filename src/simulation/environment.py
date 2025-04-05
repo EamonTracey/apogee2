@@ -6,7 +6,8 @@ import numpy as np
 
 class Environment:
 
-    def __init__(self, ground_temperature: float, ground_pressure: float, ground_wind: tuple[float, float, float]):
+    def __init__(self, ground_temperature: float, ground_pressure: float,
+                 ground_wind: tuple[float, float, float]):
         self._ground_temperature = ground_temperature
         self._ground_pressure = ground_pressure
         self._ground_wind = ground_wind
@@ -30,7 +31,7 @@ class Environment:
     @property
     def ground_pressure(self):
         return self._ground_pressure
-    
+
     @property
     def ground_wind(self):
         return self._ground_wind

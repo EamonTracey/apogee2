@@ -24,7 +24,6 @@ def quatern2euler(q):
     return (psi, theta, phi)
 
 
-
 def zenith_azimuth_to_quaternion(
         zenith: float, azimuth: float) -> tuple[float, float, float, float]:
     # input in degrees
@@ -39,20 +38,19 @@ def zenith_azimuth_to_quaternion(
 
     return (w, x, y, z)
 
+
 def quatern_prod(a, b) -> tuple[float, float, float, float]:
 
-    # Calculates the quaternion product of quaternion a and b. Not communative.    
-    q1 = a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3]
-    q2 = a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2]
-    q3 = a[0]*b[2] - a[1]*b[3] + a[2]*b[0] + a[3]*b[1]
-    q4 = a[0]*b[3] + a[1]*b[2] - a[2]*b[1] + a[3]*b[0]
+    # Calculates the quaternion product of quaternion a and b. Not communative.
+    q1 = a[0] * b[0] - a[1] * b[1] - a[2] * b[2] - a[3] * b[3]
+    q2 = a[0] * b[1] + a[1] * b[0] + a[2] * b[3] - a[3] * b[2]
+    q3 = a[0] * b[2] - a[1] * b[3] + a[2] * b[0] + a[3] * b[1]
+    q4 = a[0] * b[3] + a[1] * b[2] - a[2] * b[1] + a[3] * b[0]
 
     return (q1, q2, q3, q4)
+
 
 def quatern_conj(q) -> tuple[float, float, float, float]:
 
     # Converts a quaternion to its conjugate
     return (-q[0], -q[1], -q[2], q[3])
-
-
-

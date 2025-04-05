@@ -3,15 +3,10 @@ from dataclasses import dataclass
 
 from base.component import Component
 from base.loop import LoopState
-from flight.bmp390 import BMP390State
-from flight.bno085 import BNO085State
-from flight.icm20649 import ICM20649State
-from flight.filter import FilterState
-from flight.stage import StageState
-from flight.control import ControlState
-from flight.predict import PredictState
-from flight.fusion import FusionState
- 
+from flight.blackboard import (BMP390State, BNO085State, ControlState,
+                               FilterState, FusionState, ICM20649State,
+                               PredictState, StageState)
+
 HEADERS = [
     "Time",
     "Loop_Slip_Count",
@@ -64,17 +59,12 @@ HEADERS = [
 ]
 
 
-@dataclass
-class LogState:
-    ...
-
-
 class LogComponent(Component):
 
     def __init__(self, path: str, results: int, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, filter_state: FilterState,
-                 control_state: ControlState, stage_state: StageState, 
+                 control_state: ControlState, stage_state: StageState,
                  predict_state: PredictState, fusion_state: FusionState):
         self._state = LogState()
 
@@ -131,8 +121,7 @@ class LogComponent(Component):
 
         # If console output is selected.
         if self._results == 1:
-            print(log[0], log[1], log[2], log[3], log[4],
-                  log[5], log[8], log[11], 
-                  log[37], log[38], log[39], log[40])
+            print(log[0], log[1], log[2], log[3], log[4], log[5], log[8],
+                  log[11], log[37], log[38], log[39], log[40])
         elif self._results == 2:
             print(log)

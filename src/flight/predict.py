@@ -15,16 +15,11 @@ from simulation.environment import Environment
 logger = logging.getLogger(__name__)
 
 
-@dataclass
-class PredictState:
-    # Predicted apogee in feet.
-    apogee_prediction: float = SIM_APOGEE 
-
-
 class PredictComponent(Component):
 
-    def __init__(self, filter_state: FilterState, stage_state: StageState, fusion_state: FusionState,
-                 vehicle: Vehicle, environment: Environment, motor: Motor):
+    def __init__(self, filter_state: FilterState, stage_state: StageState,
+                 fusion_state: FusionState, vehicle: Vehicle,
+                 environment: Environment, motor: Motor):
         self._state = PredictState
 
         self._filter_state = filter_state
@@ -36,15 +31,10 @@ class PredictComponent(Component):
         self._motor = motor
 
         logger.info("Prediction Component Initialized.")
-    
+
     @property
     def state(self):
         return self._state
 
     def dispatch(self, time: float):
         pass
-
-
-
-
-

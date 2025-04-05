@@ -57,19 +57,21 @@ class Flight:
         stage_state = stage_component.state
         self.loop.add_component(stage_component, 30)
 
-        # Fusion. 
+        # Fusion.
         fusion_component = FusionComponent(bno085_state, stage_state)
         fusion_state = fusion_component.state
         self.loop.add_component(fusion_component, 30)
 
         # Apogee Prediction.
-        predict_component = PredictComponent(filter_state, stage_state, fusion_state, 
-                                             Vehicle, Environment, Motor)
+        predict_component = PredictComponent(filter_state, stage_state,
+                                             fusion_state, Vehicle,
+                                             Environment, Motor)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)
 
         # Motor Control.
-        control_component = ControlComponent(filter_state, stage_state, predict_state)
+        control_component = ControlComponent(filter_state, stage_state,
+                                             predict_state)
         control_state = control_component.state
         self.loop.add_component(control_component, 30)
 
@@ -78,7 +80,8 @@ class Flight:
         log_component = LogComponent(log_path, results, loop_state,
                                      bmp390_state, bno085_state,
                                      icm20649_state, filter_state,
-                                     control_state, stage_state, predict_state, fusion_state)
+                                     control_state, stage_state, predict_state,
+                                     fusion_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
