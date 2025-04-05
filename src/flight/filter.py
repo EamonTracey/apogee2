@@ -1,3 +1,4 @@
+from collections import deque
 from dataclasses import dataclass
 import logging
 
@@ -8,7 +9,7 @@ from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
 from base.loop import LoopState
 from base.stage import Stage
-from flight.blackboard import BMP390State, ICM20649State
+from flight.blackboard import BMP390State, FilterState, ICM20649State, StageState
 
 logger = logging.getLogger(__name__)
 

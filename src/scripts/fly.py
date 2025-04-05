@@ -25,9 +25,12 @@ logger = logging.getLogger(__name__)
               "--environment",
               default="threeoaks_basic",
               help="The launch environment.")
-def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
+def fly(name: Optional[str], vehicle: str, motor: str, environment: str):
     """Run ACS flight software."""
     from flight.flight import Flight
+    from simulation.environment import Environment
+    from simulation.motor import Motor
+    from simulation.vehicle import Vehicle
 
     # Naming is hard.
     if name is None:

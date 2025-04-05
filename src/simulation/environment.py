@@ -1,5 +1,4 @@
 import json
-from typing import Self
 
 import numpy as np
 
@@ -18,7 +17,7 @@ class Environment:
         ...
 
     @classmethod
-    def from_json(cls, file_path: str) -> Self:
+    def from_json(cls, file_path: str):
         with open(file_path, "r") as file:
             environment_json = json.load(file)
             environment = cls(**environment_json)

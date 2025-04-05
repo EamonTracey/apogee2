@@ -1,5 +1,4 @@
 import json
-from typing import Self
 
 import numpy as np
 
@@ -17,7 +16,7 @@ class Motor:
         self._validate_motor()
 
     @classmethod
-    def from_json(cls, file_path: str) -> Self:
+    def from_json(cls, file_path: str):
         with open(file_path, "r") as file:
             motor_json = json.load(file)
 

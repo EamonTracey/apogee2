@@ -8,7 +8,7 @@ import pwmio
 
 from base.component import Component
 from base.stage import Stage
-from flight.blackboard import FilterState, StageState, PredictState
+from flight.blackboard import ControlState, FilterState, StageState, PredictState
 
 from flight.constants import APOGEE_ALTITUDE
 

@@ -6,7 +6,7 @@ import numpy as np
 from base.component import Component
 from base.math import quatern2euler, quatern_prod, quatern_conj
 from base.stage import Stage
-from fligt.blackboard import BNO085State, StageState
+from flight.blackboard import BNO085State, FusionState, StageState
 
 import logging
 

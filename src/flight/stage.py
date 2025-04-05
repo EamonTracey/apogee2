@@ -4,7 +4,7 @@ from base.component import Component
 from base.stage import Stage
 import logging
 
-from flight.filter import FilterState
+from flight.blackboard import FilterState, StageState
 from flight.constants import (
     LAUNCH_ALTITUDE,
     LAUNCH_ACCELERATION,

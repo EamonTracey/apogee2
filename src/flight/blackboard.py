@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from base.stage import Stage
+
 
 @dataclass
 class BMP390State:

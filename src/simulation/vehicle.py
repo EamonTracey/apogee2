@@ -1,5 +1,4 @@
 import json
-from typing import Self
 
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
@@ -64,7 +63,7 @@ class Vehicle:
         ...
 
     @classmethod
-    def from_json(cls, file_path: str) -> Self:
+    def from_json(cls, file_path: str):
         with open(file_path, "r") as file:
             vehicle_json = json.load(file)
 
