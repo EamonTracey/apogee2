@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 class Flight:
 
-    def __init__(self, name: str, vehicle: Vehicle, motor: Motor, environment: Environment):
+    def __init__(self, name: str, vehicle: Vehicle, motor: Motor,
+                 environment: Environment):
         self.loop = Loop(30)
         loop_state = self.loop.state
 
@@ -67,7 +68,8 @@ class Flight:
 
         # Apogee Prediction.
         predict_component = PredictComponent(filter_state, stage_state,
-                                             fusion_state, vehicle, motor, environment)
+                                             fusion_state, vehicle, motor,
+                                             environment)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)
 
@@ -79,11 +81,10 @@ class Flight:
 
         # Log.
         log_path = f"{name}.csv"
-        log_component = LogComponent(log_path, loop_state,
-                                     bmp390_state, bno085_state,
-                                     icm20649_state, filter_state,
-                                     control_state, stage_state, predict_state,
-                                     fusion_state)
+        log_component = LogComponent(log_path, loop_state, bmp390_state,
+                                     bno085_state, icm20649_state,
+                                     filter_state, control_state, stage_state,
+                                     predict_state, fusion_state)
         self.loop.add_component(log_component, 30)
 
     def run(self):
