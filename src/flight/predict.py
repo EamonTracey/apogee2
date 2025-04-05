@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 class PredictComponent(Component):
 
     def __init__(self, filter_state: FilterState, stage_state: StageState,
-                 fusion_state: FusionState, vehicle: Vehicle,
-                 environment: Environment, motor: Motor):
+                 fusion_state: FusionState, vehicle: Vehicle, motor: Motor, environment: Environment):
         self._state = PredictState
 
         self._filter_state = filter_state
@@ -27,8 +26,8 @@ class PredictComponent(Component):
         self._fusion_state = fusion_state
 
         self._vehicle = vehicle
-        self._environment = environment
         self._motor = motor
+        self._environment = environment
 
         logger.info("Prediction Component Initialized.")
 

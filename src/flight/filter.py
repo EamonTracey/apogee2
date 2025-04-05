@@ -22,6 +22,7 @@ class FilterComponent(Component):
         self._loop_state = loop_state
         self._bmp390_state = bmp390_state
         self._icm20649_state = icm20649_state
+        self._stage_state = stage_state
 
         self._initialize_filters()
 
@@ -31,7 +32,6 @@ class FilterComponent(Component):
         logger.info("Kalman Filter Initialized.")
 
     def _initialize_filters(self):
-
         self.filter_matrix_list = {}
 
         self.filter_matrix_list["Zdir"] = [[1, 0, 0], [0, 0, 1]]
@@ -53,7 +53,6 @@ class FilterComponent(Component):
             dim_x=3, dim_z=len(self.filter_matrix_list["Xdir"]))
 
         for unit in self.filter_list:
-
             self.filter_list[unit].H = np.array(self.filter_matrix_list[unit])
             self.filter_list[unit].P *= 1
             self.filter_list[unit].R *= 1
@@ -66,12 +65,15 @@ class FilterComponent(Component):
 
     def dispatch(self, time: float):
         altitude = METERS_TO_FEET * self._bmp390_state.altitude
-        self._ground_altitudes.append(altitude)
-        if len(self._ground_altitudes) > 100:
-            self._ground_altitudes.popleft()
+
+        # We keep the 300 previous altitude readings to have a zero offset.
+        if self._stage_state.stage == Stage.GROUND:
+            self._ground_altitudes.append(altitude)
+            if len(self._ground_altitudes) > 300:
+                self._ground_altitudes.popleft()
 
         # Offset the Z acceleration of the accelerometer by gravity.
-        # TODO: NEEDS TO BE REPLACED by grav vector removal via zenith angle
+        # TODO: NEEDS TO BE REPLACED by grav vector removal via zenith angle.
         acceleration = [
             METERS_TO_FEET * a for a in self._icm20649_state.acceleration
         ]

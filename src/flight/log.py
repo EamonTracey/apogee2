@@ -61,7 +61,7 @@ HEADERS = [
 
 class LogComponent(Component):
 
-    def __init__(self, path: str, results: int, loop_state: LoopState,
+    def __init__(self, path: str, loop_state: LoopState,
                  bmp390_state: BMP390State, bno085_state: BNO085State,
                  icm20649_state: ICM20649State, filter_state: FilterState,
                  control_state: ControlState, stage_state: StageState,
@@ -82,7 +82,6 @@ class LogComponent(Component):
         self._file = open(self._path, "w")
         self._writer = csv.writer(self._file)
         self._writer.writerow(HEADERS)
-        self._results = results
 
     @property
     def state(self):
@@ -118,10 +117,3 @@ class LogComponent(Component):
             self._icm20649_state.gyro_errors,
         ]
         self._writer.writerow(log)
-
-        # If console output is selected.
-        if self._results == 1:
-            print(log[0], log[1], log[2], log[3], log[4], log[5], log[8],
-                  log[11], log[37], log[38], log[39], log[40])
-        elif self._results == 2:
-            print(log)

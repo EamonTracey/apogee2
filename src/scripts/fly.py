@@ -13,14 +13,18 @@ logger = logging.getLogger(__name__)
               type=str,
               default=None,
               help="The name of the flight, used to name log files.")
-@click.option("-t",
-              "--truncatedresults",
-              is_flag=True,
-              help="Display truncated live data to console.")
-@click.option("-f",
-              "--fullresults",
-              is_flag=True,
-              help="Display full live data to console.")
+@click.option("-v",
+              "--vehicle",
+              default="fullscale25",
+              help="The vehicle being flown.")
+@click.option("-m",
+              "--motor",
+              default="aerotech_l1940x",
+              help="The motor being flown.")
+@click.option("-e",
+              "--environment",
+              default="threeoaks_basic",
+              help="The launch environment.")
 def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
     """Run ACS flight software."""
     from flight.flight import Flight
@@ -30,13 +34,6 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
         utc_date = datetime.datetime.now(datetime.timezone.utc)
         utc_date_string = utc_date.strftime("%Y%m%d%H%M%S")
         name = f"ACS_{utc_date_string}"
-
-    # Results me want.
-    results = 0
-    if truncatedresults:
-        results = 1
-    if fullresults:
-        results = 2
 
     # Initialize logging.
     logging.basicConfig(
@@ -74,7 +71,15 @@ def fly(name: Optional[str], truncatedresults: bool, fullresults: bool):
 
     logger.info("The way he's actuating is so tuff.")
 
-    flight = Flight(name, results)
+    # Load launch condition parameters.
+    vehicle_file = f"data/vehicles/{vehicle}.json"
+    vehicle = Vehicle.from_json(vehicle_file)
+    motor_file = f"data/motors/{motor}.json"
+    motor = Motor.from_json(motor_file)
+    environment_file = f"data/environments/{environment}.json"
+    environment = Environment.from_json(environment_file)
+
+    flight = Flight(name, vehicle, motor, environment)
     flight.run()
 
 
