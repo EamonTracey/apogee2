@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
               help="The speed at which to run the software loop.")
 @click.option("-v",
               "--vehicle",
-              default="drjoe",
+              default="fullscale25",
               help="The vehicle to simulate.")
 @click.option("-m",
               "--motor",
@@ -39,7 +39,8 @@ logger = logging.getLogger(__name__)
               help="The azimuth angle of the launch rail.")
 @click.option("-w", "--wind", nargs=3, type=float)
 def simulate(name: Optional[str], vehicle: str, motor: str, environment: str,
-             frequency: int, zenith: float, azimuth: float, wind: tuple[float, float ,float]):
+             frequency: int, zenith: float, azimuth: float,
+             wind: tuple[float, float, float]):
     """Run a complete software-in-the-loop rocket flight simulation."""
     from base.stage import Stage
     from simulation.dynamics import DynamicsComponent
@@ -72,7 +73,8 @@ def simulate(name: Optional[str], vehicle: str, motor: str, environment: str,
 
     environment_file = f"data/environments/{environment}.json"
     environment = Environment.from_json(environment_file)
-    environment._ground_wind = wind
+    if wind:
+        environment._ground_wind = wind
 
     simulation = Simulation(name, frequency, vehicle, motor, environment,
                             zenith, azimuth)
