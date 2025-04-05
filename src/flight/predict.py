@@ -36,6 +36,9 @@ class PredictComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
+        if self._stage_state.stage not in [Stage.COAST, Stage.OVERSHOOT]:
+            return
+
         time = 1000
         mass = self._vehicle.mass + self._motor.calculate_mass(time)
         position = np.array([0, 0, self._filter_state.altitude])

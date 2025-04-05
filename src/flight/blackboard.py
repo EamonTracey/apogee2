@@ -86,7 +86,7 @@ class LogState:
 @dataclass
 class PredictState:
     # Predicted apogee in feet.
-    apogee_prediction: float = SIM_APOGEE
+    apogee_prediction: float = 5100
 
 
 @dataclass
