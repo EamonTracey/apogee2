@@ -84,7 +84,9 @@ class DynamicsComponent(Component):
         # vehicle.
         #rotation = Rotation.from_quat(orientation,
         #                              scalar_first=True).as_matrix()
-        orientation_scalar_last = [orientation[1], orientation[2], orientation[3], orientation[0]]
+        orientation_scalar_last = [
+            orientation[1], orientation[2], orientation[3], orientation[0]
+        ]
         rotation = Rotation.from_quat(orientation).as_matrix()
         vehicle_yaw = rotation @ YAW
         vehicle_pitch = rotation @ PITCH
@@ -264,7 +266,9 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     #rotation = Rotation.from_quat(orientation, scalar_first=True).as_matrix()
     #rotation = Rotation.from_quat(orientation,
     #                              scalar_first=True).as_matrix()
-    orientation_scalar_last = [orientation[1], orientation[2], orientation[3], orientation[0]]
+    orientation_scalar_last = [
+        orientation[1], orientation[2], orientation[3], orientation[0]
+    ]
     rotation = Rotation.from_quat(orientation).as_matrix()
     vehicle_yaw = rotation @ YAW
     vehicle_pitch = rotation @ PITCH

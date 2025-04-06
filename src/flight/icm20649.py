@@ -42,7 +42,7 @@ class ICM20649Component(Component):
             logger.exception(
                 f"Exception when reading ICM20649 acceleration: {traceback.format_exc()}"
             )
-        if acceleration is not None:
+        if acceleration is not None and abs(acceleration[2]) < 200:
             self._state.acceleration = acceleration
         else:
             self._state.acceleration_errors += 1

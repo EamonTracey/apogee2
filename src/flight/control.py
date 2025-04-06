@@ -105,8 +105,7 @@ class ControlComponent(Component):
             self._servo_motor.rotate(self._state.servo_angle)
         except Exception as e:
             logger.info(
-                f"Exception when controlling: {traceback.format_exc()}"
-            )
+                f"Exception when controlling: {traceback.format_exc()}")
 
 
 class ServoMotor:

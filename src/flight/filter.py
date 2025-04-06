@@ -9,7 +9,7 @@ from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
 from base.loop import LoopState
 from base.stage import Stage
-from flight.blackboard import BMP390State, FilterState, ICM20649State, StageState
+from flight.blackboard import BMP390State, FilterState, ICM20649State, StageState, BNO085State
 
 logger = logging.getLogger(__name__)
 
@@ -17,12 +17,14 @@ logger = logging.getLogger(__name__)
 class FilterComponent(Component):
 
     def __init__(self, loop_state: LoopState, bmp390_state: BMP390State,
-                 icm20649_state: ICM20649State, stage_state: StageState):
+                 icm20649_state: ICM20649State, bno085_state: BNO085State,
+                 stage_state: StageState):
         self._state = FilterState()
 
         self._loop_state = loop_state
         self._bmp390_state = bmp390_state
         self._icm20649_state = icm20649_state
+        self._bno085_state = bno085_state
         self._stage_state = stage_state
 
         self._initialize_filters()
@@ -76,7 +78,9 @@ class FilterComponent(Component):
         # Offset the Z acceleration of the accelerometer by gravity.
         # TODO: NEEDS TO BE REPLACED by grav vector removal via zenith angle.
         acceleration = [
-            METERS_TO_FEET * a for a in self._icm20649_state.acceleration
+            METERS_TO_FEET * a for a in
+            (self._icm20649_state.acceleration if self._stage_state.stage in
+             [Stage.GROUND, Stage.BURN] else self._bno085_state.acceleration)
         ]
         acceleration[2] -= EARTH_GRAVITY_ACCELERATION
 

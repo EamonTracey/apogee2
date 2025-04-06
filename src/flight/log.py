@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from base.component import Component
 from base.loop import LoopState
 from flight.blackboard import (BMP390State, BNO085State, ControlState,
-                               FilterState, FusionState, ICM20649State, LogState,
-                               PredictState, StageState)
+                               FilterState, FusionState, ICM20649State,
+                               LogState, PredictState, StageState)
 
 HEADERS = [
     "Time",
