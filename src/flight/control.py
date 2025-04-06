@@ -122,7 +122,7 @@ class ServoMotor:
 
     # Maps the angle of the acs flaps (0-40) to the angle of the servo (135-90)
     def map(self, n: float):
-        return 135 - n
+        return 140 - n
 
     def rotate(self, degrees: float):
         # Motor degrees of 135 is fully closed (0 degree flaps),
