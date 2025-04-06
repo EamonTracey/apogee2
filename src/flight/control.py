@@ -72,20 +72,21 @@ class ControlComponent(Component):
                     (apogee_error + self._error_previous) * dt / 2)
 
                 # Predetermined Proportional Constants.
-                Kp = 50
-                Ki = 8
-                Kg = 0.01
+                Kp = 0.025
+                Ki = 0.075
+                Kg = 1
+                pi0 = 5
 
                 # Max Servo Speed - Test 10.1.4 DT.1
                 max_servo_delta = dt * 45 / 0.35
 
                 # PI Control.
-                pi_delta = dt * (Kp * proportional + Ki * integral) * Kg
+                pi = pi0 + (Kp * proportional + Ki * integral)
+                pi_delta = pi - self._pi_previous
                 if pi_delta >= max_servo_delta:
-                    pi_delta = max_servo_delta
+                    pi = self._pi_previous + max_servo_delta
                 elif pi_delta <= -max_servo_delta:
-                    pi_delta = -max_servo_delta
-                pi = pi_delta + self._pi_previous
+                    pi = self._pi_previous - max_servo_delta
 
                 if pi >= 45:
                     pi = 45

@@ -55,7 +55,7 @@ class PredictComponent(Component):
         motor = self._motor
         environment = self._environment
 
-        while linear_momentum > 0:
+        while float(linear_momentum[2]) > 0:
             # Perform RK4.
             k1p, k1l, k1o, k1a = calculate_derivatives(
                 vehicle, motor, environment, time, position, linear_momentum,
