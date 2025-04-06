@@ -82,8 +82,10 @@ class DynamicsComponent(Component):
 
         # Compute the rotation matrix and yaw, pitch, and roll axes of the
         # vehicle.
-        rotation = Rotation.from_quat(orientation,
-                                      scalar_first=True).as_matrix()
+        #rotation = Rotation.from_quat(orientation,
+        #                              scalar_first=True).as_matrix()
+        orientation_scalar_last = [orientation[1], orientation[2], orientation[3], orientation[0]]
+        rotation = Rotation.from_quat(orientation).as_matrix()
         vehicle_yaw = rotation @ YAW
         vehicle_pitch = rotation @ PITCH
         vehicle_roll = rotation @ ROLL
@@ -259,7 +261,11 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
 
     # Compute the rotation matrix and yaw, pitch, and roll axes of the
     # vehicle.
-    rotation = Rotation.from_quat(orientation, scalar_first=True).as_matrix()
+    #rotation = Rotation.from_quat(orientation, scalar_first=True).as_matrix()
+    #rotation = Rotation.from_quat(orientation,
+    #                              scalar_first=True).as_matrix()
+    orientation_scalar_last = [orientation[1], orientation[2], orientation[3], orientation[0]]
+    rotation = Rotation.from_quat(orientation).as_matrix()
     vehicle_yaw = rotation @ YAW
     vehicle_pitch = rotation @ PITCH
     vehicle_roll = rotation @ ROLL
@@ -337,7 +343,6 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
                 np.cross(vehicle_roll, velocity_apparent_direction))
 
     force = force_thrust + force_gravity + force_axial + force_normal
-    self._state.acceleration = tuple(map(float, force / mass_total))
 
     # Compute the torque.
     torque_normal = np.array((0, 0, 0))
