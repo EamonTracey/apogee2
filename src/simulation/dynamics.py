@@ -323,8 +323,7 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     # Earth atmosphere model.
     # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
     air_temperature = environment.ground_temperature - 0.00356 * position[2]
-    air_pressure = environment.ground_pressure * (air_temperature /
-                                                  518.6)**5.256
+    air_pressure = environment.ground_pressure * (air_temperature / 518.6)**5.256
     air_density = air_pressure / 1718 / air_temperature
 
     # Compute the mach number.
@@ -356,5 +355,10 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     # TODO: torque roll from cfd
     torque_roll = np.array((0, 0, 0))
     torque = torque_normal + torque_roll
+
+    print(f"linvel {linear_velocity}")
+    print(f"force {force}")
+    print(f"orientation_derivative {orientation_derivative}")
+    print(f"torque {torque}")
 
     return linear_velocity, force, orientation_derivative, torque

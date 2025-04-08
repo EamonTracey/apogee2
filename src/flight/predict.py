@@ -38,12 +38,12 @@ class PredictComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
+    
         try:
-            if self._stage_state.stage not in [Stage.COAST, Stage.OVERSHOOT]:
+            if self._stage_state.stage not in [Stage.COAST, Stage.OVERSHOOT, "COAST"]:
                 return
 
-            time = 1000
-            mass = self._vehicle.mass + self._motor.calculate_mass(time)
+            mass = self._vehicle.mass + self._motor.calculate_mass(1000)
             position = np.array([0, 0, self._filter_state.altitude])
             linear_momentum = np.array(self._filter_state.velocity) * mass
             orientation = np.array([
