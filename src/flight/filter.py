@@ -4,12 +4,14 @@ import logging
 
 from filterpy.kalman import KalmanFilter
 import numpy as np
+import math
 
 from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
 from base.loop import LoopState
 from base.stage import Stage
-from flight.blackboard import BMP390State, FilterState, ICM20649State, StageState, BNO085State
+from base.math import euler_to_zyx_rotmat
+from flight.blackboard import BMP390State, FilterState, ICM20649State, StageState, BNO085State, FusionState
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +20,7 @@ class FilterComponent(Component):
 
     def __init__(self, loop_state: LoopState, bmp390_state: BMP390State,
                  icm20649_state: ICM20649State, bno085_state: BNO085State,
-                 stage_state: StageState):
+                 stage_state: StageState, fusion_state: FusionState):
         self._state = FilterState()
 
         self._loop_state = loop_state
@@ -26,6 +28,7 @@ class FilterComponent(Component):
         self._icm20649_state = icm20649_state
         self._bno085_state = bno085_state
         self._stage_state = stage_state
+        self._fusion_state = fusion_state
 
         self._initialize_filters()
 
@@ -75,14 +78,25 @@ class FilterComponent(Component):
             if len(self._ground_altitudes) > 300:
                 self._ground_altitudes.popleft()
 
-        # Offset the Z acceleration of the accelerometer by gravity.
-        # TODO: NEEDS TO BE REPLACED by grav vector removal via zenith angle.
+        # Acceleration vector. 
         acceleration = [
             METERS_TO_FEET * a for a in
             (self._icm20649_state.acceleration if self._stage_state.stage in
              [Stage.GROUND, Stage.BURN] else self._bno085_state.acceleration)
         ]
-        acceleration[2] -= EARTH_GRAVITY_ACCELERATION
+
+        # Calculate gravity vector with world reference frame.
+        g_w = np.array([[0], [0], [-EARTH_GRAVITY_ACCELERATION]])
+
+        # Generate rotation matrix.
+        r = euler_to_zyx_rotmat(self._fusion_state.euler)
+
+        # Calculate gravity vector with body reference frame and offset.
+        g_b = r @ g_w
+        acceleration[0] -= g_b[1]
+        acceleration[1] += g_b[0]
+        acceleration[2] += g_b[2] 
+
 
         params_list = {}
         params_list["Zdir"] = np.array(
