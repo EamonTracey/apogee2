@@ -68,12 +68,11 @@ class DynamicsComponent(Component):
                                orientation, angular_momentum):
         """Calculate the derivatives of the current position, linear momentum,
         orientation, and angular momentum."""
-
         # The total mass equals the sum of the mass of the vehicle and mass of
         # the motor. The mass of the motor is a function of time since its
         # mass decreases as it burns.
         vehicle_mass = self._vehicle.mass
-        motor_mass = self._motor.calculate_mass(time)
+        motor_mass = self._motor.calculate_mass(1000)
         mass_total = vehicle_mass + motor_mass
 
         # The derivative of the position vector equals the linear momentum
@@ -139,6 +138,7 @@ class DynamicsComponent(Component):
         if velocity_apparent_magnitude != 0:
             angle_of_attack = np.rad2deg(
                 np.arccos(np.dot(velocity_apparent_direction, vehicle_roll)))
+        angle_of_attack = 0
 
         # Earth atmosphere model.
         # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
@@ -254,7 +254,7 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     # the motor. The mass of the motor is a function of time since its
     # mass decreases as it burns.
     vehicle_mass = vehicle.mass
-    motor_mass = motor.calculate_mass(time)
+    motor_mass = motor.calculate_mass(1000)
     mass_total = vehicle_mass + motor_mass
 
     # The derivative of the position vector equals the linear momentum
@@ -313,13 +313,13 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     if not np.all(velocity_apparent == 0):
         velocity_apparent_magnitude = np.linalg.norm(velocity_apparent)
         velocity_apparent_direction = velocity_apparent / velocity_apparent_magnitude
-
+    
     # Compute the angle of attack.
     angle_of_attack = 0
     if velocity_apparent_magnitude != 0:
         angle_of_attack = np.rad2deg(
             np.arccos(np.dot(velocity_apparent_direction, vehicle_roll)))
-
+    angle_of_attack = 0
     # Earth atmosphere model.
     # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
     air_temperature = environment.ground_temperature - 0.00356 * position[2]
@@ -332,7 +332,7 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     mach_number = velocity_apparent_magnitude / speed_of_sound
 
     # Compute the force.
-    force_thrust = motor.calculate_thrust(time) * vehicle_roll
+    force_thrust = motor.calculate_thrust(1000) * vehicle_roll
     force_gravity = np.array((0, 0, -mass_total * EARTH_GRAVITY_ACCELERATION))
     force_axial = np.array((0, 0, 0))
     force_normal = np.array((0, 0, 0))
@@ -346,7 +346,7 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
                 np.cross(vehicle_roll, velocity_apparent_direction))
 
     force = force_thrust + force_gravity + force_axial + force_normal
-
+    #print("t g a n", force_thrust, force_gravity, force_axial, force_normal)
     # Compute the torque.
     torque_normal = np.array((0, 0, 0))
     if velocity_apparent_magnitude != 0:
@@ -356,9 +356,6 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     torque_roll = np.array((0, 0, 0))
     torque = torque_normal + torque_roll
 
-    print(f"linvel {linear_velocity}")
-    print(f"force {force}")
-    print(f"orientation_derivative {orientation_derivative}")
-    print(f"torque {torque}")
+    #print(f"linvel {linear_velocity}")
 
     return linear_velocity, force, orientation_derivative, torque

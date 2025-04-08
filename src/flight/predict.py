@@ -57,8 +57,9 @@ class PredictComponent(Component):
             motor = self._motor
             environment = self._environment
 
-            time_delta = np.float64(0.5)
-            while float(linear_momentum[2]) > 0:
+            time_delta = np.float64(1)
+
+            while float(linear_momentum[2]) > 1:
                 # Perform RK4.
                 k1p, k1l, k1o, k1a = calculate_derivatives(
                     vehicle, motor, environment, time, position,
@@ -87,7 +88,6 @@ class PredictComponent(Component):
                 orientation += time_delta / 6 * (k1o + 2 * k2o + 2 * k3o + k4o)
                 angular_momentum += time_delta / 6 * (k1a + 2 * k2a + 2 * k3a +
                                                       k4a)
-
             self._state.apogee_prediction = float(position[2])
         except Exception as e:
             logger.info(f"Exception when predicting: {traceback.format_exc()}")
