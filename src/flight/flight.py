@@ -50,8 +50,8 @@ class Flight:
 
         # Filter.
         filter_component = FilterComponent(loop_state, bmp390_state,
-                                           icm20649_state, bno085_state, 
-                                           None, None)
+                                           icm20649_state, bno085_state, None,
+                                           None)
         filter_state = filter_component.state
         self.loop.add_component(filter_component, 30)
 

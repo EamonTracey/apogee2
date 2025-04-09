@@ -38,9 +38,11 @@ class PredictComponent(Component):
         return self._state
 
     def dispatch(self, time: float):
-    
+
         try:
-            if self._stage_state.stage not in [Stage.COAST, Stage.OVERSHOOT, "COAST"]:
+            if self._stage_state.stage not in [
+                    Stage.COAST, Stage.OVERSHOOT, "COAST"
+            ]:
                 return
 
             mass = self._vehicle.mass + self._motor.calculate_mass(1000)

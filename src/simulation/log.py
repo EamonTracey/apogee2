@@ -21,9 +21,6 @@ HEADERS = [
     "Angular_Momentum_X",
     "Angular_Momentum_Y",
     "Angular_Momentum_Z",
-    "Acceleration_X",
-    "Acceleration_Y",
-    "Acceleration_Z",
 ]
 
 
@@ -65,9 +62,6 @@ class LogComponent(Component):
             self._dynamics_state.orientation[3],
             self._dynamics_state.angular_momentum[0],
             self._dynamics_state.angular_momentum[1],
-            self._dynamics_state.angular_momentum[2],
-            self._dynamics_state.acceleration[0],
-            self._dynamics_state.acceleration[1],
-            self._dynamics_state.acceleration[2],
+            self._dynamics_state.angular_momentum[2]
         ]
         self._writer.writerow(log)

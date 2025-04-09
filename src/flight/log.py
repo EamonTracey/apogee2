@@ -119,18 +119,12 @@ class LogComponent(Component):
         self._writer.writerow(log)
 
         # TEMPORARY: Console prints for testing.
-        print(time,
-                self._loop_state.slip_count,
-                self._stage_state.stage, 
-                self._control_state.servo_angle,
-                self._predict_state.apogee_prediction,
-                self._filter_state.altitude,
-                self._filter_state.velocity[2],
-                self._filter_state.acceleration[0],
-                self._filter_state.acceleration[1],
-                self._filter_state.acceleration[2],
-                self._fusion_state.euler[0],
-                self._fusion_state.euler[1],
-                self._fusion_state.euler[2],
-                self._fusion_state.zenith
-                )
+        print(time, self._loop_state.slip_count, self._stage_state.stage,
+              self._control_state.servo_angle,
+              self._predict_state.apogee_prediction,
+              self._filter_state.altitude, self._filter_state.velocity[2],
+              self._filter_state.acceleration[0],
+              self._filter_state.acceleration[1],
+              self._filter_state.acceleration[2], self._fusion_state.euler[0],
+              self._fusion_state.euler[1], self._fusion_state.euler[2],
+              self._fusion_state.zenith)

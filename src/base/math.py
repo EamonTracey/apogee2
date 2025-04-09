@@ -55,22 +55,25 @@ def quatern_conj(q) -> tuple[float, float, float, float]:
     # Converts a quaternion to its conjugate
     return (-q[0], -q[1], -q[2], q[3])
 
+
 def euler_to_zyx_rotmat(e):
 
     alpha = math.radians(e[0])
     beta = math.radians(e[1])
     gamma = math.radians(e[2])
 
-    R11 = math.cos(alpha)*math.cos(beta)
-    R12 = math.cos(alpha)*math.sin(beta)*math.sin(gamma) - math.cos(gamma)*math.sin(alpha)
-    R13 = math.sin(alpha)*math.sin(gamma) + math.cos(alpha)*math.cos(gamma)*math.sin(beta)
-    R21 = math.cos(beta)*math.sin(alpha) 
-    R22 = math.cos(alpha)*math.cos(gamma) + math.sin(alpha)*math.sin(beta)*math.sin(gamma) 
-    R23 = math.cos(gamma)*math.sin(alpha)*math.sin(beta) - math.cos(alpha)*math.sin(gamma)
+    R11 = math.cos(alpha) * math.cos(beta)
+    R12 = math.cos(alpha) * math.sin(beta) * math.sin(gamma) - math.cos(
+        gamma) * math.sin(alpha)
+    R13 = math.sin(alpha) * math.sin(gamma) + math.cos(alpha) * math.cos(
+        gamma) * math.sin(beta)
+    R21 = math.cos(beta) * math.sin(alpha)
+    R22 = math.cos(alpha) * math.cos(gamma) + math.sin(alpha) * math.sin(
+        beta) * math.sin(gamma)
+    R23 = math.cos(gamma) * math.sin(alpha) * math.sin(beta) - math.cos(
+        alpha) * math.sin(gamma)
     R31 = -math.sin(beta)
-    R32 = math.cos(beta)*math.sin(gamma)
-    R33 = math.cos(beta)*math.cos(gamma)
+    R32 = math.cos(beta) * math.sin(gamma)
+    R33 = math.cos(beta) * math.cos(gamma)
 
     return np.array([[R11, R12, R13], [R21, R22, R23], [R31, R32, R33]])
-
-
