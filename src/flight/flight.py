@@ -82,7 +82,7 @@ class Flight:
 
         # Apogee Prediction.
         predict_component = PredictComponent(filter_state, stage_state,
-                                             fusion_state, vehicle, motor,
+                                             fusion_state, None, vehicle, motor,
                                              environment)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)
@@ -92,6 +92,13 @@ class Flight:
                                              predict_state)
         control_state = control_component.state
         self.loop.add_component(control_component, 30)
+
+        # BURHRHRUHRUHR
+        control_state = test_component.get_control_state
+
+        ### CRAZY (pt 3) ###
+        predict_component._control_state = control_state
+        ### CRAZY (pt 3) ###
 
         # Log.
         log_path = f"{name}.csv"

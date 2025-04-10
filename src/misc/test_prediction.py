@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from base.component import Component
 from base.stage import Stage
-from flight.blackboard import FilterState, StageState, FusionState
+from flight.blackboard import FilterState, StageState, FusionState, ControlState
 
 import pandas as pd
 import numpy as np
@@ -15,6 +15,7 @@ class TestComponent(Component):
         self._filter_state = FilterState()
         self._stage_state = StageState()
         self._fusion_state = FusionState()
+        self._control_state = ControlState()
 
         filepath = '/home/acs/apogee2/data/launches/fullscale2/ACS_20250406191454.csv'
 
@@ -38,6 +39,10 @@ class TestComponent(Component):
     def get_fusion_state(self):
         return self._fusion_state
 
+    @property
+    def get_control_state(self):
+        return self._control_state
+
     def dispatch(self, time: float):
 
         self._filter_state.altitude = self._data[self.i][5]
@@ -58,6 +63,9 @@ class TestComponent(Component):
                                     self._data[self.i][38],
                                     self._data[self.i][39])
         self._fusion_state.zenith = self._data[self.i][40]
+
+        self._control_state.servo_angle = self._data[self.i][3]
+
 
         self.time = self._data[self.i][0]
 

@@ -132,7 +132,7 @@ class DynamicsComponent(Component):
             self._state.time)
 
 
-def calculate_derivatives(vehicle, motor, environment, time, position,
+def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time, position,
                           linear_momentum, orientation, angular_momentum):
     """Calculate the derivatives of the current position, linear momentum,
         orientation, and angular momentum."""
@@ -147,6 +147,9 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     # The derivative of the position vector equals the linear momentum
     # divided by the mass.
     linear_velocity = linear_momentum / mass_total
+
+    #print("MOMENTUM", linear_momentum)
+    #print("VELOCITY", linear_velocity)
 
     # Compute the rotation matrix and yaw, pitch, and roll axes of the
     # vehicle.
@@ -196,12 +199,14 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
         velocity_apparent_magnitude = np.linalg.norm(velocity_apparent)
         velocity_apparent_direction = velocity_apparent / velocity_apparent_magnitude
 
+    #print("    ROLL", vehicle_roll)
+    #print("    VAD", velocity_apparent_direction)
+
     # Compute the angle of attack.
     angle_of_attack = 0
     if velocity_apparent_magnitude != 0:
         angle_of_attack = np.rad2deg(
             np.arccos(np.dot(velocity_apparent_direction, vehicle_roll)))
-
     # Earth atmosphere model.
     # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
     air_temperature = environment.ground_temperature - 0.00356 * position[2]
@@ -215,6 +220,7 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     mach_number = velocity_apparent_magnitude / speed_of_sound
 
     # Compute the force.
+    # force_thrust = 0
     force_thrust = motor.calculate_thrust(time) * vehicle_roll
     force_gravity = np.array((0, 0, -mass_total * EARTH_GRAVITY_ACCELERATION))
     force_axial = np.array((0, 0, 0))
@@ -222,9 +228,9 @@ def calculate_derivatives(vehicle, motor, environment, time, position,
     if velocity_apparent_magnitude != 0:
         aerodynamic_multiplier = air_density / CFD_AIR_DENSITY
         force_axial = -aerodynamic_multiplier * vehicle.calculate_axial_force(
-            0, angle_of_attack, mach_number) * vehicle_roll
-        force_normal = -aerodynamic_multiplier * vehicle.calculate_normal_force(
-            0, angle_of_attack, mach_number) * np.cross(
+            angle_of_actuation, angle_of_attack, mach_number) * vehicle_roll
+        force_normal = aerodynamic_multiplier * vehicle.calculate_normal_force(
+            angle_of_actuation, angle_of_attack, mach_number) * np.cross(
                 vehicle_roll,
                 np.cross(vehicle_roll, velocity_apparent_direction))
 

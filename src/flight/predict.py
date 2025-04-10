@@ -6,7 +6,7 @@ import numpy as np
 
 from base.component import Component
 from base.stage import Stage
-from flight.blackboard import FilterState, FusionState, PredictState, StageState
+from flight.blackboard import FilterState, FusionState, PredictState, StageState, ControlState
 from flight.constants import SIM_APOGEE
 from simulation.dynamics import calculate_derivatives
 from simulation.vehicle import Vehicle
@@ -19,13 +19,14 @@ logger = logging.getLogger(__name__)
 class PredictComponent(Component):
 
     def __init__(self, filter_state: FilterState, stage_state: StageState,
-                 fusion_state: FusionState, vehicle: Vehicle, motor: Motor,
+            fusion_state: FusionState, control_state: ControlState, vehicle: Vehicle, motor: Motor,
                  environment: Environment):
         self._state = PredictState()
 
         self._filter_state = filter_state
         self._stage_state = stage_state
         self._fusion_state = fusion_state
+        self._control_state = control_state
 
         self._vehicle = vehicle
         self._motor = motor
@@ -58,28 +59,29 @@ class PredictComponent(Component):
             vehicle = self._vehicle
             motor = self._motor
             environment = self._environment
+            angle_of_actuation = self._control_state.servo_angle
 
             time_delta = np.float64(1)
 
             while float(linear_momentum[2]) > 1:
                 # Perform RK4.
                 k1p, k1l, k1o, k1a = calculate_derivatives(
-                    vehicle, motor, environment, time, position,
+                    vehicle, motor, environment, angle_of_actuation, time, position,
                     linear_momentum, orientation, angular_momentum)
                 k2p, k2l, k2o, k2a = calculate_derivatives(
-                    vehicle, motor, environment, time + time_delta / 2,
+                    vehicle, motor, environment, angle_of_actuation, time + time_delta / 2,
                     position + time_delta * k1p / 2,
                     linear_momentum + time_delta * k1l / 2,
                     orientation + time_delta * k1o / 2,
                     angular_momentum + time_delta * k1a / 2)
                 k3p, k3l, k3o, k3a = calculate_derivatives(
-                    vehicle, motor, environment, time + time_delta / 2,
+                    vehicle, motor, environment, angle_of_actuation, time + time_delta / 2,
                     position + time_delta * k2p / 2,
                     linear_momentum + time_delta * k2l / 2,
                     orientation + time_delta * k2o / 2,
                     angular_momentum + time_delta * k2a / 2)
                 k4p, k4l, k4o, k4a = calculate_derivatives(
-                    vehicle, motor, environment, time + time_delta,
+                    vehicle, motor, environment, angle_of_actuation, time + time_delta,
                     position + time_delta * k3p,
                     linear_momentum + time_delta * k3l,
                     orientation + time_delta * k3o,
