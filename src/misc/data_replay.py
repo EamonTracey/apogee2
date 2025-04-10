@@ -9,15 +9,13 @@ import pandas as pd
 import numpy as np
 
 
-class TestComponent(Component):
+class DataReplayComponent(Component):
 
-    def __init__(self):
+    def __init__(self, filepath):
         self._filter_state = FilterState()
         self._stage_state = StageState()
         self._fusion_state = FusionState()
         self._control_state = ControlState()
-
-        filepath = '/home/acs/apogee2/data/launches/fullscale2/ACS_20250406191454.csv'
 
         df = pd.read_csv(filepath)
         self._data = df.iloc[29090:29290].to_numpy()

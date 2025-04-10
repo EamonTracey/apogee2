@@ -18,8 +18,6 @@ from simulation.environment import Environment
 from simulation.vehicle import Vehicle
 from simulation.motor import Motor
 
-from misc.test_prediction import TestComponent
-
 logger = logging.getLogger(__name__)
 
 
@@ -73,13 +71,6 @@ class Flight:
         filter_component._fusion_state = fusion_state
         ### CRAZY (pt 2) ###
 
-        # BRUHHHHHH
-        test_component = TestComponent()
-        filter_state = test_component.get_filter_state
-        fusion_state = test_component.get_fusion_state
-        stage_state = test_component.get_stage_state
-        self.loop.add_component(test_component, 30)
-
         # Apogee Prediction.
         predict_component = PredictComponent(filter_state, stage_state,
                                              fusion_state, None, vehicle, motor,
@@ -92,9 +83,6 @@ class Flight:
                                              predict_state)
         control_state = control_component.state
         self.loop.add_component(control_component, 30)
-
-        # BURHRHRUHRUHR
-        control_state = test_component.get_control_state
 
         ### CRAZY (pt 3) ###
         predict_component._control_state = control_state
