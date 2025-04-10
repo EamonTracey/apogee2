@@ -27,12 +27,14 @@ class LoopState:
 
 class Loop:
 
-    def __init__(self, frequency: int):
+    def __init__(self, frequency: int, *, real_time: bool = True):
         assert frequency > 0
 
         self._state = LoopState()
         self._state.frequency = frequency
         self._state.period = 1 / frequency
+
+        self._real_time = real_time
 
         logger.info("Loop initialized.")
         logger.info(f"{self._state.frequency=}")
@@ -58,12 +60,16 @@ class Loop:
         self._state.components.append((component, frequency))
 
     def run(self, steps: int):
-        iterator = range(steps) if steps > 0 else iter(int, 1)
+        start: float
+        if self._real_time:
+            start = time.time()
+        else:
+            start = self._state.time + self._state.period
 
-        start = time.time()
         if self._state.first_time == 0:
             self._state.first_time = start
 
+        iterator = range(steps) if steps > 0 else iter(int, 1)
         for _ in iterator:
             self._state.time = start
             self._step()
@@ -75,5 +81,6 @@ class Loop:
                 self._state.slip_count += 1
                 start = end
             else:
-                time.sleep(self._state.period - delta)
+                if self._real_time:
+                    time.sleep(self._state.period - delta)
                 start += self._state.period
