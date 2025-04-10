@@ -61,7 +61,7 @@ class PredictComponent(Component):
             environment = self._environment
             angle_of_actuation = self._control_state.servo_angle
 
-            time_delta = np.float64(1)
+            time_delta = np.float64(0.5)
 
             while float(linear_momentum[2]) > 1:
                 # Perform RK4.
@@ -92,6 +92,8 @@ class PredictComponent(Component):
                 orientation += time_delta / 6 * (k1o + 2 * k2o + 2 * k3o + k4o)
                 angular_momentum += time_delta / 6 * (k1a + 2 * k2a + 2 * k3a +
                                                       k4a)
+
             self._state.apogee_prediction = float(position[2])
+
         except Exception as e:
             logger.info(f"Exception when predicting: {traceback.format_exc()}")

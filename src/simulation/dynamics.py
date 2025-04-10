@@ -141,7 +141,7 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     # the motor. The mass of the motor is a function of time since its
     # mass decreases as it burns.
     vehicle_mass = vehicle.mass
-    motor_mass = motor.calculate_mass(time)
+    motor_mass = motor.calculate_mass(1000)
     mass_total = vehicle_mass + motor_mass
 
     # The derivative of the position vector equals the linear momentum
@@ -201,6 +201,7 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     if velocity_apparent_magnitude != 0:
         angle_of_attack = np.rad2deg(
             np.arccos(np.dot(velocity_apparent_direction, vehicle_roll)))
+
     # Earth atmosphere model.
     # https://www.grc.nasa.gov/www/k-12/airplane/atmos.html.
     air_temperature = environment.ground_temperature - 0.00356 * position[2]
@@ -214,7 +215,7 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     mach_number = velocity_apparent_magnitude / speed_of_sound
 
     # Compute the force.
-    # force_thrust = 0
+    #force_thrust = 0
     force_thrust = motor.calculate_thrust(time) * vehicle_roll
     force_gravity = np.array((0, 0, -mass_total * EARTH_GRAVITY_ACCELERATION))
     force_axial = np.array((0, 0, 0))
