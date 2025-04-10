@@ -45,8 +45,7 @@ class PredictComponent(Component):
                     Stage.COAST, Stage.OVERSHOOT, "COAST"
             ]:
                 return
-
-            mass = self._vehicle.mass + self._motor.calculate_mass(1000)
+            mass = self._vehicle.mass + self._motor.calculate_mass(time)
             position = np.array([0, 0, self._filter_state.altitude])
             linear_momentum = np.array(self._filter_state.velocity) * mass
             orientation = np.array([
@@ -60,8 +59,8 @@ class PredictComponent(Component):
             motor = self._motor
             environment = self._environment
             angle_of_actuation = self._control_state.servo_angle
-
-            time_delta = np.float64(0.5)
+            
+            time_delta = np.float64(1)
 
             while float(linear_momentum[2]) > 1:
                 # Perform RK4.

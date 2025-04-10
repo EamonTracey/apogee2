@@ -38,7 +38,7 @@ class DynamicsComponent(Component):
                  vehicle: Vehicle,
                  motor: Motor,
                  environment: Environment,
-                 rail_zenith: float = 0,
+                 rail_zenith: float = 5,
                  rail_azimuth: float = 0):
         self._state = DynamicsState()
 
@@ -136,12 +136,16 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
                           linear_momentum, orientation, angular_momentum):
     """Calculate the derivatives of the current position, linear momentum,
         orientation, and angular momentum."""
-
+    
+    # Quaternion into normalized quaternion.
+    angle_of_actuation = 0
+    orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(orientation) != 0 else orientation
+    
     # The total mass equals the sum of the mass of the vehicle and mass of
     # the motor. The mass of the motor is a function of time since its
     # mass decreases as it burns.
     vehicle_mass = vehicle.mass
-    motor_mass = motor.calculate_mass(1000)
+    motor_mass = motor.calculate_mass(time)
     mass_total = vehicle_mass + motor_mass
 
     # The derivative of the position vector equals the linear momentum
@@ -150,17 +154,18 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
 
     # Compute the rotation matrix and yaw, pitch, and roll axes of the
     # vehicle.
-    rotation = Rotation.from_quat(
-        (*orientation[1:4], orientation[0])).as_matrix()
+    rotation = Rotation.from_quat((*orientation[1:4],orientation[0])).as_matrix()
+
     vehicle_yaw = rotation @ YAW
     vehicle_pitch = rotation @ PITCH
     vehicle_roll = rotation @ ROLL
+
 
     # Compute the angular velocity using the rotation matrix and reference
     # inertia tensor.
     inertia = np.diag(vehicle.inertia)
     inertia_inverse = np.linalg.inv(inertia)
-    angular_velocity = rotation @ inertia_inverse @ rotation.T @ angular_momentum
+    angular_velocity = rotation @ inertia_inverse @ rotation.T @ angular_momentum.T
 
     # Compute the derivative of the orientation using the angular velocity
     # and orientation (quaternion).
@@ -239,5 +244,6 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     # TODO: torque roll from cfd
     torque_roll = np.array((0, 0, 0))
     torque = torque_normal + torque_roll
+
 
     return linear_velocity, force, orientation_derivative, torque
