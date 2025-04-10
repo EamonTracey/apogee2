@@ -3,8 +3,8 @@ import logging
 from base.loop import Loop
 
 from flight.predict import PredictComponent
-from misc.data_replay import DataReplayComponent
-from misc.log_replay import LogReplayComponent
+from replay_flight.data_replay import DataReplayComponent
+from replay_flight.log_replay import LogReplayComponent
 
 from simulation.environment import Environment
 from simulation.vehicle import Vehicle
