@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
               help="The name of the simulation, used to name log files.")
 @click.option("-f",
               "--frequency",
-              default=100,
+              default=30,
               help="The speed at which to run the software loop.")
 @click.option("-v",
               "--vehicle",

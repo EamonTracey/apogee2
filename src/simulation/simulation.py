@@ -16,7 +16,7 @@ class Simulation:
     def __init__(self, name: str, frequency: int, vehicle: Vehicle,
                  motor: Motor, environment: Environment, zenith: float,
                  azimuth: float):
-        self.loop = Loop(frequency)
+        self.loop = Loop(frequency, real_time=False)
         loop_state = self.loop.state
 
         dynamics_component = DynamicsComponent(vehicle, motor, environment,
@@ -28,8 +28,8 @@ class Simulation:
         log_state = log_component.state
         self.loop.add_component(log_component, frequency)
 
-        self._dynamics_state = dynamics_state
+        self.dynamics_state = dynamics_state
 
     def run(self):
-        while self._dynamics_state.position[2] > -1:
+        while self.dynamics_state.position[2] > -1:
             self.loop.run(1)

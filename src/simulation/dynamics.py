@@ -90,25 +90,25 @@ class DynamicsComponent(Component):
         angular_momentum = np.array(self._state.angular_momentum)
 
         # Perform RK4.
-        k1p, k1l, k1o, k1a = calculate_derivatives(vehicle, motor, environment,
+        k1p, k1l, k1o, k1a = calculate_derivatives(vehicle, motor, environment, 0,
                                                    time, position,
                                                    linear_momentum,
                                                    orientation,
                                                    angular_momentum)
         k2p, k2l, k2o, k2a = calculate_derivatives(
-            vehicle, motor, environment, time + time_delta / 2,
+            vehicle, motor, environment, 0, time + time_delta / 2,
             position + time_delta * k1p / 2,
             linear_momentum + time_delta * k1l / 2,
             orientation + time_delta * k1o / 2,
             angular_momentum + time_delta * k1a / 2)
         k3p, k3l, k3o, k3a = calculate_derivatives(
-            vehicle, motor, environment, time + time_delta / 2,
+            vehicle, motor, environment, 0, time + time_delta / 2,
             position + time_delta * k2p / 2,
             linear_momentum + time_delta * k2l / 2,
             orientation + time_delta * k2o / 2,
             angular_momentum + time_delta * k2a / 2)
         k4p, k4l, k4o, k4a = calculate_derivatives(
-            vehicle, motor, environment, time + time_delta,
+            vehicle, motor, environment, 0, time + time_delta,
             position + time_delta * k3p, linear_momentum + time_delta * k3l,
             orientation + time_delta * k3o,
             angular_momentum + time_delta * k3a)
@@ -147,9 +147,6 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     # The derivative of the position vector equals the linear momentum
     # divided by the mass.
     linear_velocity = linear_momentum / mass_total
-
-    #print("MOMENTUM", linear_momentum)
-    #print("VELOCITY", linear_velocity)
 
     # Compute the rotation matrix and yaw, pitch, and roll axes of the
     # vehicle.
@@ -198,9 +195,6 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     if not np.all(velocity_apparent == 0):
         velocity_apparent_magnitude = np.linalg.norm(velocity_apparent)
         velocity_apparent_direction = velocity_apparent / velocity_apparent_magnitude
-
-    #print("    ROLL", vehicle_roll)
-    #print("    VAD", velocity_apparent_direction)
 
     # Compute the angle of attack.
     angle_of_attack = 0
