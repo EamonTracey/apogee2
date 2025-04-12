@@ -44,13 +44,13 @@ class ControlComponent(Component):
         try:
             # Motor Control Algorithm.
             if self._stage_state.stage == Stage.GROUND or self._stage_state.stage == Stage.BURN:
-                self._state.servo_angle = -5
+                self._state.servo_angle = 0
 
             elif self._stage_state.stage == Stage.OVERSHOOT:
                 self._state.servo_angle = 40
 
             elif self._stage_state.stage == Stage.DESCENT:
-                self._state.servo_angle = -10
+                self._state.servo_angle = 0
 
             elif self._stage_state.stage == Stage.COAST:
                 # First iteration in coast?

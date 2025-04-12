@@ -45,7 +45,7 @@ while True:
         continue
 
     if not (-10 <= degrees <= 45):
-        print(f"{degrees} not in the range 0-45.", file=sys.stderr)
+        print(f"{degrees} not in the range -10-45.", file=sys.stderr)
         continue
 
     servo_motor.rotate(degrees)
