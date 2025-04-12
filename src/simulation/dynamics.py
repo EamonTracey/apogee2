@@ -138,7 +138,6 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
         orientation, and angular momentum."""
     
     # Quaternion into normalized quaternion.
-    angle_of_actuation = 0
     orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(orientation) != 0 else orientation
     
     # The total mass equals the sum of the mass of the vehicle and mass of
