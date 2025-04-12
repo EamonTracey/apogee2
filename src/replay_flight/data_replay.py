@@ -18,8 +18,7 @@ class DataReplayComponent(Component):
         self._control_state = ControlState()
 
         df = pd.read_csv(filepath)
-        self._data = df.iloc[29090:29290].to_numpy()
-        print(self._data)
+        self._data = df.iloc[13368:13792].to_numpy()
 
         self.i = 0
 

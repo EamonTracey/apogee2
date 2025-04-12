@@ -74,9 +74,9 @@ class ControlComponent(Component):
 
                     # Predetermined Proportional Constants.
                     Kp = 0.025
-                    Ki = 0.075
+                    Ki = 0.0
                     Kg = 1
-                    pi0 = 5
+                    pi0 = 10
 
                     # Max Servo Speed - Test 10.1.4 DT.1
                     max_servo_delta = dt * 45 / 0.35

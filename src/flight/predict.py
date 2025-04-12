@@ -7,7 +7,6 @@ import numpy as np
 from base.component import Component
 from base.stage import Stage
 from flight.blackboard import FilterState, FusionState, PredictState, StageState, ControlState
-from flight.constants import SIM_APOGEE
 from simulation.dynamics import calculate_derivatives
 from simulation.vehicle import Vehicle
 from simulation.motor import Motor
