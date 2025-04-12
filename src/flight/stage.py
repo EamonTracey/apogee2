@@ -56,6 +56,6 @@ class StageComponent(Component):
                 self._state.stage = Stage.DESCENT
 
         # OVERSHOOT -> DESCENT
-        elif self._state.stage == Stage.DESCENT:
+        elif self._state.stage == Stage.OVERSHOOT:
             if velocity < DESCENT_VELOCITY:
                 self._state.stage = Stage.DESCENT
