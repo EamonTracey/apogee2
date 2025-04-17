@@ -63,7 +63,6 @@ class DataReplayComponent(Component):
 
         self._control_state.servo_angle = self._data[self.i][3]
 
-
         self.time = self._data[self.i][0]
 
         self.i = self.i + 1

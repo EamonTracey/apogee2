@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
               "--environment",
               default="threeoaks_basic",
               help="The launch environment.")
-
-def replay(name: Optional[str], path: str, vehicle: str, motor: str, environment: str):
+def replay(name: Optional[str], path: str, vehicle: str, motor: str,
+           environment: str):
     """Run ACS replay software."""
     from replay_flight.flight_replay import Replay
     from simulation.environment import Environment
@@ -49,11 +49,9 @@ def replay(name: Optional[str], path: str, vehicle: str, motor: str, environment
         format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
         datefmt="%Y%m%d%H%M%S",
         level=logging.INFO)
-    logger.info(
-        "Apogee Control System Replay. \u0391\u039a\u03a3.")
+    logger.info("Apogee Control System Replay. \u0391\u039a\u03a3.")
     logger.info("Developed by the Notre Dame Rocketry Team.")
     logger.info(f"{name=}")
-
 
     # Load launch condition parameters.
     vehicle_file = f"data/vehicles/{vehicle}.json"

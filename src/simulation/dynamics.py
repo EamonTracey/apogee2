@@ -90,8 +90,8 @@ class DynamicsComponent(Component):
         angular_momentum = np.array(self._state.angular_momentum)
 
         # Perform RK4.
-        k1p, k1l, k1o, k1a = calculate_derivatives(vehicle, motor, environment, 0,
-                                                   time, position,
+        k1p, k1l, k1o, k1a = calculate_derivatives(vehicle, motor, environment,
+                                                   0, time, position,
                                                    linear_momentum,
                                                    orientation,
                                                    angular_momentum)
@@ -132,14 +132,19 @@ class DynamicsComponent(Component):
             self._state.time)
 
 
-def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time, position,
-                          linear_momentum, orientation, angular_momentum):
+def calculate_derivatives(vehicle, motor, environment, angle_of_actuation,
+                          time, position, linear_momentum, orientation,
+                          angular_momentum):
     """Calculate the derivatives of the current position, linear momentum,
         orientation, and angular momentum."""
-    
+
     # Quaternion into normalized quaternion.
     orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(orientation) != 0 else orientation
     
+    angle_of_actuation = 0
+    orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(
+        orientation) != 0 else orientation
+
     # The total mass equals the sum of the mass of the vehicle and mass of
     # the motor. The mass of the motor is a function of time since its
     # mass decreases as it burns.
@@ -153,12 +158,12 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
 
     # Compute the rotation matrix and yaw, pitch, and roll axes of the
     # vehicle.
-    rotation = Rotation.from_quat((*orientation[1:4],orientation[0])).as_matrix()
+    rotation = Rotation.from_quat(
+        (*orientation[1:4], orientation[0])).as_matrix()
 
     vehicle_yaw = rotation @ YAW
     vehicle_pitch = rotation @ PITCH
     vehicle_roll = rotation @ ROLL
-
 
     # Compute the angular velocity using the rotation matrix and reference
     # inertia tensor.
@@ -243,6 +248,5 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation, time,
     # TODO: torque roll from cfd
     torque_roll = np.array((0, 0, 0))
     torque = torque_normal + torque_roll
-
 
     return linear_velocity, force, orientation_derivative, torque

@@ -47,12 +47,9 @@ class LogComponent(Component):
 
     def dispatch(self, time: float):
         log = [
-            self._dynamics_state.time,
-            self._dynamics_state.stage,
-            self._dynamics_state.mass,
-            self._dynamics_state.position[0],
-            self._dynamics_state.position[1],
-            self._dynamics_state.position[2],
+            self._dynamics_state.time, self._dynamics_state.stage,
+            self._dynamics_state.mass, self._dynamics_state.position[0],
+            self._dynamics_state.position[1], self._dynamics_state.position[2],
             self._dynamics_state.linear_momentum[0],
             self._dynamics_state.linear_momentum[1],
             self._dynamics_state.linear_momentum[2],

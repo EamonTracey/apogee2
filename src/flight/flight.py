@@ -73,8 +73,8 @@ class Flight:
 
         # Apogee Prediction.
         predict_component = PredictComponent(filter_state, stage_state,
-                                             fusion_state, None, vehicle, motor,
-                                             environment)
+                                             fusion_state, None, vehicle,
+                                             motor, environment)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)
 
