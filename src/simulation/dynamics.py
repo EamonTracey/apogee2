@@ -139,8 +139,9 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation,
         orientation, and angular momentum."""
 
     # Quaternion into normalized quaternion.
-    orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(orientation) != 0 else orientation
-    
+    orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(
+        orientation) != 0 else orientation
+
     angle_of_actuation = 0
     orientation = orientation / np.linalg.norm(orientation) if np.linalg.norm(
         orientation) != 0 else orientation
