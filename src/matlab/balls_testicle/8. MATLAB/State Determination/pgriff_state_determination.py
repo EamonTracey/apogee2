@@ -7,23 +7,25 @@ Original file is located at
     https://colab.research.google.com/drive/1RSA2g_FhkTGSfSBqBRtCqWEJEyqzkdi3
 """
 
+
 def stateDetermination(accel, velocity, altitude):
 
-  nearZero = 0.1
-  targetApogee = 5100 #ft
+    nearZero = 0.1
+    targetApogee = 5100  #ft
 
-  # ground state
+    # ground state
 
-  if -nearZero <= accel <= nearZero:
-    return "ground - DONT DEPLOY FLAPS"
-  elif accel > nearZero:
-    return "motor burn - DONT DEPLOY FLAPS"
-  elif accel < -nearZero and altitude > 800:
-    return "coast - DYNAMICALLY ACTUATE FLAPS"
-  elif altitude > targetApogee:
-    return "overshoot - FULL DEPLOY"
-  elif -nearZero <= velocity <= nearZero:
-    return "apogee - GREAT WORK RETRACT FLAPS"
+    if -nearZero <= accel <= nearZero:
+        return "ground - DONT DEPLOY FLAPS"
+    elif accel > nearZero:
+        return "motor burn - DONT DEPLOY FLAPS"
+    elif accel < -nearZero and altitude > 800:
+        return "coast - DYNAMICALLY ACTUATE FLAPS"
+    elif altitude > targetApogee:
+        return "overshoot - FULL DEPLOY"
+    elif -nearZero <= velocity <= nearZero:
+        return "apogee - GREAT WORK RETRACT FLAPS"
+
 
 state = stateDetermination(-2, 1000000, 7000)
 print(state)
