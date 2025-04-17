@@ -1,0 +1,132 @@
+%% Flight Analysis
+% This code plots launch data such as altitude and acceleration and
+% attempts to derive velocity and orientation. Let's use the imperial 
+% system.
+
+% Property of AKΣ
+
+% Author: William Teasley
+
+% Date: 21 November 2024
+
+clc; clear; close all;
+sv = style_values(); % Load in style values for plotting
+set(0, 'DefaultAxesFontName', sv.FontName);
+addpath('Quaternions');      % include quaternion library
+addpath('Quaternions\quaternion_library');
+% -------------------------------------------------------------------------
+
+%% Import sensor data
+global time_flight g
+g = 32.17405;
+time_flight = 22;
+raw_acs_data =  readtable("Flight Data\ACS\Fullscale_Flight_2.csv");
+acs_data = truncate_fullscale_flight(raw_acs_data);
+
+% raw_dad_br =  readtable("Flight Data\Recovery\Fullscale_Flight_1_DAD_BR.csv");
+% dad_br = truncate_flight_recovery_br(raw_dad_br);
+% 
+% raw_dad_em =  readtable("Flight Data\Recovery\Fullscale_Flight_1_DAD_EM");
+% dad_em = truncate_flight_recovery_em(raw_dad_em);
+% 
+% raw_mom_br =  readtable("Flight Data\Recovery\Fullscale_Flight_1_MOM_BR.csv");
+% mom_br = truncate_flight_recovery_br(raw_mom_br);
+% 
+% raw_mom_em =  readtable("Flight Data\Recovery\Fullscale_Flight_1_MOM_EM.csv");
+% mom_em = truncate_flight_recovery_em(raw_mom_em);
+
+% clc
+
+fprintf("ACS Apogee: %.1f ft", acs_data.Apogee)
+disp(" ")
+
+%% Plotting
+f1=figure(1);
+f1.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Altitude, 'LineWidth',sv.LineWidth1,'Color',sv.Orange, 'DisplayName', 'ACS BMP930');
+% plot(dad_br.Time, dad_br.Altitude_AGL, 'LineWidth',sv.LineWidth1,'Color',sv.Blues{1}, 'DisplayName', ' DAD BR');
+% plot(2+dad_em.Time, dad_em.Altitude_AGL, 'LineWidth',sv.LineWidth1,'Color',sv.Blues{2}, 'DisplayName', ' DAD EM');
+% plot(mom_br.Time, mom_br.Altitude_AGL, 'LineWidth',sv.LineWidth1,'Color',sv.Blues{3}, 'DisplayName', ' MOM BR');
+% plot(2+mom_em.Time, mom_em.Altitude_AGL, 'LineWidth',sv.LineWidth1,'Color',sv.Blues{4}, 'DisplayName', ' MOM EM');
+
+yline(acs_data.Apogee, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Orange, 'DisplayName', 'ACS Apogee')
+yline(5100, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Target Apogee')
+% yline(dad_br.Apogee, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Blues{1}, 'DisplayName', 'DAD BR Apogee')
+% yline(dad_em.Apogee, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Blues{2}, 'DisplayName', 'DAD RM Apogee')
+% yline(mom_br.Apogee, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Blues{3}, 'DisplayName', 'MOM BR Apogee')
+% yline(mom_em.Apogee, '--', 'LineWidth',sv.LineWidth2,'Color',sv.Blues{4}, 'DisplayName', 'MOM EM Apogee')
+
+% yline(acs_data.Apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Actual Apogee');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.Time(acs_data.iovershoot), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Overshoot');
+xlabel('Time [s]'); ylabel('Altitude [ft]');
+title('Flight Data')
+legend('Location','northwest')
+
+f2=figure(2);
+f2.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Velocity_Z, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Velocity Z');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.Time(acs_data.iovershoot), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Overshoot');
+xlabel('Time [s]'); ylabel('Velocity [ft/s]');
+title('Flight Data')
+legend('Location','northeast')
+
+f3=figure(3);
+f3.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Acceleration_Z_BNO085, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'BNO085 Z');
+plot(acs_data.Time, acs_data.Acceleration_Z_ICM20649, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'ICM20649 Z');
+plot(acs_data.Time, acs_data.Acceleration_X_BNO085, 'LineWidth',sv.LineWidth1,'Color',sv.Green, 'DisplayName', 'BNO085 X');
+plot(acs_data.Time, acs_data.Acceleration_Y_BNO085, 'LineWidth',sv.LineWidth1,'Color',sv.Orange, 'DisplayName', 'BNO085 Y');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xlabel('Time [s]'); ylabel('Acceleration [ft/s^2]');
+title('Flight Data')
+legend('Location','southeast')
+
+if isfield(acs_data, "Predicted_Apogee")
+    f4=figure(4);
+    f4.Position = [100,100,800,500]; 
+    hold on; grid on;
+    plot(acs_data.Time, acs_data.Predicted_Apogee, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Predicted Apogee');
+    xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+    xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+    xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+    xline(acs_data.Time(acs_data.iovershoot), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Overshoot');
+    xlabel('Time [s]'); ylabel('Predicted Apogee [ft]');
+    title('Flight Data')
+    legend('Location','southeast')
+end
+
+f5=figure(5);
+f5.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Servo_Angle, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Servo Angle');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.Time(acs_data.iovershoot), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Overshoot');
+xlabel('Time [s]'); ylabel('Servo Angle [\circ]');
+title('Flight Data')
+legend('Location','northwest')
+
+f6=figure(6);
+f6.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Predicted_Apogee-5100, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Servo Angle');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.Time(acs_data.iovershoot), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Overshoot');
+xlabel('Time [s]'); ylabel('Error');
+title('Flight Data')
+legend('Location','northwest')
+

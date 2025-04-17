@@ -1,0 +1,220 @@
+%% Apogee Prediction
+% This code uses flight data to test the apogee prediction function 
+
+% Property of AKΣ
+
+% Author: William Teasley
+
+% Date: 3 April 2025
+
+clc; clear; close all;
+sv = style_values(); % Load in style values for plotting
+set(0, 'DefaultAxesFontName', sv.FontName);
+addpath('Quaternions');      % include quaternion library
+addpath('Quaternions\quaternion_library');
+% -------------------------------------------------------------------------
+global g
+g = 32.1740485564; 
+g_vec_earth = [0; 0; -g];
+
+%% Import sensor data
+raw_acs_data =  readtable("Flight Data\ACS\Fullscale_Flight_3.csv");
+acs_data = truncate_fullscale_flight(raw_acs_data);
+
+AccelerometerBNO085 = [acs_data.Acceleration_X_BNO085, acs_data.Acceleration_Y_BNO085, acs_data.Acceleration_Z_BNO085]; % *32.17/9.81; % shouldn't thrust be positive and gravity negative?
+MagnetometerBNO085 = [acs_data.Magnetic_X_BNO085, acs_data.Magnetic_Y_BNO085, acs_data.Magnetic_Z_BNO085];
+GyroscopeBNO085 = [acs_data.Gyro_X_BNO085, acs_data.Gyro_Y_BNO085, acs_data.Gyro_Z_BNO085];
+QuaternionBNO085 = [acs_data.Quaternion_W_BNO085 acs_data.Quaternion_X_BNO085 acs_data.Quaternion_Y_BNO085 acs_data.Quaternion_Z_BNO085];
+
+AccelerometerICM20649 = [acs_data.Acceleration_X_ICM20649, acs_data.Acceleration_Y_ICM20649, acs_data.Acceleration_Z_ICM20649];
+GyroscopeICM20649 = [acs_data.Gyro_X_ICM20649, acs_data.Gyro_Y_ICM20649, acs_data.Gyro_Z_ICM20649];
+
+%% Values that might change on launch day
+% Environment
+environment_inish.P0 = 2114.7133; % lbf/ft2
+environment_inish.T0 = 55; % °F
+environment_inish.u_inf = 8.8; % ft/s
+environment_inish.u_inf_3000 = 8.8; % 29.3333; % ft/s
+environment_inish.wind_direction = 0; % wind direction counterclockwise from North, (°)
+
+% Vehicle
+vehicle_name = "katie";
+vehicle = calculate_vehicle(vehicle_name); 
+vehicle.m = (645.92/16)/g; % total vehicle mass with full motor, slugs
+vehicle.x_cm = 57/12; % distance from nose to center of mass, ft
+vehicle.angle_launch_rail = -5; % launch rail angle, (°)
+vehicle.angle_azimuth = 0; % launch rail heading, counterclockwise from North, (°)
+
+%% Simulation Parameters
+% Environment
+environment_inish.wind_profile = "trap";
+environment_inish.altitude0_ASL = 692; % altitude of launch rail ASL, ft
+environment = calculate_environment(environment_inish, 0);
+
+% Motor
+motor_name = "L1940X";
+motor = calculate_motor(motor_name);
+
+%% Simulation starts here
+% mass(1) = vehicle.m + motor.full_weight ;
+% position(:, 1) = [0; 0; 0]; % xyz position in Global Earth coordinates relative to launch pad, ft
+% velocity(:, 1) = [0; 0; 0]; % velocity in Global Earth coordinates, ft/s
+% accel(:, 1) = [0; 0; 0]; % acceleration in Global Earth coordinates, ft/s2
+% eulers(:, 1) = [vehicle.angle_launch_rail*pi/180; vehicle.angle_azimuth*pi/180; 0]; % Euler angles, rad (theta, psi, phi)
+
+%% Calculate Orientation
+quaternion_calculated(1,:) = QuaternionBNO085(1,:);
+velocity_earth = zeros(3,length(acs_data.Time));
+acceleration_earth = zeros(3,length(acs_data.Time));
+
+for i = 1:length(acs_data.Time)-1
+    dt = acs_data.Time(i+1) - acs_data.Time(i);
+
+    % Update acceleration
+    R = quat2rotm(quaternion_calculated(i,:));
+    if norm(AccelerometerICM20649(i,:)) > 8*g && norm(AccelerometerICM20649(i,:)) < 16*g
+        acceleration_earth(:,i) = R*AccelerometerICM20649(i,:)' + [0; 0; -norm(AccelerometerBNO085(3,:))];
+    else
+        acceleration_earth(:,i) = R*AccelerometerBNO085(i,:)' + [0; 0; -g];
+    end
+
+    if acs_data.Time(i) < acs_data.Time(acs_data.ilaunch) 
+        acceleration_earth(3,i) = 0; % acceleration_earth(3,i) - norm(acceleration_earth(3,i));
+    else
+        acceleration_earth(:,i) = acceleration_earth(:,i); % - norm(acceleration_earth(:,launch_data.ilaunch-1));
+    end
+    velocity_earth(:,i+1) = velocity_earth(:,i) + dt*acceleration_earth(:,i);
+
+    % Calculate Quaternion using gyro data
+    quaternion_calculated(i+1,:) = updateQuaternion(quaternion_calculated(i,:), GyroscopeBNO085(i,:), dt);
+end
+euler_calculated = quat2eul(quaternion_calculated,'XYZ');
+
+velocity_earth = [acs_data.Velocity_X, acs_data.Velocity_Y, acs_data.Velocity_Z]';
+position_earth = [zeros(1,length(acs_data.Altitude)); zeros(1,length(acs_data.Altitude)); acs_data.Altitude']; % 0.5*(cumtrapz(velocity_earth) + [0; 0; launch_data.Altitude_AGL]);
+
+%% Calculate Zenith Angle
+v_up_earth = [0 0 0 1];
+zenith_measured = zeros(1, length(acs_data.Time));
+zenith_calculated = zeros(1, length(acs_data.Time));
+
+for i = 1:length(acs_data.Time)
+    v_rot_earth_measured = quatmultiply(QuaternionBNO085(i,:), quatmultiply(v_up_earth, quaternConj(QuaternionBNO085(i,:))));
+    zenith_measured(i) = acosd(v_rot_earth_measured(:,4));
+
+    v_rot_earth_calculated = quatmultiply(quaternion_calculated(i,:), quatmultiply(v_up_earth, quaternConj(quaternion_calculated(i,:))));
+    zenith_calculated(i) = acosd(v_rot_earth_calculated(:,4));
+end
+
+%% Calculate Would-Be Predicted Apogee
+eulers = [euler_calculated(:,1), euler_calculated(:,2), zeros(length(euler_calculated(:,1)),1)]' .* pi/180;
+i = 1;
+while velocity_earth(3, i) > -25
+    if acs_data.Time(i)-2 < acs_data.Time(acs_data.iflap)-2 
+        ANGLE(i) = 0;
+    else
+        a = (45 - 22) / (12.89114)^2;
+        ANGLE(i) = 22 + a * (acs_data.Time(i)-acs_data.Time(acs_data.iflap)).^2;
+    end
+    state = [position_earth(:,i); velocity_earth(:, i); eulers(:,i); acs_data.Gyro_X_BNO085(i); acs_data.Gyro_Z_BNO085(i); acs_data.Gyro_Y_BNO085(i);  ANGLE(i); 0]; % launch_data.Gyro_Z_BNO085(i); launch_data.Gyro_X_BNO085(i); launch_data.Gyro_Y_BNO085(i); launch_data.Servo_Angle(i); 0]; % launch_data.Gyro_Z_BNO085(i); launch_data.Gyro_Y_BNO085(i); launch_data.Gyro_X_BNO085(i);
+    predicted_apogee(i) = Six_DOF_RK4_Apogee_Prediction_fn(state, vehicle, motor, environment, acs_data.Time(i)-2);
+    fprintf("Time from launch: %.2f s \n", acs_data.Time(i)-2)
+    i=i+1;
+end
+
+fprintf("ACS Apogee: %.1f ft \n", acs_data.Apogee)
+fprintf("Predicted Apogee at Apogee: %.1f ft \n", predicted_apogee(acs_data.iapogee))
+
+
+%% Plotting
+f1=figure(1);
+f1.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acs_data.Altitude, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'BMP Altitude');
+plot(acs_data.Time(1:length(predicted_apogee)), predicted_apogee, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Predicted Apogee');
+yline(acs_data.Apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Actual Apogee');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'HandleVisibility', 'Off');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xlabel('Time [s]'); ylabel('Predicted Apogee [ft]');
+title('Flight Data')
+legend('Location','southeast')
+
+f2=figure(2);
+f2.Position = [100,100,800,500]; 
+title('Flight Data')
+axis(2) = subplot(4,1,1);
+hold on; grid on;
+plot(acs_data.Time, euler_calculated(:,1)*180/pi, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Roll');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Roll Angle, \phi');
+legend('Location','northeast')
+axis(2) = subplot(4,1,2);
+hold on; grid on;
+plot(acs_data.Time, euler_calculated(:,2)*180/pi, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Pitch');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Pitch Angle, \theta');
+legend('Location','northeast')
+axis(2) = subplot(4,1,3);
+hold on; grid on;
+plot(acs_data.Time, euler_calculated(:,3)*180/pi, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Yaw');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Yaw Angle, \psi');
+legend('Location','northeast')
+axis(2) = subplot(4,1,4);
+hold on; grid on;
+plot(acs_data.Time, zenith_measured, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Zenith');
+plot(acs_data.Time, zenith_calculated, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Zenith');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Zenith Angle, Z');
+legend('Location','northeast')
+
+f3=figure(3);
+f3.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, velocity_earth(1,:), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Velocity X_E');
+plot(acs_data.Time, velocity_earth(2,:), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Velocity Y_E');
+plot(acs_data.Time, velocity_earth(3,:), 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'Velocity Z_E');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Velocity [ft/s]');
+title('Flight Data')
+legend('Location','northeast')
+
+f4=figure(4);
+f4.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time, acceleration_earth(1,:), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Acceleration X_E');
+plot(acs_data.Time, acceleration_earth(2,:), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Acceleration Y_E');
+plot(acs_data.Time, acceleration_earth(3,:), 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'Acceleration Z_E');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xlabel('Time [s]'); ylabel('Acceleration [ft/s^2]');
+title('Flight Data')
+legend('Location','northeast')
+
+f5=figure(5);
+f5.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time(1:length(predicted_apogee)), predicted_apogee-acs_data.Apogee, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Prediction Error');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+ylim([-1000 1000])
+xlabel('Time [s]'); ylabel('Error [ft]');
+title('Flight Data')
+legend('Location','northeast')
+
+f6=figure(6);
+f6.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(acs_data.Time(1:length(predicted_apogee)), ANGLE, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Estimated Flap Angle');
+xline(acs_data.t_apogee, 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Apogee');
+xline(acs_data.Time(acs_data.ilaunch), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Launch');
+xline(acs_data.Time(acs_data.iflap), 'LineWidth',sv.LineWidth2,'Color',sv.Black, 'DisplayName', 'Flap Deployment');
+xlabel('Time [s]'); ylabel('Servo Angle [\circ]');
+title('Flight Data')
+legend('Location','southeast')

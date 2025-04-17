@@ -1,0 +1,226 @@
+%% Subscale Flight Analysis
+% This code plots ACS Subscale Data
+
+% Let's use the imperial system
+
+% Author: William Teasley
+
+% Date: 21 November 2024
+
+clc; clear; close all;
+sv = style_values(); % Load in style values for plotting
+set(0, 'DefaultAxesFontName', sv.FontName);
+addpath('Quaternions\quaternion_library');      % include quaternion library
+% -------------------------------------------------------------------------
+
+%% Import and plot sensor data
+data =  readtable("Flight Data\Testing\ACS 20241208154255.csv");
+launch_data = truncate_subscale_flight(data);
+% launch_data = readtable("ACS Data\pitchtestnumbertwo.csv");
+
+%% Convert units to imperial
+g = 32.1740485564; 
+dt = mean(diff(launch_data.Time));
+
+%% Create Data Vectors
+AccelerometerBNO085 = [launch_data.Acceleration_X_BNO085, launch_data.Acceleration_Y_BNO085, launch_data.Acceleration_Z_BNO085]; % shouldn't thrust be positive and gravity negative?
+MagnetometerBNO085 = [launch_data.Magnetic_X_BNO085, launch_data.Magnetic_Y_BNO085, launch_data.Magnetic_Z_BNO085];
+GyroscopeBNO085 = [launch_data.Gyro_X_BNO085, launch_data.Gyro_Y_BNO085, launch_data.Gyro_Z_BNO085];
+QuaternionBNO085 = [launch_data.Quaternion_W_BNO085 launch_data.Quaternion_X_BNO085 launch_data.Quaternion_Y_BNO085 launch_data.Quaternion_Z_BNO085];
+
+AccelerometerICM20649 = [launch_data.Acceleration_X_ICM20649, launch_data.Acceleration_Y_ICM20649, launch_data.Acceleration_Z_ICM20649];
+GyroscopeICM20649 = [launch_data.Gyro_X_ICM20649, launch_data.Gyro_Y_ICM20649, launch_data.Gyro_Z_ICM20649];
+
+%% Convert Sensor coordinates to Rocket Body coordinates
+% qBNO2Rocket = [-0.5*sqrt(2) 0 -0.5*sqrt(2) 0];
+% qBNO2Rocket = [0.5 -0.5 0.5 -0.5];
+Quaternion_Rocket_Measured = QuaternionBNO085; % quaternProd(qBNO2Rocket, QuaternionBNO085_Sensor);
+
+%% Perform Mahony's Method to Calculate Quaternions
+% Define transformation matrix
+T = [1, 0, 0;  % Sensor x → Earth y
+     0, 1, 0;  % Sensor y → Earth x
+     0, 0, 1]; % Sensor z → Earth -z
+
+% Apply transformation
+AccelerometerBNO085_Aligned = (T * AccelerometerBNO085')'; % Transform accelerometer data
+GyroscopeBNO085_Aligned = (T * GyroscopeBNO085')';         % Transform gyroscope data
+MagnetometerBNO085_Aligned = (T * MagnetometerBNO085')';   % Transform magnetometer data
+
+% Initial Conditions
+q0 = Quaternion_Rocket_Measured(1, :); % [Quaternion_Rocket_Measured(1,1) Quaternion_Rocket_Measured(1,2) Quaternion_Rocket_Measured(1,3) Quaternion_Rocket_Measured(1,4)];
+q0_conj = quaternConj(q0);
+
+quaternion_calculated = zeros(length(launch_data.Time), 4);
+quaternion_calculated(1, :) = q0; % quaternProd(q0_conj, q0); % Convert initial condition to earth coordinates
+
+
+% % Convert Sensor data to Earth reference frame for Mahony algorithm
+% AccelerometerBNO085_Aligned = zeros(size(AccelerometerBNO085));
+% GyroscopeBNO085_Aligned = zeros(size(GyroscopeBNO085));
+% MagnetometerBNO085_Aligned = zeros(size(MagnetometerBNO085));
+%
+% for t = 1:size(AccelerometerBNO085, 1)
+%     % Transform accelerometer
+%     v_accel_quat = [0, AccelerometerBNO085(t, :)]; % Convert to quaternion
+%     v_accel_quat_aligned = quaternProd(q0_conj, quaternProd(v_accel_quat, q0));
+%     AccelerometerBNO085_Aligned(t, :) = v_accel_quat_aligned(2:4); % Extract rotated vector
+% 
+%     % Transform gyroscope
+%     v_gyro_quat = [0, GyroscopeBNO085(t, :)];
+%     v_gyro_quat_aligned = quaternProd(q0_conj, quaternProd(v_gyro_quat, q0));
+%     GyroscopeBNO085_Aligned(t, :) = v_gyro_quat_aligned(2:4);
+% 
+%     % Transform magnetometer
+%     v_mag_quat = [0, MagnetometerBNO085(t, :)];
+%     v_mag_quat_aligned = quaternProd(q0_conj, quaternProd(v_mag_quat, q0));
+%     MagnetometerBNO085_Aligned(t, :) = v_mag_quat_aligned(2:4);
+% end
+
+AHRS = MahonyAHRS('SamplePeriod', dt, 'Kp', 1, 'Ki', 0.1); %, 'Quaternion', q0);
+% AHRS = MadgwickAHRS('SamplePeriod', dt, 'Beta', 1, 'Quaternion', q0);
+
+for t = 2:length(launch_data.Time)
+    % Update Mahony filter with aligned data
+    AHRS.Update(GyroscopeBNO085_Aligned(t, :), AccelerometerBNO085_Aligned(t, :), MagnetometerBNO085_Aligned(t, :));
+    quaternion_calculated(t, :) = AHRS.Quaternion; % quaternProd(qBNO2Rocket, );
+end
+
+%% Rotate measured quaternions to sensor coordinates or something
+
+% q_trans_all = zeros(size(Quaternion_Rocket_Measured));
+% for t = 1:size(Quaternion_Rocket_Measured, 1)
+%     q_trans_all(t, :) = quaternProd(Quaternion_Rocket_Measured(t, :), quaternConj(quaternion_calculated(t, :)));
+% end
+% q_trans = mean(q_trans_all, 1);
+% q_trans = q_trans / norm(q_trans); % Normalize
+
+% Rotation about x axis
+theta_x = 0 * pi / 180;
+q_x = [cos(theta_x/2), sin(theta_x/2), 0, 0];
+
+% Rotation about y axis
+theta_y = 0 * pi / 180;
+q_y = [cos(theta_y/2), 0, sin(theta_y/2), 0];
+% q_y_adjust = [cosd(-90/2), 0, sind(-90/2), 0];
+
+% Rotation about z axis
+theta_z = -90 * pi / 180;
+q_z = [cos(theta_z/2), 0, 0, sin(theta_z/2)];
+
+q_trans = quaternProd(q_x, quaternProd(q_y, q_z));
+% q_trans = quatmultiply(q_y_adjust, quatmultiply(q_z, q_y));
+
+quaternion_calculated = quaternProd(q_trans, quaternion_calculated);
+% quaternion_calculated = quaternConj(quaternion_calculated);
+
+%% Convert from Rocket Coordinates to Earth Coordinates
+euler_calculated = quat2eul(quaternion_calculated,'XYZ') * (180/pi); % quatern2euler(quaternConj(quaternion_calculated)) * (180/pi);	% use conjugate for sensor frame relative to Earth and convert to degrees.
+euler_measured = quat2eul(Quaternion_Rocket_Measured,'XYZ') * (180/pi);	% use conjugate for sensor frame relative to Earth and convert to degrees.
+
+%% Calculate Zenith Angle From Quaternions
+v_body = [0 -1 0 0].*ones(length(Quaternion_Rocket_Measured),1); % rocket body frame where x axis is longitudinal
+v_longtidunal_earth_measured = quatmultiply(Quaternion_Rocket_Measured, quatmultiply(v_body, quaternConj(Quaternion_Rocket_Measured)));
+v_longtidunal_earth_calculated = quatmultiply(quaternion_calculated, quatmultiply(v_body, quaternConj(quaternion_calculated)));
+zenith_measured = acos(v_longtidunal_earth_measured(:,2))*180/pi;
+zenith_calculated = acos(v_longtidunal_earth_calculated(:,2))*180/pi;
+
+%% Plotting
+f1=figure(1);
+f1.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(launch_data.Time, launch_data.Altitude_BMP390, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Altitude BMP930');
+xlabel('Time [s]'); ylabel('Altitude [ft]');
+title('Flight Data')
+legend('Location','northwest')
+
+f2=figure(2);
+f2.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(launch_data.Time, AccelerometerBNO085(:,1), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'BNO085 X');
+plot(launch_data.Time, AccelerometerBNO085(:,2), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'BNO085 Y');
+plot(launch_data.Time, AccelerometerBNO085(:,3), 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'BNO085 Z');
+plot(launch_data.Time, AccelerometerICM20649(:,1), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'ICM20649 X');
+plot(launch_data.Time, AccelerometerICM20649(:,2), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'ICM20649 Y');
+plot(launch_data.Time, AccelerometerICM20649(:,3), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'ICM20649 Z');
+xlabel('Time [s]'); ylabel('Acceleration [ft/s^2]');
+title('Flight Data')
+legend('Location','northwest')
+
+f3=figure(3);
+f3.Position = [100,100,800,500];
+title('Flight Data')
+axis(3) = subplot(4,1,1);
+hold on; grid on;
+plot(launch_data.Time, abs(Quaternion_Rocket_Measured(:,1)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Q_W');
+plot(launch_data.Time, abs(quaternion_calculated(:,1)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Q_W');
+xlabel('Time [s]'); ylabel('Quaternion');
+legend('Location','northeast')
+axis(3) = subplot(4,1,2);
+hold on; grid on;
+plot(launch_data.Time, abs(Quaternion_Rocket_Measured(:,2)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Q_X');
+plot(launch_data.Time, abs(quaternion_calculated(:,2)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Q_X');
+xlabel('Time [s]'); ylabel('Quaternion');
+legend('Location','northeast')
+axis(3) = subplot(4,1,3);
+hold on; grid on;
+plot(launch_data.Time, abs(Quaternion_Rocket_Measured(:,3)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Q_Y');
+plot(launch_data.Time, abs(quaternion_calculated(:,3)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Q_Y');
+xlabel('Time [s]'); ylabel('Quaternion');
+legend('Location','northeast')
+axis(3) = subplot(4,1,4);
+hold on; grid on;
+plot(launch_data.Time, abs(Quaternion_Rocket_Measured(:,4)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Q_Z');
+plot(launch_data.Time, abs(quaternion_calculated(:,4)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Q_Z');
+xlabel('Time [s]'); ylabel('Quaternion');
+legend('Location','northeast')
+
+f4=figure(4);
+f4.Position = [100,100,800,500];
+title('Flight Data')
+axis(4) = subplot(4,1,1);
+hold on; grid on;
+plot(launch_data.Time, abs(euler_measured(:,1)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Roll');
+plot(launch_data.Time, euler_calculated(:,1), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Roll');
+xlabel('Time [s]'); ylabel('Roll Angle, \phi');
+legend('Location','northeast')
+axis(4) = subplot(4,1,2);
+hold on; grid on;
+plot(launch_data.Time, abs(euler_measured(:,2)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Pitch');
+plot(launch_data.Time, abs(euler_calculated(:,2)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Pitch');
+xlabel('Time [s]'); ylabel('Pitch Angle, \theta');
+legend('Location','northeast')
+axis(4) = subplot(4,1,3);
+hold on; grid on;
+plot(launch_data.Time, abs(euler_measured(:,3)), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Yaw');
+plot(launch_data.Time, abs(euler_calculated(:,3)), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Yaw');
+xlabel('Time [s]'); ylabel('Yaw Angle, \psi');
+legend('Location','northeast')
+axis(4) = subplot(4,1,4);
+hold on; grid on;
+plot(launch_data.Time, zenith_measured, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Zenith');
+plot(launch_data.Time, zenith_calculated, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Zenith Angle');
+xlabel('Time [s]'); ylabel('Zenith Angle, Z');
+legend('Location','northeast')
+
+
+f5=figure(5);
+f5.Position = [100,100,800,500];
+hold on; grid on;
+plot(launch_data.Time, zenith_measured, 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'Measured Zenith Angle');
+plot(launch_data.Time, zenith_calculated, 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'Calculated Zenith Angle');
+xlabel('Time [s]'); ylabel('Zenith Angle, Z');
+legend('Location','northeast')
+
+f6=figure(6);
+f6.Position = [100,100,800,500]; 
+hold on; grid on;
+plot(launch_data.Time, AccelerometerBNO085(:,1), 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'BNO085 X');
+plot(launch_data.Time, AccelerometerBNO085(:,2), 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'BNO085 Y');
+plot(launch_data.Time, AccelerometerBNO085(:,3), 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'BNO085 Z');
+plot(launch_data.Time, AccelerometerBNO085_Aligned(:,1), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Blue, 'DisplayName', 'BNO085 X Aligned');
+plot(launch_data.Time, AccelerometerBNO085_Aligned(:,2), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Red, 'DisplayName', 'BNO085 Y Aligned');
+plot(launch_data.Time, AccelerometerBNO085_Aligned(:,3), '--', 'LineWidth',sv.LineWidth1,'Color',sv.Purple, 'DisplayName', 'BNO085 Z Aligned');
+xlabel('Time [s]'); ylabel('Acceleration [ft/s^2]');
+title('Flight Data')
+legend('Location','northwest')

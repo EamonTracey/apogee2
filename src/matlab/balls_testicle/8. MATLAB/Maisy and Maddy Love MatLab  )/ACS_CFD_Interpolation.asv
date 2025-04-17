@@ -1,0 +1,30 @@
+%% ACS_CFD_Interpolation.m
+
+clear all
+clc
+
+%% Read in data
+og_data = readtable("CDR_CFD_2.csv");
+
+flap_angle = og_data(:,1);
+mach_number = og_data(:,2);
+drag_force = og_data(:,3);
+
+for ix = 1:flap_angle(:) 
+    mach_number0 = 
+    if flap_angle == 0  
+        mach_number0(ix) = mach_number(ix) 
+    else
+        flap
+    end 
+end 
+
+
+
+for ix = 1:flap_angle(:)
+    while flap_angle == 0
+    
+
+
+    end 
+end 
