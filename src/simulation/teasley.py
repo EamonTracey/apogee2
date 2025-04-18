@@ -78,7 +78,7 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
     # TODO: Incorporate wind.
     # TODO: Check density calculation.
     altitude = x_earth[2]
-    wind_earth = np.array([[0], [0], [0]])
+    wind_earth = np.array([[5], [0], [0]])
     temperature = environment.ground_temperature - 0.00356 * x_earth[2]
     pressure = environment.ground_pressure * (temperature / 518.6)**5.256
     density = pressure / 1718 / temperature
@@ -96,8 +96,8 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
         F_normal_dir = np.array([[0], [0], [0]])
     else:
         wind_dir_earth = wind_earth / np.linalg.norm(wind_earth)
-        perp_wind_dir_earth = np.array([[-wind_dir_earth[1]],
-                                        [wind_dir_earth[0]], [0]])
+        perp_wind_dir_earth = np.array([[-wind_dir_earth[1][0]],
+                                        [wind_dir_earth[0][0]], [0]])
 
         v_hat = velocityVec_earth / np.linalg.norm(velocityVec_earth)
         b_hat = bodyAxisVec_earth / np.linalg.norm(bodyAxisVec_earth)
@@ -119,7 +119,7 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
         if abs(aoa) < 1e-6:
             F_normal_dir = np.array([[0], [0], [0]])
         else:
-            F_normal_dir = Te2b * matcross(b_hat, matcross(b_hat, v_hat))
+            F_normal_dir = Te2b @ matcross(b_hat, matcross(b_hat, v_hat))
 
     if sign_alpha < 0:
         F_axial = vehicle.calculate_axial_force(flap_angle, -aoa, mach_number)

@@ -10,6 +10,9 @@ vehicle = Vehicle.from_json("data/vehicles/fullscale25.json")
 environment = Environment.from_json("data/environments/threeoaks_basic.json")
 
 state = TeasleyState()
+state.theta = 0.087
+state.psi = 0.087
+state.phi = 0.087
 
 dt = 0.025
 while state.vel_earth[2] >= -5:
@@ -47,4 +50,4 @@ while state.vel_earth[2] >= -5:
     state.q = float(q[0])
     state.r = float(r[0])
 
-    print(x_earth[2])
+    print(x_earth)
