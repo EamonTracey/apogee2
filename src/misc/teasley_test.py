@@ -19,8 +19,8 @@ while state.vel_earth[2] >= -5:
     flap_angle = state.flap_angle
     time = state.time
 
-    x_earth = np.array(state.x_earth, dtype=float).reshape(3, 1)
-    vel_earth = np.array(state.vel_earth, dtype=float).reshape(3, 1)
+    x_earth = np.array(state.x_earth, dtype=float)
+    vel_earth = np.array(state.vel_earth, dtype=float)
     phi = state.phi
     theta = state.theta
     psi = state.psi
@@ -46,8 +46,8 @@ while state.vel_earth[2] >= -5:
     state.phi = float(phi)
     state.theta = float(theta)
     state.psi = float(psi)
-    state.p = float(p[0])
-    state.q = float(q[0])
-    state.r = float(r[0])
+    state.p = float(p)
+    state.q = float(q)
+    state.r = float(r)
 
     print(x_earth)

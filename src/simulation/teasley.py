@@ -48,13 +48,6 @@ def Tb2eTe2b(phi, theta, psi):
     return (Tb2e, Te2b)
 
 
-def matcross(a, b):
-    a = a.reshape(3, )
-    b = b.reshape(3, )
-    cross = np.cross(a, b).reshape(3, 1)
-    return cross
-
-
 def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
                                   time, x_earth, vel_earth, phi, theta, psi, p,
                                   q, r):
@@ -66,8 +59,8 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
     Iz = vehicle.inertia[0]
     cm = vehicle.center_of_mass
     cp = vehicle.center_of_pressure
-    r_body = np.array([[cm - cp], [0], [0]])
-    bodyAxisVec_body = np.array([[1], [0], [0]])
+    r_body = np.array([cm - cp, 0, 0])
+    bodyAxisVec_body = np.array([1, 0, 0])
     bodyAxisVec_earth = Tb2e @ bodyAxisVec_body
 
     # Motor.
@@ -78,7 +71,7 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
     # TODO: Incorporate wind.
     # TODO: Check density calculation.
     altitude = x_earth[2]
-    wind_earth = np.array([[5], [0], [0]])
+    wind_earth = np.array([5, 0, 0])
     temperature = environment.ground_temperature - 0.00356 * x_earth[2]
     pressure = environment.ground_pressure * (temperature / 518.6)**5.256
     density = pressure / 1718 / temperature
@@ -93,20 +86,20 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
         sign_alpha = 1
         wind_dir_earth = 0
         perp_wind_dir_earth = 0
-        F_normal_dir = np.array([[0], [0], [0]])
+        F_normal_dir = np.array([0, 0, 0])
     else:
         wind_dir_earth = wind_earth / np.linalg.norm(wind_earth)
-        perp_wind_dir_earth = np.array([[-wind_dir_earth[1][0]],
-                                        [wind_dir_earth[0][0]], [0]])
+        perp_wind_dir_earth = np.array([-wind_dir_earth[1],
+                                        wind_dir_earth[0], 0])
 
         v_hat = velocityVec_earth / np.linalg.norm(velocityVec_earth)
         b_hat = bodyAxisVec_earth / np.linalg.norm(bodyAxisVec_earth)
 
-        dot_val = np.sum(v_hat * b_hat)
+        dot_val = np.dot(v_hat, b_hat)
         dot_val = max(min(dot_val, 1), -1)
         angle_mag = np.degrees(np.acos(dot_val))
 
-        cross_prod = matcross(v_hat, b_hat)
+        cross_prod = np.cross(v_hat, b_hat)
 
         dot_val = np.sum(cross_prod * perp_wind_dir_earth)
         if abs(dot_val) < 1e-6:
@@ -117,9 +110,9 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
         aoa = sign_alpha * angle_mag
 
         if abs(aoa) < 1e-6:
-            F_normal_dir = np.array([[0], [0], [0]])
+            F_normal_dir = np.array([0, 0, 0])
         else:
-            F_normal_dir = Te2b @ matcross(b_hat, matcross(b_hat, v_hat))
+            F_normal_dir = Te2b @ np.cross(b_hat, np.cross(b_hat, v_hat))
 
     if sign_alpha < 0:
         F_axial = vehicle.calculate_axial_force(flap_angle, -aoa, mach_number)
@@ -133,19 +126,19 @@ def calculate_derivatives_teasley(vehicle, motor, environment, flap_angle,
         F_axial = F_axial * density / density_SL
         F_normal = F_normal * density / density_SL
 
-    F_axial_body = np.array([[-F_axial[0]], [0], [0]])
+    F_axial_body = np.array([-F_axial, 0, 0])
     F_normal_body = F_normal * F_normal_dir
     F_A_body = F_axial_body + F_normal_body
 
-    g_earth = np.array([[0], [0], [-EARTH_GRAVITY_ACCELERATION]])
+    g_earth = np.array([0, 0, -EARTH_GRAVITY_ACCELERATION])
     g_body = Te2b @ g_earth
     F_g_body = m * g_body
 
-    F_P_body = np.array([[thrust], [0], [0]])
+    F_P_body = np.array([thrust, 0, 0])
 
     F_body = F_A_body + F_P_body + F_g_body
 
-    torque_body = matcross(r_body, F_normal_body)
+    torque_body = np.cross(r_body, F_normal_body)
 
     pdot = (torque_body[0] / Ix) - q * r * (Iz - Iy) / Ix
     qdot = (torque_body[1] / Iy) - r * p * (Ix - Iz) / Iy
