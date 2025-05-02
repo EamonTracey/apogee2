@@ -1,1 +1,1 @@
-yapf -i -m --recursive src/
+yapf --exclude "src/misc/music.py" -i -m --recursive src/

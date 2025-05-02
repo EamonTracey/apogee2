@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 def replay(name: Optional[str], path: str, vehicle: str, motor: str,
            environment: str):
     """Run ACS replay software."""
-    from replay_flight.flight_replay import Replay
+    from ereplay.replay import Replay
     from simulation.environment import Environment
     from simulation.motor import Motor
     from simulation.vehicle import Vehicle
@@ -41,7 +41,7 @@ def replay(name: Optional[str], path: str, vehicle: str, motor: str,
         name = f"ACS_Replay_{utc_date_string}"
 
     # File to replay from.
-    path = ' '.join(path)
+    path = " ".join(path)
 
     # Initialize logging.
     logging.basicConfig(

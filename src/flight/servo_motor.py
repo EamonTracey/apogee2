@@ -1,6 +1,7 @@
 import microcontroller
 import pwmio
 
+
 class ServoMotor:
     ON = 2**16
     MOTOR_MIN = 0.140
