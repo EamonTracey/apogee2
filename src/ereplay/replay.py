@@ -2,11 +2,8 @@ import logging
 
 from base.loop import Loop
 from ereplay.data_replay import DataReplayComponent
-from flight.bmp390 import BMP390Component
-from flight.bno085 import BNO085Component
 from flight.filter import FilterComponent
 from flight.fusion import FusionComponent
-from flight.icm20649 import ICM20649Component
 from flight.predict import PredictComponent
 from flight.stage import StageComponent
 from simulation.environment import Environment

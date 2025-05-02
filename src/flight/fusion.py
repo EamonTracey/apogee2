@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from math import pi
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from base.component import Component
 from base.math import quatern2euler, quatern_prod, quatern_conj
@@ -97,3 +98,15 @@ class FusionComponent(Component):
                                       v_rot_earth_calculated[3])
 
         self._state.zenith = np.degrees(np.arccos(v_rot_earth_calculated[2]))
+
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
+        #####one more mike's #####
+        ##### zebner won with quad aces #####
+        # EAMON CAN EXPLAIN WHAT HAPPENED HERE #
+        r = Rotation.from_euler("zyz", [0, self._state.zenith, 0],
+                                degrees=True) * Rotation.from_euler(
+                                    "y", -90, degrees=True)
+        q = r.as_quat()
+        q = np.roll(q, 1)
+        self._state.quaternion = q
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####

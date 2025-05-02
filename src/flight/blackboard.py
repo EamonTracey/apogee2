@@ -57,7 +57,7 @@ class FilterState:
 
 @dataclass
 class FusionState:
-    # Outputs quaternion in (x, y, z, w)
+    # Outputs quaternion in (w, x, y, z)
     quaternion: tuple[float, float, float, float] = (0, 0, 0, 0)
 
     # Outputs euler in (Roll, Yaw, Pitch)
