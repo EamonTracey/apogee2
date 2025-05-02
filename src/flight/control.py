@@ -4,14 +4,12 @@ import traceback
 import sys
 
 import board
-import microcontroller
-import pwmio
 
 from base.component import Component
 from base.stage import Stage
 from flight.blackboard import ControlState, FilterState, StageState, PredictState
-
 from flight.constants import APOGEE_ALTITUDE
+from flight.servo_motor import ServoMotor
 
 logger = logging.getLogger(__name__)
 
@@ -109,41 +107,3 @@ class ControlComponent(Component):
         except Exception as e:
             logger.info(
                 f"Exception when controlling: {traceback.format_exc()}")
-
-
-class ServoMotor:
-    ON = 2**16
-    MOTOR_MIN = 0.140
-    MOTOR_MAX = 0.810
-
-    def __init__(self, pin: microcontroller.Pin, **kwargs):
-        self.motor = pwmio.PWMOut(pin, variable_frequency=False, **kwargs)
-        self.motor.frequency = 330
-
-        self.degrees = None
-
-    # Maps the angle of the acs flaps (0-40) to the angle of the servo (135-90)
-    def map(self, n: float):
-        return 140 - n
-
-    def rotate(self, degrees: float):
-        # Motor degrees of 135 is fully closed (0 degree flaps),
-        # Motor degrees of 90 is fully open. (40 degree flaps)
-
-        if not (-10 <= degrees <= 40):
-            logging.warning(
-                f"ERROR: Unsafe servo actuation percentage ({degrees}), stay in [-10, 40]."
-            )
-            return
-
-        logging.debug(f"Actuating servo to {degrees} degrees")
-
-        degrees = self.map(degrees)
-
-        percentage = degrees / 270
-        duty_cycle = ServoMotor.MOTOR_MIN + (ServoMotor.MOTOR_MAX -
-                                             ServoMotor.MOTOR_MIN) * percentage
-        duty_cycle *= ServoMotor.ON
-        self.motor.duty_cycle = duty_cycle
-
-        self.degrees = degrees

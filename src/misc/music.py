@@ -2335,10 +2335,9 @@ lion_tempo = 122
 ##################################################
 
 # Song selection.
-song = levels
-tempo = levels_tempo
+song = imperial
+tempo = imperial_tempo
 whole_note = (60 * 4) / tempo
-
 
 # Initialize buzzer.
 class PiezoBuzzer:
