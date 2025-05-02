@@ -7,15 +7,18 @@ from scipy.spatial.transform import Rotation
 
 from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION
-from base.constants import PITCH, ROLL, YAW
 from base.math import zenith_azimuth_to_quaternion
 from base.stage import Stage
-from simulation.constants import CFD_AIR_DENSITY
 from simulation.environment import Environment
 from simulation.motor import Motor
 from simulation.vehicle import Vehicle
 
 logger = logging.getLogger(__name__)
+
+# Axes.
+YAW = np.array([1, 0, 0])
+PITCH = np.array([0, 1, 0])
+ROLL = np.array([0, 0, 1])
 
 
 @dataclass
@@ -231,11 +234,10 @@ def calculate_derivatives(vehicle, motor, environment, angle_of_actuation,
     force_axial = np.array((0, 0, 0))
     force_normal = np.array((0, 0, 0))
     if velocity_apparent_magnitude != 0:
-        aerodynamic_multiplier = air_density / CFD_AIR_DENSITY
-        force_axial = -aerodynamic_multiplier * vehicle.calculate_axial_force(
-            angle_of_actuation, angle_of_attack, mach_number) * vehicle_roll
-        force_normal = aerodynamic_multiplier * vehicle.calculate_normal_force(
-            angle_of_actuation, angle_of_attack, mach_number) * np.cross(
+        force_axial = -vehicle.calculate_axial_force(
+            angle_of_actuation, angle_of_attack, mach_number, air_density) * vehicle_roll
+        force_normal = vehicle.calculate_normal_force(
+            angle_of_actuation, angle_of_attack, mach_number, air_density) * np.cross(
                 vehicle_roll,
                 np.cross(vehicle_roll, velocity_apparent_direction))
 

@@ -8,6 +8,7 @@
         7.75556952648169,
         0.02356886137483644
     ],
+    "assumed_density": 0.0023768924,
     "axial_force": {
         "angles_of_actuation": [
             0

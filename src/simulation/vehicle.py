@@ -7,14 +7,15 @@ from scipy.interpolate import RegularGridInterpolator
 class Vehicle:
 
     def __init__(self, mass: float, length: float, center_of_mass: float,
-                 center_of_pressure: float, inertia: tuple[float, float,
-                                                           float],
+                 center_of_pressure: float,
+                 inertia: tuple[float, float, float], assumed_density: float,
                  axial_force: dict, normal_force: dict):
         self._mass = mass
         self._length = length
         self._center_of_mass = center_of_mass
         self._center_of_pressure = center_of_pressure
-        self._inertia = tuple(inertia)
+        self._inertia = inertia
+        self._assumed_density = assumed_density
         self._axial_force = axial_force
         self._normal_force = normal_force
 
@@ -59,33 +60,38 @@ class Vehicle:
         return self._inertia
 
     def _validate_vehicle(self):
-        # TODO: implement
+        # TODO: Implement.
         ...
 
     @classmethod
     def from_json(cls, file_path: str):
         with open(file_path, "r") as file:
             vehicle_json = json.load(file)
-
+        vehicle_json = {
+            k: tuple(v) if isinstance(v, list) else v
+            for k, v in vehicle_json.items()
+        }
         vehicle = cls(**vehicle_json)
         return vehicle
 
     def calculate_axial_force(self, angle_of_actuation: float,
-                              angle_of_attack: float,
-                              mach_number: float) -> float:
+                              angle_of_attack: float, mach_number: float,
+                              density: float) -> float:
+        aerodynamic_ratio = density / self._assumed_density
         axial_force = self._axial_interpolator(
             (angle_of_actuation, angle_of_attack, mach_number))
         if axial_force < 0:
             axial_force = 0
-
-        return axial_force
+        axial_force *= aerodynamic_ratio
+        return float(axial_force)
 
     def calculate_normal_force(self, angle_of_actuation: float,
-                               angle_of_attack: float,
-                               mach_number: float) -> float:
+                               angle_of_attack: float, mach_number: float,
+                               density: float) -> float:
+        aerodynamic_ratio = density / self._assumed_density
         normal_force = self._normal_interpolator(
             (angle_of_actuation, angle_of_attack, mach_number))
         if normal_force < 0:
             normal_force = 0
-
-        return normal_force
+        normal_force *= aerodynamic_ratio
+        return float(normal_force)
