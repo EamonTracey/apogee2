@@ -78,11 +78,14 @@ class FilterComponent(Component):
                 self._ground_altitudes.popleft()
 
         # Acceleration vector.
-        acceleration = [
-            METERS_TO_FEET * a for a in
-            (self._icm20649_state.acceleration if self._stage_state.stage in
-             [Stage.GROUND, Stage.BURN] else self._bno085_state.acceleration)
-        ]
+        if self._stage_state.stage in [Stage.GROUND, Stage.BURN]:
+            acceleration = [METERS_TO_FEET * a for a in self._icm20649_state.acceleration]
+        else:
+            acceleration = [METERS_TO_FEET * a for a in self._bno085_state.acceleration]
+            x, y, z = acceleration[0], acceleration[1], acceleration[2]
+            acceleration[0] = -y
+            acceleration[1] = x
+            acceleration[2] = z
 
         # Calculate gravity vector with world reference frame.
         g_w = np.array([[0], [0], [-EARTH_GRAVITY_ACCELERATION]])
@@ -92,8 +95,8 @@ class FilterComponent(Component):
 
         # Calculate gravity vector with body reference frame and offset.
         g_b = r @ g_w
-        acceleration[0] -= g_b[1]
-        acceleration[1] += g_b[0]
+        acceleration[0] += g_b[0]
+        acceleration[1] += g_b[1]
         acceleration[2] += g_b[2]
 
         params_list = {}
