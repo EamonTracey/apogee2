@@ -97,7 +97,6 @@ class FilterComponent(Component):
         self.filter.predict()
         self.filter.update(params)
 
-        self._previous_time = time
 
         self._state.altitude = self.filter.x[0]
         self._state.altitude -= self._ground_altitudes[0]
@@ -107,6 +106,18 @@ class FilterComponent(Component):
                                     self.filter.x[2])
         #print(self._state.altitude)
         # print(self._state.velocity[2])
+
+        # SNAG x,y VELOCITY GLOBAL
+        dt = time - self._previous_time
+        if self._stage_state.stage in [
+                Stage.COAST,
+                Stage.OVERSHOOT,
+        ]:
+            vx = self._state.velocity[0] + acceleration[0] * dt
+            vy = self._state.velocity[1] + acceleration[1] * dt
+            self._state.velocity = (vx, vy, self._state.velocity[2])
+
+        self._previous_time = time
 
     def _generate_phi(self, time: float):
         dt = time - self._previous_time

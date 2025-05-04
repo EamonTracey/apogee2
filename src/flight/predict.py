@@ -91,8 +91,9 @@ class PredictComponent(Component):
 
         angle_of_actuation = self._control_state.servo_angle
 
-        import time
-        s=time.time()
+        #v_body = r.inv().apply(dynamics.state.velocity)
+        #print(v_body[0])
+
         while dynamics.state.velocity[2] > 0:
             v_body = r.inv().apply(dynamics.state.velocity)
             angle_of_actuation = dampen_angle_of_actuation(angle_of_actuation, v_body[0])
@@ -100,9 +101,8 @@ class PredictComponent(Component):
             dynamics._step(DT, angle_of_actuation)
 
         self._state.apogee_prediction = dynamics.state.position[2]
-        e=time.time()
 
         #print(self._stage_state.stage, self._filter_state.altitude)
         #print(self._filter_state.velocity)
         #print(self._filter_state.altitude, self._state.apogee_prediction)
-        print(e-s, self._state.apogee_prediction)
+        print(self._state.apogee_prediction)
