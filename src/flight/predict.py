@@ -67,7 +67,7 @@ class PredictComponent(Component):
         v = self._filter_state.velocity
         #if 0 < zenith < 25:
         #    v = (0, 0, v[2] * math.cos(zenith))
-        print(float(v[2]))
+        #print(float(v[2]))
         ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
 
         # Hack the dynamics component.

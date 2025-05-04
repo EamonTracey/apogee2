@@ -4,6 +4,7 @@ import logging
 
 from filterpy.kalman import KalmanFilter
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
@@ -72,23 +73,29 @@ class FilterComponent(Component):
             acceleration[1] = x
             acceleration[2] = z
 
-        # Calculate gravity vector with world reference frame.
-        g_w = np.array([[0], [0], [-EARTH_GRAVITY_ACCELERATION]])
+        # CONVERT SENSOR FRAME TO BODY FRAME
+        x, y, z = acceleration[0], acceleration[1], acceleration[2]
+        acceleration[0] = z
+        acceleration[1] = y
+        acceleration[2] = x
 
-        # Generate rotation matrix.
-        r = euler_to_zyx_rotmat(self._fusion_state.euler)
+        # CONVERT BODY FRAME TO GLOBAL FRAME
+        zenith = self._fusion_state.zenith
+        r = Rotation.from_euler("zyz", [0, zenith, 0],
+                                degrees=True) * Rotation.from_euler(
+                                    "y", -90, degrees=True)
+        acceleration = r.apply(acceleration)
 
-        # Calculate gravity vector with body reference frame and offset.
-        g_b = r @ g_w
-        acceleration[0] += g_b[0]
-        acceleration[1] += g_b[1]
-        acceleration[2] += g_b[2]
+        # REMOVE GRAVITY
+        acceleration[2] -= EARTH_GRAVITY_ACCELERATION
 
-        params_list = np.array([float(altitude), float(acceleration[2])])
+        print(float(acceleration[2]))
+
+        params = np.array([float(altitude), float(acceleration[2])])
 
         self.filter.F = self._generate_phi(time)
         self.filter.predict()
-        self.filter.update(params_list)
+        self.filter.update(params)
 
         self._previous_time = time
 
@@ -98,6 +105,7 @@ class FilterComponent(Component):
         self._state.acceleration = (acceleration[0],
                                     acceleration[1],
                                     self.filter.x[2])
+        # print("velocity", self._state.velocity[2])
 
     def _generate_phi(self, time: float):
         dt = time - self._previous_time
