@@ -72,11 +72,11 @@ class ControlComponent(Component):
 
                     # Predetermined Proportional Constants.
                     Kp = 0.025
-                    Ki = 0.005
+                    Ki = 0.01
                     Kg = 1
                     pi0 = 10
 
-                    if self._predict_state.apogee_prediction < 4300:
+                    if self._predict_state.apogee_prediction < 4500:
                         Ki = 0.0
 
                     # Max Servo Speed - Test 10.1.4 DT.1
