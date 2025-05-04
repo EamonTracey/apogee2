@@ -1,6 +1,8 @@
 import logging
 
-from base.loop import Loop
+import pandas as pd
+
+from base.loop import Loop, ReplayLoop
 from ereplay.data_replay import DataReplayComponent
 from flight.filter import FilterComponent
 from flight.fusion import FusionComponent
@@ -17,7 +19,9 @@ class Replay:
 
     def __init__(self, name: str, vehicle: Vehicle, motor: Motor,
                  environment: Environment, path: str):
-        self.loop = Loop(30, real_time=False)
+        times = pd.read_csv(path)["Time"].to_list()
+
+        self.loop = ReplayLoop(30, times)
         loop_state = self.loop.state
 
         # Data replay.
@@ -25,6 +29,7 @@ class Replay:
         bmp390_state = data_replay_component.bmp390_state
         bno085_state = data_replay_component.bno085_state
         icm20649_state = data_replay_component.icm20649_state
+        control_state = data_replay_component.control_state
         self.loop.add_component(data_replay_component, 30)
 
         # Filter.
@@ -51,7 +56,7 @@ class Replay:
 
         # Apogee Prediction.
         predict_component = PredictComponent(filter_state, stage_state,
-                                             fusion_state, None, vehicle,
+                                             fusion_state, control_state, vehicle,
                                              motor, environment)
         predict_state = predict_component.state
         self.loop.add_component(predict_component, 30)

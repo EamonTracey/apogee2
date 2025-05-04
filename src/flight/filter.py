@@ -89,7 +89,7 @@ class FilterComponent(Component):
         # REMOVE GRAVITY
         acceleration[2] -= EARTH_GRAVITY_ACCELERATION
 
-        print(float(acceleration[2]))
+        # print(float(acceleration[2]))
 
         params = np.array([float(altitude), float(acceleration[2])])
 
@@ -105,7 +105,8 @@ class FilterComponent(Component):
         self._state.acceleration = (acceleration[0],
                                     acceleration[1],
                                     self.filter.x[2])
-        # print("velocity", self._state.velocity[2])
+        #print(self._state.altitude)
+        # print(self._state.velocity[2])
 
     def _generate_phi(self, time: float):
         dt = time - self._previous_time

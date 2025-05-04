@@ -47,7 +47,7 @@ class DynamicsComponent(Component):
         self._step(time - self._previous_time)
         self._previous_time = time
 
-    def _step(self, time_delta: float):
+    def _step(self, time_delta: float, angle_of_actuation):
         assert time_delta >= 0
         if (time_delta == 0):
             return
@@ -64,20 +64,20 @@ class DynamicsComponent(Component):
 
         # Perform RK4.
         k1p, k1l, k1o, k1a = calculate_derivatives_eamonteasley(
-            vehicle, motor, environment, 0, time, position, velocity,
+            vehicle, motor, environment, angle_of_actuation, time, position, velocity,
             orientation, angular_velocity)
         k2p, k2l, k2o, k2a = calculate_derivatives_eamonteasley(
-            vehicle, motor, environment, 0, time + time_delta / 2,
+            vehicle, motor, environment, angle_of_actuation, time + time_delta / 2,
             position + time_delta * k1p / 2, velocity + time_delta * k1l / 2,
             orientation + time_delta * k1o / 2,
             angular_velocity + time_delta * k1a / 2)
         k3p, k3l, k3o, k3a = calculate_derivatives_eamonteasley(
-            vehicle, motor, environment, 0, time + time_delta / 2,
+            vehicle, motor, environment, angle_of_actuation, time + time_delta / 2,
             position + time_delta * k2p / 2, velocity + time_delta * k2l / 2,
             orientation + time_delta * k2o / 2,
             angular_velocity + time_delta * k2a / 2)
         k4p, k4l, k4o, k4a = calculate_derivatives_eamonteasley(
-            vehicle, motor, environment, 0, time + time_delta,
+            vehicle, motor, environment, angle_of_actuation, time + time_delta,
             position + time_delta * k3p, velocity + time_delta * k3l,
             orientation + time_delta * k3o,
             angular_velocity + time_delta * k3a)
@@ -88,10 +88,10 @@ class DynamicsComponent(Component):
         angular_velocity += time_delta / 6 * (k1a + 2 * k2a + 2 * k3a + k4a)
 
         # Repack the simulation state.
-        self._state.position = tuple(position)
-        self._state.velocity = tuple(velocity)
-        self._state.orientation = tuple(orientation)
-        self._state.angular_velocity = tuple(angular_velocity)
+        self._state.position = position.copy()
+        self._state.velocity = velocity.copy()
+        self._state.orientation = orientation.copy()
+        self._state.angular_velocity = angular_velocity.copy()
 
         # Update other simulation state items.
         self._state.time += time_delta

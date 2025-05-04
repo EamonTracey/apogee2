@@ -45,7 +45,7 @@ class ControlComponent(Component):
                 self._state.servo_angle = 0
 
             elif self._stage_state.stage == Stage.OVERSHOOT:
-                self._state.servo_angle = 40
+                self._state.servo_angle = 45
 
             elif self._stage_state.stage == Stage.DESCENT:
                 self._state.servo_angle = 0
@@ -90,8 +90,8 @@ class ControlComponent(Component):
                     elif pi_delta <= -max_servo_delta:
                         pi = self._pi_previous - max_servo_delta
 
-                    if pi >= 40:
-                        pi = 40
+                    if pi >= 45:
+                        pi = 45
                     elif pi <= 0:
                         pi = 0
 

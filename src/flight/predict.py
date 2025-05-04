@@ -16,6 +16,15 @@ from simulation.vehicle import Vehicle
 
 logger = logging.getLogger(__name__)
 
+def dampen_angle_of_actuation(a, v):
+    max_velocity = 629.9932
+    v = min(v, max_velocity)
+
+    ANGLE0 = 20
+    ANGLEMAX = 45
+    u = (v - max_velocity)/max_velocity
+    return min(a, (ANGLEMAX - ANGLE0)*u**2 + ANGLE0)
+
 
 class PredictComponent(Component):
 
@@ -71,7 +80,7 @@ class PredictComponent(Component):
         ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
 
         # Hack the dynamics component.
-        DT = 0.2
+        DT = 0.25
         dynamics = DynamicsComponent(self._vehicle, self._motor,
                                      self._environment)
         dynamics.state.time = 1000
@@ -79,11 +88,21 @@ class PredictComponent(Component):
         dynamics.state.velocity = v
         dynamics.state.orientation = q
         dynamics.state.angular_velocity = (0, 0, 0)
+
+        angle_of_actuation = self._control_state.servo_angle
+
+        import time
+        s=time.time()
         while dynamics.state.velocity[2] > 0:
-            dynamics._step(DT)
+            v_body = r.inv().apply(dynamics.state.velocity)
+            angle_of_actuation = dampen_angle_of_actuation(angle_of_actuation, v_body[0])
+
+            dynamics._step(DT, angle_of_actuation)
 
         self._state.apogee_prediction = dynamics.state.position[2]
+        e=time.time()
 
         #print(self._stage_state.stage, self._filter_state.altitude)
         #print(self._filter_state.velocity)
         #print(self._filter_state.altitude, self._state.apogee_prediction)
+        print(e-s, self._state.apogee_prediction)
