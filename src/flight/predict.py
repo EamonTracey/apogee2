@@ -105,4 +105,4 @@ class PredictComponent(Component):
         #print(self._stage_state.stage, self._filter_state.altitude)
         #print(self._filter_state.velocity)
         #print(self._filter_state.altitude, self._state.apogee_prediction)
-        print(self._state.apogee_prediction)
+        #print(self._state.apogee_prediction)
