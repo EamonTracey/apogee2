@@ -4,7 +4,6 @@ import logging
 
 from filterpy.kalman import KalmanFilter
 import numpy as np
-import math
 
 from base.component import Component
 from base.constants import EARTH_GRAVITY_ACCELERATION, METERS_TO_FEET
@@ -122,14 +121,6 @@ class FilterComponent(Component):
         self._state.acceleration = (self.filter_list["Xdir"].x[2],
                                     self.filter_list["Ydir"].x[2],
                                     self.filter_list["Zdir"].x[2])
-
-        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
-        #####one more mike's #####
-        ##### zebner won with quad aces #####
-        # EAMON CAN EXPLAIN WHAT HAPPENED HERE #
-        if 0 < self._fusion_state.zenith < 25:
-            self._state.velocity = (0, 0, self._state.velocity[2] * math.cos(self._fusion_state.zenith))
-        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
 
     def _generate_phi(self, time: float, unit):
         dt = time - self._previous_time

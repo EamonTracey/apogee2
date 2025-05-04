@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 import logging
+import math
 import traceback
 
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from base.component import Component
 from base.stage import Stage
@@ -44,14 +46,38 @@ class PredictComponent(Component):
         ]:
             return
 
+        # FUSION
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
+        #####one more mike's #####
+        ##### zebner won with quad aces #####
+        # EAMON CAN EXPLAIN WHAT HAPPENED HERE #
+        zenith = self._fusion_state.zenith
+        r = Rotation.from_euler("zyz", [0, zenith, 0],
+                                degrees=True) * Rotation.from_euler(
+                                    "y", -90, degrees=True)
+        q = r.as_quat()
+        q = np.roll(q, 1)
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
+
+        # FILTER
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
+        #####one more mike's #####
+        ##### zebner won with quad aces #####
+        # EAMON CAN EXPLAIN WHAT HAPPENED HERE #
+        v = self._filter_state.velocity
+        #if 0 < zenith < 25:
+        #    v = (0, 0, v[2] * math.cos(zenith))
+        print(float(v[2]))
+        ##### ITS 3AM IN HUNTSVILLE TIME TO VIBE #####
+
         # Hack the dynamics component.
         DT = 0.2
         dynamics = DynamicsComponent(self._vehicle, self._motor,
                                      self._environment)
         dynamics.state.time = 1000
         dynamics.state.position = (0, 0, self._filter_state.altitude)
-        dynamics.state.velocity = self._filter_state.velocity
-        dynamics.state.orientation = self._fusion_state.quaternion
+        dynamics.state.velocity = v
+        dynamics.state.orientation = q
         dynamics.state.angular_velocity = (0, 0, 0)
         while dynamics.state.velocity[2] > 0:
             dynamics._step(DT)
@@ -60,4 +86,4 @@ class PredictComponent(Component):
 
         #print(self._stage_state.stage, self._filter_state.altitude)
         #print(self._filter_state.velocity)
-        print(self._state.apogee_prediction)
+        #print(self._filter_state.altitude, self._state.apogee_prediction)
